@@ -1,3 +1,5 @@
+let language = 'ua';
+
 const textLayerDefaultLayoutParams = {
     'text-font': ['Open Sans Bold'],
     'text-size': 11,
@@ -11,53 +13,60 @@ const textLayerDefaultPaint = {
 };
 
 const controlsLocation = 'bottom-right';
+
 const backgroundLayerId = 'background';
 const helpPointsLayerId = 'helpPoints';
 
-const layerStyles = {
-    [backgroundLayerId]: {
-        layers: [
-            {
-                id: backgroundLayerId,
-                type: 'raster',
-                source: 'osmTiles',
-                minZoom: 0,
-                maxZoom: 19,
-            },
-        ],
-        name: 'Background',
-    },
-    [helpPointsLayerId]: {
-        layers: [
-            {
-                id: helpPointsLayerId + 'Circles',
-                type: 'circle',
-                source: 'custom',
-                paint: {
-                    'circle-color': 'rgba(255, 0, 0, 0.9)',
-                    'circle-radius': 18,
-                    'circle-stroke-color': 'rgba(245, 245, 245, 0.88)',
-                    'circle-stroke-width': 2,
+const dataLayerIds = [
+    helpPointsLayerId,
+];
+
+function layerStyles() {
+    return {
+        [backgroundLayerId]: {
+            layers: [
+                {
+                    id: backgroundLayerId,
+                    type: 'raster',
+                    source: 'osmTiles',
+                    minZoom: 0,
+                    maxZoom: 19,
                 },
-                filter: ['==', 'custom', 'punkt recepcyjny'],
-            }, {
-                id: helpPointsLayerId + 'Labels',
-                type: 'symbol',
-                source: 'custom',
-                layout: {
-                    'text-field': '{name}',
-                    ...textLayerDefaultLayoutParams,
+            ],
+            name: 'Background',
+        },
+        [helpPointsLayerId]: {
+            layers: [
+                {
+                    id: helpPointsLayerId + 'Circles',
+                    type: 'circle',
+                    source: 'custom',
+                    paint: {
+                        'circle-color': 'rgba(255, 0, 0, 0.9)',
+                        'circle-radius': 18,
+                        'circle-stroke-color': 'rgba(245, 245, 245, 0.88)',
+                        'circle-stroke-width': 2,
+                    },
+                    filter: ['==', 'custom', 'punkt recepcyjny'],
+                }, {
+                    id: helpPointsLayerId + 'Labels',
+                    type: 'symbol',
+                    source: 'custom',
+                    layout: {
+                        'text-field': `{name:${language}}`,
+                        ...textLayerDefaultLayoutParams,
+                    },
+                    paint: textLayerDefaultPaint,
+                    filter: ['==', 'custom', 'punkt recepcyjny'],
                 },
-                paint: textLayerDefaultPaint,
-                filter: ['==', 'custom', 'punkt recepcyjny'],
-            },
-        ],
-        name: 'Punkty pomocy',
-    },
-};
+            ],
+            name: 'Punkty pomocy',
+        },
+    };
+}
 const initialMapLayers = [
-    ...layerStyles[backgroundLayerId].layers,
-    ...layerStyles[helpPointsLayerId].layers,
+    ...layerStyles()[backgroundLayerId].layers,
+    ...layerStyles()[helpPointsLayerId].layers,
 ];
 
 
@@ -151,7 +160,7 @@ function renderGoogleRouteLink(lonlat) {
 }
 
 function toggleLayer(layerId) {
-    layerStyles[layerId].layers.forEach(layer => {
+    layerStyles()[layerId].layers.forEach(layer => {
         if (map.getLayer(layer.id)) {
             console.log("Removing " + layer.id + " layer from map.");
             map.removeLayer(layer.id);
@@ -159,5 +168,14 @@ function toggleLayer(layerId) {
             console.log("Adding " + layer.id + " layer to map.");
             map.addLayer(layer);
         }
+    });
+}
+
+function changeLanguage(lang) {
+    language = lang;
+    dataLayerIds.forEach(layerId => {
+        // do it twice to remove layers and add them back in with labels in new language
+        toggleLayer('helpPoints');
+        toggleLayer('helpPoints');
     });
 }
