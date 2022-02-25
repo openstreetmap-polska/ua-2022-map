@@ -5,6 +5,7 @@
       "type": "Feature",
       "properties": {
         "name:pl": "Punkt pomocy (Dorohusk)",
+        "name:en": "Reception point (Dorohusk)",
         "name:ua": "ПУНКТА ПРИЕМА (Dorohusk)",
         "description": "Pałac Suchodolskich Gminny Ośrodek Kultury i Turystyki, ul. Parkowa 5, 22-175 Dorohusk – osiedle",
         "custom": "punkt recepcyjny"
@@ -21,6 +22,7 @@
       "type": "Feature",
       "properties": {
         "name:pl": "Punkt pomocy (Dołhobyczów)",
+        "name:en": "Reception point (Dołhobyczów)",
         "name:ua": "ПУНКТА ПРИЕМА (Dołhobyczów)",
         "description": "Przygraniczne Centrum Kultury i Rekreacji, ul. Spółdzielcza 8, 22 - 540 Dołhobyczów",
         "custom": "punkt recepcyjny"
@@ -37,6 +39,7 @@
       "type": "Feature",
       "properties": {
         "name:pl": "Punkt pomocy (Horodło)",
+        "name:en": "Reception point (Horodło)",
         "name:ua": "ПУНКТА ПРИЕМА (Horodło)",
         "description": "Zespół Szkół w Horodle, ul. Piłsudskiego 58, 22 - 523 Horodło",
         "custom": "punkt recepcyjny"
@@ -53,6 +56,7 @@
       "type": "Feature",
       "properties": {
         "name:pl": "Punkt pomocy (Lubycza Królewska)",
+        "name:en": "Reception point (Lubycza Królewska)",
         "name:ua": "ПУНКТА ПРИЕМА (Lubycza Królewska)",
         "description": "Szkoła Podstawowa w Lubyczy Królewskiej (zaplecze hali sportowej), ul. Jana III Sobieskiego 5, 22 - 680 Lubycza Królewska",
         "custom": "punkt recepcyjny"
@@ -69,6 +73,7 @@
       "type": "Feature",
       "properties": {
         "name:pl": "Punkt pomocy (Korczowa)",
+        "name:en": "Reception point (Korczowa)",
         "name:ua": "ПУНКТА ПРИЕМА (Korczowa)",
         "description": "Świetlica, Korczowa 155 37-552 Korczowa",
         "custom": "punkt recepcyjny"
@@ -85,6 +90,7 @@
       "type": "Feature",
       "properties": {
         "name:pl": "Punkt pomocy (Medyka)",
+        "name:en": "Reception point (Medyka)",
         "name:ua": "ПУНКТА ПРИЕМА (Medyka)",
         "description": "Hala sportowa - Medyka 285, 37-732 Medyka",
         "custom": "punkt recepcyjny"
@@ -101,6 +107,7 @@
       "type": "Feature",
       "properties": {
         "name:pl": "Punkt pomocy (Krowica Sama)",
+        "name:en": "Reception point (Krowica Sama)",
         "name:ua": "ПУНКТА ПРИЕМА (Krowica Sama)",
         "description": "Szkoła Podstawowa w m. Krowica Sama 183, 37-625 Krowica Sama",
         "custom": "punkt recepcyjny"
@@ -117,6 +124,7 @@
       "type": "Feature",
       "properties": {
         "name:pl": "Punkt pomocy (Ustrzyki Dolne)",
+        "name:en": "Reception point (Ustrzyki Dolne)",
         "name:ua": "ПУНКТА ПРИЕМА (Ustrzyki Dolne)",
         "description": "Była Szkoła Podstawowa w Łodynie,  Łodyna 41, 38-700 Ustrzyki Dolne",
         "custom": "punkt recepcyjny"

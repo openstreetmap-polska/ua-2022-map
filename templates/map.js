@@ -1,4 +1,6 @@
-var language = 'ua';
+var language = '{{ lang }}';
+
+const customLayerURL = "../custom.geojson";
 
 const textLayerDefaultLayoutParams = {
     'text-font': ['Open Sans Bold'],
@@ -23,11 +25,6 @@ const dataLayerIds = [
     helpPointsLayerId,
 ];
 
-const navigationString = {
-    'pl': 'Nawigacja',
-    'ua': 'навігація',
-    'en': 'Navigation',
-}
 
 function layerStyles() {
     return {
@@ -61,7 +58,7 @@ function layerStyles() {
                     type: 'symbol',
                     source: 'custom',
                     layout: {
-                        'text-field': `{name:${language}}`,
+                        'text-field': '{name:{{ lang }}}',
                         ...textLayerDefaultLayoutParams,
                     },
                     paint: textLayerDefaultPaint,
@@ -81,10 +78,11 @@ const initialMapLayers = [
 var map = new maplibregl.Map({
     container: 'map', // container id
     center: [24.055, 50.538], // starting position [lng, lat]
-    zoom: 8, // starting zoom
+    zoom: 7, // starting zoom
     maxZoom: 19, // max zoom to allow
     maxPitch: 0,
     dragRotate: false,
+    hash: 'map',
     style: {
         version: 8,
         glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
@@ -105,7 +103,7 @@ var map = new maplibregl.Map({
             },
             custom: {
                 type: 'geojson',
-                data: './custom.geojson',
+                data: customLayerURL,
                 maxzoom: 12,
                 generateId: true,
             },
@@ -153,31 +151,33 @@ map.on('click', helpPointsLayerId + 'Circles', function (e) {
         ${renderOSMRouteLink(lonlat, properties)}
         <br>
         ${renderGoogleRouteLink(lonlat, properties)}
+        <br>
+        <p class="p-2">${properties.description}</p>
     `;
-    new maplibregl.Popup({maxWidth: '480px'})
+    new maplibregl.Popup({maxWidth: '300px'})
         .setLngLat(e.lngLat)
         .setHTML(popupHTML)
         .addTo(map);
 });
 // ----------------
 function renderOSMRouteLink(lonlat, properties) {
-    return `<a target="_blank" rel="noopener" class="button" style="min-width: 207px;"
+    return `<div class="p-1"><a target="_blank" rel="noopener" class="button p-1"
         href="https://www.openstreetmap.org/directions?from=&to=${lonlat[1]}%2C${lonlat[0]}#map=14/${lonlat[1]}/${lonlat[0]}">
         <svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="currentColor" d="M15.5,12C18,12 20,14 20,16.5C20,17.38 19.75,18.21 19.31,18.9L22.39,22L21,23.39L17.88,20.32C17.19,20.75 16.37,21 15.5,21C13,21 11,19 11,16.5C11,14 13,12 15.5,12M15.5,14A2.5,2.5 0 0,0 13,16.5A2.5,2.5 0 0,0 15.5,19A2.5,2.5 0 0,0 18,16.5A2.5,2.5 0 0,0 15.5,14M14,6.11L8,4V15.89L9,16.24V16.5C9,17.14 9.09,17.76 9.26,18.34L8,17.9L2.66,19.97L2.5,20A0.5,0.5 0 0,1 2,19.5V4.38C2,4.15 2.15,3.97 2.36,3.9L8,2L14,4.1L19.34,2H19.5A0.5,0.5 0 0,1 20,2.5V11.81C18.83,10.69 17.25,10 15.5,10C15,10 14.5,10.06 14,10.17V6.11Z" />
         </svg>
-        OpenStreetMap ${navigationString[language]}
-        </a>`;
+        OpenStreetMap {{ strings.navigation[lang] }}
+        </a></div>`;
 }
 
 function renderGoogleRouteLink(lonlat, properties) {
-    return `<a target="_blank" rel="noopener" class="button" style="min-width: 207px;"
+    return `<div class="p-1"><a target="_blank" rel="noopener" class="button p-1"
         href="https://www.google.com/maps/dir/?api=1&destination=${lonlat[1]}%2C${lonlat[0]}">
         <svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="currentColor" d="M18.27 6C19.28 8.17 19.05 10.73 17.94 12.81C17 14.5 15.65 15.93 14.5 17.5C14 18.2 13.5 18.95 13.13 19.76C13 20.03 12.91 20.31 12.81 20.59C12.71 20.87 12.62 21.15 12.53 21.43C12.44 21.69 12.33 22 12 22H12C11.61 22 11.5 21.56 11.42 21.26C11.18 20.53 10.94 19.83 10.57 19.16C10.15 18.37 9.62 17.64 9.08 16.93L18.27 6M9.12 8.42L5.82 12.34C6.43 13.63 7.34 14.73 8.21 15.83C8.42 16.08 8.63 16.34 8.83 16.61L13 11.67L12.96 11.68C11.5 12.18 9.88 11.44 9.3 10C9.22 9.83 9.16 9.63 9.12 9.43C9.07 9.06 9.06 8.79 9.12 8.43L9.12 8.42M6.58 4.62L6.57 4.63C4.95 6.68 4.67 9.53 5.64 11.94L9.63 7.2L9.58 7.15L6.58 4.62M14.22 2.36L11 6.17L11.04 6.16C12.38 5.7 13.88 6.28 14.56 7.5C14.71 7.78 14.83 8.08 14.87 8.38C14.93 8.76 14.95 9.03 14.88 9.4L14.88 9.41L18.08 5.61C17.24 4.09 15.87 2.93 14.23 2.37L14.22 2.36M9.89 6.89L13.8 2.24L13.76 2.23C13.18 2.08 12.59 2 12 2C10.03 2 8.17 2.85 6.85 4.31L6.83 4.32L9.89 6.89Z" />
         </svg>
-        Google Maps ${navigationString[language]}
-        </a>`;
+        Google Maps {{ strings.navigation[lang] }}
+        </a></div>`;
 }
 
 function toggleLayer(layerId) {

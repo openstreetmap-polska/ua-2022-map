@@ -1,4 +1,5 @@
 import logging
+import shutil
 import sys
 from pathlib import Path
 
@@ -44,4 +45,13 @@ if __name__ == "__main__":
     for lang in languages:
         lang_dir = output_dir.joinpath(lang)
         lang_dir.mkdir(exist_ok=True)
-        pass
+        render_and_save(output_directory=lang_dir, language=lang)
+
+    shutil.copy(
+        src=this_file_dir.joinpath("data", "custom.geojson").resolve(),
+        dst=this_file_dir.joinpath("build", "custom.geojson").resolve(),
+    )
+    shutil.copy(
+        src=this_file_dir.joinpath("data", "style.css").resolve(),
+        dst=this_file_dir.joinpath("build", "style.css").resolve(),
+    )
