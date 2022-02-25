@@ -33,7 +33,7 @@ function layerStyles() {
                 {
                     id: backgroundLayerId,
                     type: 'raster',
-                    source: 'mediaWikiTiles',
+                    source: 'osmTiles',
                     minZoom: 0,
                     maxZoom: 19,
                 },
