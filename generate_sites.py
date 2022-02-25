@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     for lang in languages:
         lang_dir = output_dir.joinpath(lang)
-        lang_dir.mkdir(exist_ok=True)
+        lang_dir.mkdir(exist_ok=True, parents=True)
         render_and_save(output_directory=lang_dir, language=lang)
 
     shutil.copy(
