@@ -33,7 +33,7 @@ function layerStyles() {
                 {
                     id: backgroundLayerId,
                     type: 'raster',
-                    source: 'osmTiles',
+                    source: 'mediaWikiTiles',
                     minZoom: 0,
                     maxZoom: 19,
                 },
@@ -100,6 +100,18 @@ var map = new maplibregl.Map({
                     'raster-fade-duration': 100
                 },
                 attribution: `data © <a target="_top" rel="noopener" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.`,
+            },
+            mediaWikiTiles: {
+                type: 'raster',
+                tiles: [
+                    'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png?lang=uk'
+                ],
+                tileSize: 256,
+                maxzoom: 19,
+                paint: {
+                    'raster-fade-duration': 100
+                },
+                attribution: `map: <a target="_top" rel="noopener" href="https://foundation.wikimedia.org/wiki/Maps_Terms_of_Use">WikiMedia</a>; data: © <a target="_top" rel="noopener" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.`,
             },
             custom: {
                 type: 'geojson',
