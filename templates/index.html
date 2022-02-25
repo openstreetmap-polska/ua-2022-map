@@ -15,8 +15,8 @@
 
   <nav aria-label="main navigation" class="navbar is-link pl-1">
     <div class="navbar-brand">
-      <a class="has-text-weight-light navbar-item has-text-white-ter is-size-4 is-size-5-mobile pr-1 pl-2" href="#">
-        Poland<span class="has-text-weight-semibold">4</span>Ukraine
+      <a class="navbar-item has-text-white-ter is-size-4 is-size-5-mobile pr-1 pl-2" href="#">
+        dopomoha.pl
       </a>
 
 <!--      <div class="navbar-item is-hidden-touch">-->
@@ -48,6 +48,19 @@
     <div class="navbar-menu" id="navMenu">
       <div class="navbar-end">
         <div class="navbar-item px-1">
+          <a class="button is-white is-outlined px-4"
+             href="mailto:">{{ strings.need_help[lang] }}</a>
+        </div>
+        <div class="navbar-item px-1">
+          <a class="button is-white is-outlined px-4"
+             href="mailto:">{{ strings.offer_help[lang] }}</a>
+        </div>
+        <div class="navbar-item px-1">
+          <a class="button is-white is-outlined px-4"
+             href="mailto:">{{ strings.contact_us[lang] }}</a>
+        </div>
+
+        <div class="navbar-item px-1">
           <a class="" href="../ua/">
             <span class="is-size-2" style="line-height: 46px;">🇺🇦</span>
           </a>
@@ -66,7 +79,7 @@
         </div>
 
         <div class="navbar-item px-1">
-          <a class="button is-white has-text-weight-light is-outlined"
+          <a class="button is-white is-outlined"
              href="https://www.gov.pl/web/udsc/ukraina" rel="noopener"
              target="_blank">
             <div class="pr-1 pt-2">
@@ -77,11 +90,6 @@
             ua.gov.pl
           </a>
         </div>
-
-<!--        <div class="navbar-item px-1">-->
-<!--          <a class="button is-white is-outlined px-4"-->
-<!--             href="mailto:zarzad@openstreetmap.pl">Kontakt</a>-->
-<!--        </div>-->
 
         <div class="navbar-item px-1">
           <button class="button is-white is-outlined has-text-weight-light has-text-white-ter" onclick="showSidebar()">

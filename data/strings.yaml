@@ -3,6 +3,22 @@ navigation:
   pl: Nawigacja
   en: Navigation
 title:
+  ua: Допомога
+  pl: Pomoc Ukrainie
+  en: Help Ukraine
+offer_help:
+  ua: placeholder
+  pl: Chcę pomóc
+  en: Offer help
+need_help:
+  ua: placeholder
+  pl: Potrzebuję pomocy
+  en: Need help
+contact_us:
+  ua: placeholder
+  pl: Kontakt
+  en: Contact
+placeholder:
   ua: placeholder
   pl: placeholder
   en: placeholder
