@@ -57,7 +57,7 @@ function layerStyles() {
                     id: helpPointsLayerId + 'Labels',
                     type: 'symbol',
                     source: 'custom',
-                    minzoom: 7,
+                    minzoom: 5,
                     layout: {
                         'text-field': '{name:{{ lang }}}',
                         'text-offset': [0, 3],

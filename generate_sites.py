@@ -60,3 +60,15 @@ if __name__ == "__main__":
         src=this_file_dir.joinpath("data", "meta-image.png").resolve(),
         dst=this_file_dir.joinpath("build", "meta-image.png").resolve(),
     )
+    shutil.copy(
+        src=this_file_dir.joinpath("data", "ua.png").resolve(),
+        dst=this_file_dir.joinpath("build", "ua.png").resolve(),
+    )
+    shutil.copy(
+        src=this_file_dir.joinpath("data", "pl.png").resolve(),
+        dst=this_file_dir.joinpath("build", "pl.png").resolve(),
+    )
+    shutil.copy(
+        src=this_file_dir.joinpath("data", "gb.png").resolve(),
+        dst=this_file_dir.joinpath("build", "gb.png").resolve(),
+    )
