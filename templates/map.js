@@ -47,18 +47,20 @@ function layerStyles() {
                     type: 'circle',
                     source: 'custom',
                     paint: {
-                        'circle-color': 'rgba(255, 0, 0, 0.9)',
+                        'circle-color': '#ffd500',
                         'circle-radius': 18,
-                        'circle-stroke-color': 'rgba(245, 245, 245, 0.88)',
-                        'circle-stroke-width': 2,
+                        'circle-stroke-color': '#fff',
+                        'circle-stroke-width': 3,
                     },
                     filter: ['==', 'custom', 'punkt recepcyjny'],
                 }, {
                     id: helpPointsLayerId + 'Labels',
                     type: 'symbol',
                     source: 'custom',
+                    minzoom: 7,
                     layout: {
                         'text-field': '{name:{{ lang }}}',
+                        'text-offset': [0, 3],
                         ...textLayerDefaultLayoutParams,
                     },
                     paint: textLayerDefaultPaint,

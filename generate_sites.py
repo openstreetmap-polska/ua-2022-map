@@ -56,3 +56,7 @@ if __name__ == "__main__":
         src=this_file_dir.joinpath("data", "style.css").resolve(),
         dst=this_file_dir.joinpath("build", "style.css").resolve(),
     )
+    shutil.copy(
+        src=this_file_dir.joinpath("data", "meta-image.png").resolve(),
+        dst=this_file_dir.joinpath("build", "meta-image.png").resolve(),
+    )
