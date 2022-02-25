@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ strings.title }}</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.css" rel="stylesheet" />
+  <script defer src="https://openingh.openstreetmap.de/opening_hours.js/opening_hours+deps.min.js"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet"/>
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  </style>
+</head>
+<body>
+
+  <nav aria-label="main navigation" class="navbar is-link pl-1">
+    <div class="navbar-brand">
+      <a class="has-text-weight-light navbar-item has-text-white-ter is-size-4 is-size-5-mobile pr-1 pl-2" href="#">
+        Poland<span class="has-text-weight-semibold">4</span>Ukraine
+      </a>
+
+<!--      <div class="navbar-item is-hidden-touch">-->
+<!--        <span class="has-text-grey-light has-text-weight-light mr-3">|</span>-->
+<!--        <span class="has-text-weight-light is-size-6 is-size-7-touch pl-0">-->
+<!--                  tworzona z ❤️ przez <a class="has-text-weight-medium" href="https://openstreetmap.org.pl/"-->
+<!--                                         rel="noopener" style="color:#effaf5;" target="_blank"-->
+<!--                                         title="Odwiedź stronę polskiej społeczności OSM">OpenStreetMap Polska</a>-->
+<!--                </span>-->
+<!--      </div>-->
+<!--      <div class="navbar-item is-hidden-desktop osm-caption-mobile">-->
+<!--        <span class="has-text-grey-light has-text-weight-light mr-3 is-size-4">|</span>-->
+<!--        <span class="has-text-weight-light is-size-6 is-size-7-touch pl-0">-->
+<!--                tworzona z ❤️ przez <a class="has-text-weight-medium" href="https://openstreetmap.org.pl/" rel="noopener"-->
+<!--                                       style="color:#effaf5;" target="_blank"-->
+<!--                                       title="Odwiedź stronę polskiej społeczności OSM">OpenStreetMap Polska</a>-->
+<!--              </span>-->
+<!--      </div>-->
+
+      <a aria-expanded="false" aria-label="menu" class="navbar-burger has-text-white-ter is-transparent"
+         data-target="navMenu"
+         role="button">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu" id="navMenu">
+      <div class="navbar-end">
+<!--        <div class="navbar-item px-1">-->
+<!--          <a class="button is-success has-text-weight-light is-outlined"-->
+<!--             href="https://wiki.openstreetmap.org/wiki/Pl:Przewodnik_dla_pocz%C4%85tkuj%C4%85cych" rel="noopener"-->
+<!--             target="_blank">Przewodnik OSM</a>-->
+<!--        </div>-->
+
+<!--        <div class="navbar-item px-1">-->
+<!--          <a class="button is-white is-outlined px-4"-->
+<!--             href="mailto:zarzad@openstreetmap.pl">Kontakt</a>-->
+<!--        </div>-->
+
+        <div class="navbar-item px-1">
+          <button class="button is-white is-outlined has-text-weight-light has-text-white-ter" onclick="showSidebar()">
+            <svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24">
+              <path
+                d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"
+                fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="sidebar-right is-invisible" id="sidebar-div">
+    <div class="card">
+  
+      <div id="sidebar-header">
+        <div class="columns is-vcentered is-flex mr-0">
+          <div class="column ml-4 my-3">
+            <p class="title has-text-weight-light" id="sidebar-caption">Ustawienia</p>
+          </div>
+          <button aria-label="Zamknij ekran boczny"
+                  class="delete is-medium is-hidden-touch is-pulled-right close-button mr-2 mt-5"
+                  id="sidebar-button-close-touch"></button>
+          <button aria-label="Zamknij ekran boczny"
+                  class="delete is-large is-hidden-desktop is-pulled-right close-button mr-2 mt-5"
+                  id="sidebar-button-close-desktop"></button>
+        </div>
+      </div>
+  
+      <div class="card-content pt-3 pb-3">
+        <div class="content" id="sidebar-content-div">
+
+        </div>
+      </div>
+  
+      <footer class="card-footer">
+  
+      </footer>
+    </div>
+  </div>
+
+  <div id="map"></div>
+  <script src="./map.js"></script>
+</body>
+</html>

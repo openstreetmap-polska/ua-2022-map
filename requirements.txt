@@ -1,2 +1,4 @@
 requests==2.27.1
 osm2geojson==0.1.31
+jinja2==3.0.3
+ruamel.yaml==0.17.21
