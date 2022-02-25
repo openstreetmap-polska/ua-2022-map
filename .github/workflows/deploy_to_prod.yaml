@@ -18,16 +18,16 @@ jobs:
     environment: prod
     steps:
       - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt --upgrade pip
+      - name: Generate from templates
+        run: python generate_sites.py
       - name: Install SSH Key
         uses: kielabokkie/ssh-key-and-known-hosts-action@v1
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ssh-host: ${{ secrets.SSH_HOST_IP }}
           ssh-port: ${{ secrets.SSH_HOST_PORT }}
-      - name: Install dependencies
-        run: pip install -r requirements.txt --upgrade pip
-      - name: Generate from templates
-        run: python generate_sites.py
       - name: Update download script with rsync
         run: |
           rsync --update -e "ssh -p ${{ secrets.SSH_HOST_PORT }}" ./download_data.py ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_IP }}:/var/download_data.py

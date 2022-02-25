@@ -37,6 +37,7 @@ if __name__ == "__main__":
 
     default_dir = this_file_dir.joinpath("build").resolve()
     output_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else default_dir
+    output_dir.mkdir(exist_ok=True)
 
     if not output_dir.is_dir():
         logger.error(f"Given path: {output_dir} is not a directory.")
@@ -44,7 +45,7 @@ if __name__ == "__main__":
 
     for lang in languages:
         lang_dir = output_dir.joinpath(lang)
-        lang_dir.mkdir(exist_ok=True, parents=True)
+        lang_dir.mkdir(exist_ok=True)
         render_and_save(output_directory=lang_dir, language=lang)
 
     shutil.copy(
