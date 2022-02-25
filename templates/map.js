@@ -161,9 +161,9 @@ map.on('click', helpPointsLayerId + 'Circles', function (e) {
     const lonlat = e.features[0].geometry.coordinates;
     const properties = e.features[0].properties;
     const namePl = e.features[0].properties['name:pl'];
-    const nameUa = e.features[0].properties['name:ua'];
+    const nameUk = e.features[0].properties['name:uk'];
     const popupHTML = `
-        <h1 class="is-size-5 pb-2">${nameUa}</h1>
+        <h1 class="is-size-5 pb-2">${nameUk}</h1>
         <h2 class="is-size-6 pb-3">${namePl}</h2>
         ${renderOSMRouteLink(lonlat, properties)}
         ${renderGoogleRouteLink(lonlat, properties)}

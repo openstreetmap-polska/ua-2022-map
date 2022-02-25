@@ -17,7 +17,7 @@ env = Environment(
     autoescape=select_autoescape()
 )
 
-languages = ("pl", "ua", "en")
+languages = ("pl", "uk", "en")
 
 yaml = YAML()
 strings = yaml.load(
