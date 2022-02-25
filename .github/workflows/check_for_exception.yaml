@@ -1,0 +1,24 @@
+# deploy main branch
+
+name: check_for_exceptions
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+    paths-ignore:
+      - README.md
+      - .gitignore
+      - LICENSE
+
+jobs:
+  deploy:
+    name: Check if site generation runs successfully without throwing exceptions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt --upgrade pip
+      - name: Generate from templates
+        run: python generate_sites.py
