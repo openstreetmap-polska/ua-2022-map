@@ -38,7 +38,11 @@ const dataLayerIds = [
     layersDict.helpPoints,
 ];
 
-const usedLayersIds = [layersDict.background, layersDict.helpPoints, layersDict.socialFacilities];
+const usedLayersIds = [
+    layersDict.background,
+    layersDict.helpPoints,
+    layersDict.socialFacilities,
+];
 
 const layersDefinitions = {
         [layersDict.background]: {
