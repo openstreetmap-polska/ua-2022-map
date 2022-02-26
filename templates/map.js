@@ -1,7 +1,7 @@
 var language = '{{ lang }}';
 
 const customLayerURL = "{{ url_for('static', filename='custom.geojson') }}";
-const osmLayerURL = "../data/osm_data.geojson";
+const osmLayerURL = "{{ url_for('get_osm_data_geojson') }}";
 
 const textLayerDefaultLayoutParams = {
     'text-font': ['Open Sans Bold'],
