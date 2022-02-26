@@ -23,4 +23,4 @@ python3 generate_sites.py
 python3 -m http.server
 ```
 
-Go to http://localhost:8000/en/ in the browser.
+Go to http://localhost:8000/build/en/ in the browser.
