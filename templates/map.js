@@ -39,7 +39,7 @@ function layerStyles() {
                     maxZoom: 19,
                 },
             ],
-            name: 'Background',
+            name: 'Background', // todo: localize layer name
         },
         [helpPointsLayerId]: {
             layers: [
@@ -69,7 +69,7 @@ function layerStyles() {
                     filter: ['==', 'custom', 'punkt recepcyjny'],
                 },
             ],
-            name: 'Punkty pomocy',
+            name: 'Punkty pomocy', // todo: localize layer name
         },
         [socialFacilitiesLayerId]: {
             layers: [
@@ -83,7 +83,7 @@ function layerStyles() {
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 3,
                     },
-                    filter: ['==', 'feature_type', 'social_facility'],
+                    filter: ['==', 'amenity', 'social_facility'],
                 }, {
                     id: socialFacilitiesLayerId + 'Labels',
                     type: 'symbol',
@@ -96,7 +96,7 @@ function layerStyles() {
                         ...textLayerDefaultLayoutParams,
                     },
                     paint: textLayerDefaultPaint,
-                    filter: ['==', 'feature_type', 'social_facility'],
+                    filter: ['==', 'amenity', 'social_facility'],
                 },
             ],
             name: 'Placówki opieki społecznej', // todo: localize layer name

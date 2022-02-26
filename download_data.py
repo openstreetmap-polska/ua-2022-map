@@ -4,6 +4,7 @@ import requests
 import json
 import sys
 from pathlib import Path
+import re
 
 from osm2geojson import json2geojson
 
@@ -60,6 +61,18 @@ def coalesce(*args) -> str:
     return ""
 
 
+def keep_tag(tag: str) -> bool:
+    tags_to_ignore = (
+        re.compile("^name.*"),
+        re.compile("^source$"),
+        re.compile("^ref.*"),
+    )
+    for pattern in tags_to_ignore:
+        if pattern.match(tag):
+            return False
+    return True
+
+
 def process_feature_properties(properties: dict) -> dict:
     p = properties["tags"]
     results = {}
@@ -68,9 +81,8 @@ def process_feature_properties(properties: dict) -> dict:
     results["name:uk"] = coalesce(p.get("name:uk"), p.get("name"))
     results["name:en"] = coalesce(p.get("name:en"), p.get("name"))
 
-    if p.get("social_facility"):
-        results["feature_type"] = "social_facility"
-        results["detailed_type"] = p.get("social_facility")
+    results["metadata"] = {k: v for k, v in properties.items() if k not in ("tags", "nodes")}
+    results["tags"] = {k: v for k, v in p if keep_tag(k)}
 
     return results
 
