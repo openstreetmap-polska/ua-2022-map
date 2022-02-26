@@ -41,7 +41,7 @@ const layersDefinitions = {
                     maxZoom: 19,
                 },
             ],
-            name: 'Background', // todo: localize layer name
+            name: 'OSM Carto tiles', // todo: localize layer name
             id: layersDict.background,
             before: layersDict.helpPoints
         },
