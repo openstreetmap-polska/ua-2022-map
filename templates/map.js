@@ -16,23 +16,25 @@ const textLayerDefaultPaint = {
 
 const controlsLocation = 'bottom-right';
 
-const backgroundLayerId = 'background';
-const helpPointsLayerId = 'helpPoints';
-const socialFacilitiesLayerId = 'socialFacilities';
+const layersDict = {
+    background: 'background',
+    helpPoints: 'helpPoints',
+    socialFacilities: 'socialFacilities',
+}
 
 const sidebarDivId = 'sidebar-div';
 
 const dataLayerIds = [
-    helpPointsLayerId,
+    layersDict.helpPoints,
 ];
 
+const usedLayersIds = [layersDict.background, layersDict.helpPoints];
 
-function layerStyles() {
-    return {
-        [backgroundLayerId]: {
+const layersDefinitions = {
+        [layersDict.background]: {
             layers: [
                 {
-                    id: backgroundLayerId,
+                    id: layersDict.background,
                     type: 'raster',
                     source: 'osmTiles',
                     minZoom: 0,
@@ -40,11 +42,13 @@ function layerStyles() {
                 },
             ],
             name: 'Background', // todo: localize layer name
+            id: layersDict.background,
+            before: layersDict.helpPoints
         },
-        [helpPointsLayerId]: {
+        [layersDict.helpPoints]: {
             layers: [
                 {
-                    id: helpPointsLayerId + 'Circles',
+                    id: `${layersDict.helpPoints}Circles`,
                     type: 'circle',
                     source: 'custom',
                     paint: {
@@ -55,7 +59,7 @@ function layerStyles() {
                     },
                     filter: ['==', 'custom', 'punkt recepcyjny'],
                 }, {
-                    id: helpPointsLayerId + 'Labels',
+                    id: `${layersDict.helpPoints}Labels`,
                     type: 'symbol',
                     source: 'custom',
                     minzoom: 5,
@@ -70,11 +74,12 @@ function layerStyles() {
                 },
             ],
             name: 'Punkty pomocy', // todo: localize layer name
+            id: layersDict.helpPoints,
         },
-        [socialFacilitiesLayerId]: {
+        [layersDict.socialFacilities]: {
             layers: [
                 {
-                    id: socialFacilitiesLayerId + 'Circles',
+                    id: `${layersDict.socialFacilities}Circles`,
                     type: 'circle',
                     source: 'osmData',
                     paint: {
@@ -85,7 +90,7 @@ function layerStyles() {
                     },
                     filter: ['==', 'amenity', 'social_facility'],
                 }, {
-                    id: socialFacilitiesLayerId + 'Labels',
+                    id: `${layersDict.socialFacilities}Labels`,
                     type: 'symbol',
                     source: 'osmData',
                     minzoom: 5,
@@ -100,14 +105,12 @@ function layerStyles() {
                 },
             ],
             name: 'Placówki opieki społecznej', // todo: localize layer name
+            id: layersDict.socialFacilities,
         },
-    };
-}
-const initialMapLayers = [
-    ...layerStyles()[backgroundLayerId].layers,
-    ...layerStyles()[helpPointsLayerId].layers,
-];
+};
 
+const usedLayersDefs = usedLayersIds.map(layerId => layersDefinitions[layerId]);
+const separatedLayersDefs = usedLayersDefs.reduce((acc, layer) => [...acc, ...layer.layers], []);
 
 var map = new maplibregl.Map({
     container: 'map', // container id
@@ -159,7 +162,7 @@ var map = new maplibregl.Map({
                 maxzoom: 12,
             },
         },
-        layers: initialMapLayers,
+        layers: separatedLayersDefs,
     },
 });
 
@@ -186,15 +189,15 @@ map.addControl(geolocate, controlsLocation);
 
 // user interaction stuff
 // ----------------
-map.on('mouseenter', helpPointsLayerId + 'Circles', () => {
+map.on('mouseenter', `${layersDict.helpPoints}Circles`, () => {
     map.getCanvas().style.cursor = 'pointer';
 });
 
-map.on('mouseleave', helpPointsLayerId + 'Circles', () => {
+map.on('mouseleave', `${layersDict.helpPoints}Circles`, () => {
     map.getCanvas().style.cursor = '';
 });
 
-map.on('click', helpPointsLayerId + 'Circles', function (e) {
+map.on('click', `${layersDict.helpPoints}Circles`, function (e) {
     const lonlat = e.features[0].geometry.coordinates;
     const properties = e.features[0].properties;
     const namePl = e.features[0].properties['name:pl'];
@@ -234,14 +237,10 @@ function renderGoogleRouteLink(lonlat, properties) {
 }
 
 function toggleLayer(layerId) {
-    layerStyles()[layerId].layers.forEach(layer => {
-        if (map.getLayer(layer.id)) {
-            console.log("Removing " + layer.id + " layer from map.");
-            map.removeLayer(layer.id);
-        } else {
-            console.log("Adding " + layer.id + " layer to map.");
-            map.addLayer(layer);
-        }
+    const currentState = map.getLayoutProperty(layersDefinitions[layerId].layers[0].id, 'visibility')
+    const newState = !currentState || currentState === 'visible' ? 'none' : 'visible';
+    layersDefinitions[layerId].layers.forEach(layer => {
+        map.setLayoutProperty(layer.id, 'visibility', newState)
     });
 }
 
@@ -314,4 +313,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Render legend 
+    (function legendIife() {
+        const legend = document.getElementById('legend__wrapper');
+        const list = document.createElement('ul');
+        list.classList.add('legend__list')
+        function getLegendItem(id, displayName) {
+            const legendItem = document.createElement('li');
+            legendItem.classList.add('legend__item');
+            legendItem.innerHTML = `
+            <label class="checkbox">
+                <input checked type="checkbox" data-layer-id=${id}>
+                <span class="is-size-6">
+                    ${displayName}
+                </span>
+            </label>`;
+            return legendItem
+        }
+    
+        function renderLegend(layers) {
+            layers.forEach(layer => {
+            const legendItem = getLegendItem(layer.id, layer.name)
+                list.appendChild(legendItem)
+            })
+            legend.appendChild(list)
+        }
+        
+        list.addEventListener('click', e => {
+            const target = e.target;
+            if (target.tagName === 'INPUT') {
+                const layerId = target.dataset.layerId
+                toggleLayer(layerId);
+            }
+        })
+        renderLegend(usedLayersDefs)
+      })();
 });
