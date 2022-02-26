@@ -14,7 +14,24 @@ logger.setLevel(logging.INFO)
 overpass_api_url = "https://lz4.overpass-api.de/api/interpreter"
 
 overpass_query = """
-
+[out:json][timeout:360];
+area(id:3600130919)->.wojLub;
+area(id:3600130957)->.wojPodk;
+//area(id:3600060199)->.ukra;
+area(id:3600072380)->.ukra1;
+area(id:3600071064)->.ukra2;
+(
+  nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.wojLub); 
+  nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.wojPodk);
+  nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.ukra1);
+  nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.ukra2);
+  
+  nwr[building=train_station](area.wojLub);
+  nwr[building=train_station](area.wojPodk);
+  nwr[building=train_station](area.ukra1);
+  nwr[building=train_station](area.ukra2);
+);
+out center body qt;
 """
 
 
@@ -36,20 +53,58 @@ def save_json(file_path: Union[str, Path], data: dict) -> None:
     logger.info("Done saving json file.")
 
 
+def coalesce(*args) -> str:
+    for arg in args:
+        if arg:
+            return arg
+    return ""
+
+
+def process_feature_properties(properties: dict) -> dict:
+    p = properties["tags"]
+    results = {}
+
+    results["name:pl"] = coalesce(p.get("name:pl"), p.get("name"))
+    results["name:uk"] = coalesce(p.get("name:uk"), p.get("name"))
+    results["name:en"] = coalesce(p.get("name:en"), p.get("name"))
+
+    if p.get("social_facility"):
+        results["feature_type"] = "social_facility"
+        results["detailed_type"] = p.get("social_facility")
+
+    return results
+
+
+def process_geojson(data: dict) -> dict:
+    return {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": process_feature_properties(feature["properties"]),
+                "geometry": feature["geometry"],
+            }
+            for feature in data["features"]
+        ]
+    }
+
+
 def main(output_path: Union[str, Path]) -> None:
     data = query_overpass_api(overpass_query)
     geojson_data = json2geojson(data)
-    save_json(output_path, geojson_data)
+    processed_data = process_geojson(geojson_data)
+    save_json(output_path, processed_data)
 
 
 if __name__ == "__main__":
+    print(sys.argv[1])
 
     this_files_dir = Path(__file__).parent.resolve()
     output_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else this_files_dir
     fp = output_dir.joinpath('osm_data.geojson')
 
     if not output_dir.is_dir():
-        logger.error(f'Given path: "f{output_dir}" is not a directory.')
+        logger.error(f'Given path: "{output_dir}" is not a directory.')
         sys.exit()
 
     main(output_path=fp)

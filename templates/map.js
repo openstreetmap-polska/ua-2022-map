@@ -1,10 +1,10 @@
 var language = '{{ lang }}';
 
 const customLayerURL = "../custom.geojson";
+const osmLayerURL = "../osm_data.geojson";
 
 const textLayerDefaultLayoutParams = {
     'text-font': ['Open Sans Bold'],
-    'text-size': 11,
     'text-letter-spacing': 0.05,
     'text-overlap': 'always',
 };
@@ -18,6 +18,7 @@ const controlsLocation = 'bottom-right';
 
 const backgroundLayerId = 'background';
 const helpPointsLayerId = 'helpPoints';
+const socialFacilitiesLayerId = 'socialFacilities';
 
 const sidebarDivId = 'sidebar-div';
 
@@ -61,6 +62,7 @@ function layerStyles() {
                     layout: {
                         'text-field': '{name:{{ lang }}}',
                         'text-offset': [0, 3],
+                        'text-size': 11,
                         ...textLayerDefaultLayoutParams,
                     },
                     paint: textLayerDefaultPaint,
@@ -68,6 +70,36 @@ function layerStyles() {
                 },
             ],
             name: 'Punkty pomocy',
+        },
+        [socialFacilitiesLayerId]: {
+            layers: [
+                {
+                    id: socialFacilitiesLayerId + 'Circles',
+                    type: 'circle',
+                    source: 'osmData',
+                    paint: {
+                        'circle-color': '#00d5ff',
+                        'circle-radius': 10,
+                        'circle-stroke-color': '#fff',
+                        'circle-stroke-width': 3,
+                    },
+                    filter: ['==', 'feature_type', 'social_facility'],
+                }, {
+                    id: socialFacilitiesLayerId + 'Labels',
+                    type: 'symbol',
+                    source: 'osmData',
+                    minzoom: 5,
+                    layout: {
+                        'text-field': '{name:{{ lang }}}',
+                        'text-offset': [0, 3],
+                        'text-size': 8,
+                        ...textLayerDefaultLayoutParams,
+                    },
+                    paint: textLayerDefaultPaint,
+                    filter: ['==', 'feature_type', 'social_facility'],
+                },
+            ],
+            name: 'Placówki opieki społecznej', // todo: localize layer name
         },
     };
 }
@@ -120,6 +152,11 @@ var map = new maplibregl.Map({
                 data: customLayerURL,
                 maxzoom: 12,
                 generateId: true,
+            },
+            osmData: {
+                type: 'geojson',
+                data: osmLayerURL,
+                maxzoom: 12,
             },
         },
         layers: initialMapLayers,
