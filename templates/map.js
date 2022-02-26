@@ -28,7 +28,9 @@ const dataLayerIds = [
     layersDict.helpPoints,
 ];
 
-const layerStyles = { 
+const usedLayersIds = [layersDict.background, layersDict.helpPoints];
+
+const layersDefinitions = {
         [layersDict.background]: {
             layers: [
                 {
@@ -40,6 +42,8 @@ const layerStyles = {
                 },
             ],
             name: 'Background', // todo: localize layer name
+            id: layersDict.background,
+            before: layersDict.helpPoints
         },
         [layersDict.helpPoints]: {
             layers: [
@@ -70,6 +74,7 @@ const layerStyles = {
                 },
             ],
             name: 'Punkty pomocy', // todo: localize layer name
+            id: layersDict.helpPoints,
         },
         [layersDict.socialFacilities]: {
             layers: [
@@ -85,7 +90,7 @@ const layerStyles = {
                     },
                     filter: ['==', 'amenity', 'social_facility'],
                 }, {
-                    id: layersDict.socialFacilities + 'Labels',
+                    id: `${layersDict.socialFacilities}Labels`,
                     type: 'symbol',
                     source: 'osmData',
                     minzoom: 5,
@@ -100,13 +105,12 @@ const layerStyles = {
                 },
             ],
             name: 'Placówki opieki społecznej', // todo: localize layer name
+            id: layersDict.socialFacilities,
         },
-    };
+};
 
-const initialMapLayers = [
-    ...layerStyles.background.layers,
-    ...layerStyles.helpPoints.layers,
-];
+const usedLayersDefs = usedLayersIds.map(layerId => layersDefinitions[layerId]);
+const separatedLayersDefs = usedLayersDefs.reduce((acc, layer) => [...acc, ...layer.layers], []);
 
 var map = new maplibregl.Map({
     container: 'map', // container id
@@ -158,7 +162,7 @@ var map = new maplibregl.Map({
                 maxzoom: 12,
             },
         },
-        layers: initialMapLayers,
+        layers: separatedLayersDefs,
     },
 });
 
@@ -233,14 +237,10 @@ function renderGoogleRouteLink(lonlat, properties) {
 }
 
 function toggleLayer(layerId) {
-    layerStyles[layerId].layers.forEach(layer => {
-        if (map.getLayer(layer.id)) {
-            console.log("Removing " + layer.id + " layer from map.");
-            map.removeLayer(layer.id);
-        } else {
-            console.log("Adding " + layer.id + " layer to map.");
-            map.addLayer(layer);
-        }
+    const currentState = map.getLayoutProperty(layersDefinitions[layerId].layers[0].id, 'visibility')
+    const newState = !currentState || currentState === 'visible' ? 'none' : 'visible';
+    layersDefinitions[layerId].layers.forEach(layer => {
+        map.setLayoutProperty(layer.id, 'visibility', newState)
     });
 }
 
@@ -313,4 +313,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Render legend 
+    (function legendIife() {
+        const legend = document.getElementById('legend__wrapper');
+        const list = document.createElement('ul');
+        function getLegendItem(id, displayedName) {
+            const legendItem = document.createElement('li');
+            legendItem.classList.add('legend__item');
+            legendItem.innerHTML = `<input data-layer-id=${id} checked type="checkbox"> <span>${displayedName}</span>`
+            return legendItem
+        }
+    
+        function renderLegend(layers) {
+            layers.forEach(layer => {
+            const legendItem = getLegendItem(layer.id, layer.name)
+                list.appendChild(legendItem)
+            })
+            legend.appendChild(list)
+        }
+        
+        list.addEventListener('click', e => {
+            const target = e.target;
+            if (target.tagName === 'INPUT') {
+                const layerId = target.dataset.layerId
+                toggleLayer(layerId);
+            }
+        })
+        renderLegend(usedLayersDefs)
+      })();
 });
