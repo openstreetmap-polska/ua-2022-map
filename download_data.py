@@ -114,7 +114,7 @@ def main(output_path: Union[str, Path]) -> None:
 
 
 if __name__ == "__main__":
-    print(sys.argv[1])
+    #print(sys.argv[1])
 
     this_files_dir = Path(__file__).parent.resolve()
     output_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else this_files_dir
