@@ -88,7 +88,7 @@ const layersDefinitions = {
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 3,
                     },
-                    filter: ['==', 'amenity', 'social_facility'],
+                    filter: ['==', ['get', 'amenity'], 'social_facility'],
                 }, {
                     id: `${layersDict.socialFacilities}Labels`,
                     type: 'symbol',
@@ -101,7 +101,7 @@ const layersDefinitions = {
                         ...textLayerDefaultLayoutParams,
                     },
                     paint: textLayerDefaultPaint,
-                    filter: ['==', 'amenity', 'social_facility'],
+                    filter: ['==', ['get', 'amenity'], 'social_facility'],
                 },
             ],
             name: 'Placówki opieki społecznej', // todo: localize layer name
