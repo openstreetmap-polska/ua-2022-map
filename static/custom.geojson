@@ -3,6 +3,7 @@
   "features": [
     {
       "type": "Feature",
+      "id": "dorohusk",
       "properties": {
         "name:pl": "Punkt pomocy (Dorohusk)",
         "name:en": "Reception point (Dorohusk)",
@@ -20,6 +21,7 @@
     },
     {
       "type": "Feature",
+      "id": "dolhobyczow",
       "properties": {
         "name:pl": "Punkt pomocy (Dołhobyczów)",
         "name:en": "Reception point (Dołhobyczów)",
@@ -37,6 +39,7 @@
     },
     {
       "type": "Feature",
+      "id": "horodlo",
       "properties": {
         "name:pl": "Punkt pomocy (Horodło)",
         "name:en": "Reception point (Horodło)",
@@ -54,6 +57,7 @@
     },
     {
       "type": "Feature",
+      "id": "lubycza-krolewska",
       "properties": {
         "name:pl": "Punkt pomocy (Lubycza Królewska)",
         "name:en": "Reception point (Lubycza Królewska)",
@@ -71,6 +75,7 @@
     },
     {
       "type": "Feature",
+      "id": "korczowa",
       "properties": {
         "name:pl": "Punkt pomocy (Korczowa)",
         "name:en": "Reception point (Korczowa)",
@@ -88,6 +93,7 @@
     },
     {
       "type": "Feature",
+      "id": "medyka",
       "properties": {
         "name:pl": "Punkt pomocy (Medyka)",
         "name:en": "Reception point (Medyka)",
@@ -105,6 +111,7 @@
     },
     {
       "type": "Feature",
+      "id": "krowica-sama",
       "properties": {
         "name:pl": "Punkt pomocy (Krowica Sama)",
         "name:en": "Reception point (Krowica Sama)",
@@ -122,6 +129,7 @@
     },
     {
       "type": "Feature",
+      "id": "ustrzyki-dolne",
       "properties": {
         "name:pl": "Punkt pomocy (Ustrzyki Dolne)",
         "name:en": "Reception point (Ustrzyki Dolne)",
@@ -139,6 +147,7 @@
     },
     {
       "type": "Feature",
+      "id": "przemysl-pkp",
       "properties": {
         "name:pl": "Punkt pomocy (Przemyśl PKP)",
         "name:en": "Reception point (Przemyśl PKP)",

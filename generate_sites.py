@@ -1,5 +1,7 @@
 import logging
 import shutil
+import json
+import os
 import sys
 from pathlib import Path
 
@@ -26,11 +28,21 @@ strings = yaml.load(
 
 
 def render_and_save(output_directory: Path, language: str) -> None:
+    with open(this_file_dir.joinpath("static", "custom.geojson").resolve()) as file:
+        points = json.load(file)['features']
     for template_name in env.list_templates():
         template = env.get_template(template_name)
-        rendered = template.render(lang=language, strings=strings)
-        with open(output_directory.joinpath(template_name), mode="w", encoding="utf-8") as out_file:
-            out_file.write(rendered)
+        if template_name == 'point.html':
+            for point in points:
+                rendered = template.render(lang=language, strings=strings, point=point)
+                path = output_directory.joinpath('points', f"{point['id']}.html")
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, mode="w", encoding="utf-8") as out_file:
+                    out_file.write(rendered)
+        else:
+            rendered = template.render(lang=language, strings=strings)
+            with open(output_directory.joinpath(template_name), mode="w", encoding="utf-8") as out_file:
+                out_file.write(rendered)
 
 
 if __name__ == "__main__":

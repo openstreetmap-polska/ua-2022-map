@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ strings.title[lang] }}</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta content="#485fc7" name="theme-color">
+
+  <!-- Facebook Meta Tags -->
+  <meta content="website" property="og:type">
+  <meta content="https://dopomoha.pl/" property="og:url">
+  <meta property="og:title" content="{{ strings.title[lang] }}">
+  <meta property="og:description" content="">
+  <meta property="og:image" content="https://dopomoha.pl/meta-image.png">
+  
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:description" content="">
+  <meta property="twitter:domain" content="dopomoha.pl">
+  <meta property="twitter:url" content="https://dopomoha.pl/">
+  <meta name="twitter:title" content="{{ strings.title[lang] }}">
+  <meta property="twitter:image" content="https://dopomoha.pl/meta-image.png">
+
+  <script src="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.css" rel="stylesheet" />
+  <script defer src="https://openingh.openstreetmap.de/opening_hours.js/opening_hours+deps.min.js"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet"/>
+  <link href="../../style.css" rel="stylesheet"/>
+</head>
+<body>
+
+  <nav aria-label="main navigation" class="navbar is-link pl-1">
+    <div class="navbar-brand">
+      <a class="navbar-item has-text-weight-semibold has-text-white-ter is-size-4 is-size-5-mobile pr-2 pl-2" href="">
+        dopomoha.pl 
+          <svg class="icon ml-2"  style="width:24px;height:24px" viewBox="0 0 24 24">
+            <path fill="#ffd500" d="M12,1C7.59,1 4,4.59 4,9C4,14.57 10.96,22.34 11.26,22.67L12,23.5L12.74,22.67C13.04,22.34 20,14.57 20,9C20,4.59 16.41,1 12,1M12,20.47C9.82,17.86 6,12.54 6,9A6,6 0 0,1 12,3A6,6 0 0,1 18,9C18,12.83 13.75,18.36 12,20.47M11.13,14H12.88V15.75H11.13M12,5A3.5,3.5 0 0,0 8.5,8.5H10.25A1.75,1.75 0 0,1 12,6.75A1.75,1.75 0 0,1 13.75,8.5C13.75,10.26 11.13,10.04 11.13,12.88H12.88C12.88,10.91 15.5,10.69 15.5,8.5A3.5,3.5 0 0,0 12,5Z" />
+        </svg>
+      </a>
+
+      <a aria-expanded="false" aria-label="menu" class="navbar-burger has-text-white-ter is-transparent"
+         data-target="navMenu"
+         role="button">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu has-background-link" id="navMenu">
+      <div class="navbar-end">
+<!--        <div class="navbar-item px-1">-->
+<!--          <a class="button is-white is-outlined px-4"-->
+<!--             href="mailto:kontakt@dopomoha.pl">{{ strings.offer_help[lang] }}</a>-->
+<!--        </div>-->
+<!--        <div class="navbar-item px-1">-->
+<!--          <a class="button is-white is-outlined px-4"-->
+<!--             href="mailto:">{{ strings.need_help[lang] }}</a>-->
+<!--        </div>-->
+
+        <div class="navbar-item px-1">
+          <a class="" href="../../uk/">
+            <img src="../../ua.png" height="45px" class="mt-2 lang-img" alt="Ukrainian language">
+          </a>
+        </div>
+
+
+        <div class="navbar-item px-1">
+          <a class="" href="../../pl/">
+            <img src="../../pl.png" height="45px" class="mt-2 lang-img" alt="Polish language">
+          </a>
+        </div>
+
+        <div class="navbar-item px-1">
+          <a class="" href="../../en/">
+            <img src="../../gb.png" height="45px" class="mt-2 lang-img" alt="English language">
+          </a>
+        </div>
+
+        <div class="navbar-item px-1 pl-2">
+          <a class="button is-white is-outlined px-4" href="mailto:kontakt@dopomoha.pl">
+            <svg class="icon mr-1" style="width:24px;height:24px" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
+          </svg>
+            {{ strings.contact_us[lang] }}
+          </a>
+        </div>
+
+        <div class="navbar-item px-1">
+          <a class="button is-white is-outlined"
+             href="https://www.gov.pl/web/udsc/ukraina" rel="noopener"
+             target="_blank">
+            <div class="pr-1 pt-2">
+              <svg style="width:24px; height:24px" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+              </svg>
+            </div>
+            ua.gov.pl
+          </a>
+        </div>
+
+        <div class="navbar-item px-1">
+          <button class="button is-white is-outlined has-text-weight-light" onclick="showSidebar()">
+            <svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M12,16L19.36,10.27L21,9L12,2L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,21.07L21,14.07L19.37,12.8L12,18.54Z" />
+          </svg>
+          </button>
+        </div>
+
+        <div class="navbar-item pb-0 is-white">
+          <a href="https://github.com/openstreetmap-polska/ua-2022-map" rel="noopener" target="_blank">
+            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+              <path fill="#ffffff" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+  
+  <div class="sidebar-right is-invisible" id="sidebar-div">
+    <div class="card">
+  
+      <div id="sidebar-header">
+        <div class="columns is-vcentered is-flex mr-0">
+          <div class="column ml-4 my-3">
+            <p class="title has-text-weight-light" id="sidebar-caption">{{ strings.layers[lang] }}</p>
+          </div>
+          <button aria-label="Zamknij ekran boczny" onclick="hideSidebar()"
+                  class="delete is-medium is-hidden-touch is-pulled-right close-button mr-2"
+                  id="sidebar-button-close-touch"></button>
+          <button aria-label="Zamknij ekran boczny" onclick="hideSidebar()"
+                  class="delete is-large is-hidden-desktop is-pulled-right close-button mr-2"
+                  id="sidebar-button-close-desktop"></button>
+        </div>
+      </div>
+  
+      <div class="card-content pt-3 pb-3">
+        <div class="content" id="sidebar-content-div">
+          <div id="legend__wrapper">
+          </div>
+        </div>
+      </div>
+  
+      <footer class="card-footer">
+  
+      </footer>
+    </div>
+  </div>
+
+  <p>
+      {{ point.properties['name:'+lang] }}
+  </p>
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "da4ec9500cd74c4c8a08c72a1d70f491"}'></script>
+  <!-- End Cloudflare Web Analytics -->
+
+</body>
+</html>
