@@ -49,24 +49,24 @@ const layersDefinitions = {
             layers: [
                 {
                     id: `${layersDict.helpPoints}Circles`,
-                    type: 'circle',
+                    type: 'symbol',
                     source: 'custom',
-                    paint: {
-                        'circle-color': '#ffd500',
-                        'circle-radius': 18,
-                        'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 3,
+                    'layout': {
+                        'icon-image': 'social_facility__outreach', //['concat', 'aed-icon-', ['get', 'access']], 
+                        'icon-size': 1,
+                        'icon-overlap': 'always',
                     },
                     filter: ['==', 'custom', 'punkt recepcyjny'],
                 }, {
                     id: `${layersDict.helpPoints}Labels`,
                     type: 'symbol',
                     source: 'custom',
-                    minzoom: 5,
+                    minzoom: 6,
                     layout: {
                         'text-field': '{name:{{ lang }}}',
                         'text-offset': [0, 3],
-                        'text-size': 11,
+                        'text-size': 10,
+                        'text-anchor': 'top',
                         ...textLayerDefaultLayoutParams,
                     },
                     paint: textLayerDefaultPaint,
@@ -97,7 +97,7 @@ const layersDefinitions = {
                     layout: {
                         'text-field': '{name:{{ lang }}}',
                         'text-offset': [0, 3],
-                        'text-size': 8,
+                        'text-size': 11,
                         ...textLayerDefaultLayoutParams,
                     },
                     paint: textLayerDefaultPaint,
@@ -164,6 +164,15 @@ var map = new maplibregl.Map({
         },
         layers: separatedLayersDefs,
     },
+});
+
+//  markers
+map.loadImage('../static/img/markers/social_facility__outreach.png', (error, image) => {
+    if (error) throw error;
+
+    map.addImage('social_facility__outreach', image, {
+        'sdf': false
+    });
 });
 
 // controlls stuff
