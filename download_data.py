@@ -31,6 +31,11 @@ area(id:3600071064)->.ukra2;
   nwr[building=train_station](area.wojPodk);
   nwr[building=train_station](area.ukra1);
   nwr[building=train_station](area.ukra2);
+  
+  nwr["office"="diplomatic"]["country"="UA"](area.wojLub);
+  nwr["office"="diplomatic"]["country"="UA"](area.wojPodk);
+  nwr["office"="diplomatic"]["country"="UA"](area.ukra1);
+  nwr["office"="diplomatic"]["country"="UA"](area.ukra2);
 );
 out center body qt;
 """
