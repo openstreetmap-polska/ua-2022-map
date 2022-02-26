@@ -84,15 +84,12 @@ def keep_tag(tag: str) -> bool:
 
 
 def process_feature_properties(properties: dict) -> dict:
-    p = properties["tags"]
-    results = {}
 
+    p = properties["tags"]
+    results = {k: v for k, v in p.items() if keep_tag(k)}
     results["name:pl"] = coalesce(p.get("name:pl"), p.get("name"))
     results["name:uk"] = coalesce(p.get("name:uk"), p.get("name:ua"), p.get("name"))
     results["name:en"] = coalesce(p.get("name:en"), p.get("name"))
-
-    results["metadata"] = {k: v for k, v in properties.items() if k not in ("tags", "nodes")}
-    results["tags"] = {k: v for k, v in p.items() if keep_tag(k)}
 
     return results
 
