@@ -136,6 +136,23 @@
           49.460197307039245
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name:pl": "Punkt pomocy (Przemyśl PKP)",
+        "name:en": "Reception point (Przemyśl PKP)",
+        "name:uk": "ПУНКТ ПРИЙОМУ (Przemyśl PKP)",
+        "description": "Dworzec PKP w Przemyślu, Plac Legionów 1",
+        "custom": "punkt recepcyjny"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.7763991,
+          49.783388
+        ]
+      }
     }
   ]
 }
