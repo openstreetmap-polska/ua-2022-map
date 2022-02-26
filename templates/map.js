@@ -16,23 +16,23 @@ const textLayerDefaultPaint = {
 
 const controlsLocation = 'bottom-right';
 
-const backgroundLayerId = 'background';
-const helpPointsLayerId = 'helpPoints';
-const socialFacilitiesLayerId = 'socialFacilities';
+const layersDict = {
+    background: 'background',
+    helpPoints: 'helpPoints',
+    socialFacilities: 'socialFacilities',
+}
 
 const sidebarDivId = 'sidebar-div';
 
 const dataLayerIds = [
-    helpPointsLayerId,
+    layersDict.helpPoints,
 ];
 
-
-function layerStyles() {
-    return {
-        [backgroundLayerId]: {
+const layerStyles = { 
+        [layersDict.background]: {
             layers: [
                 {
-                    id: backgroundLayerId,
+                    id: layersDict.background,
                     type: 'raster',
                     source: 'osmTiles',
                     minZoom: 0,
@@ -41,10 +41,10 @@ function layerStyles() {
             ],
             name: 'Background', // todo: localize layer name
         },
-        [helpPointsLayerId]: {
+        [layersDict.helpPoints]: {
             layers: [
                 {
-                    id: helpPointsLayerId + 'Circles',
+                    id: `${layersDict.helpPoints}Circles`,
                     type: 'circle',
                     source: 'custom',
                     paint: {
@@ -55,7 +55,7 @@ function layerStyles() {
                     },
                     filter: ['==', 'custom', 'punkt recepcyjny'],
                 }, {
-                    id: helpPointsLayerId + 'Labels',
+                    id: `${layersDict.helpPoints}Labels`,
                     type: 'symbol',
                     source: 'custom',
                     minzoom: 5,
@@ -71,10 +71,10 @@ function layerStyles() {
             ],
             name: 'Punkty pomocy', // todo: localize layer name
         },
-        [socialFacilitiesLayerId]: {
+        [layersDict.socialFacilities]: {
             layers: [
                 {
-                    id: socialFacilitiesLayerId + 'Circles',
+                    id: `${layersDict.socialFacilities}Circles`,
                     type: 'circle',
                     source: 'osmData',
                     paint: {
@@ -85,7 +85,7 @@ function layerStyles() {
                     },
                     filter: ['==', 'amenity', 'social_facility'],
                 }, {
-                    id: socialFacilitiesLayerId + 'Labels',
+                    id: layersDict.socialFacilities + 'Labels',
                     type: 'symbol',
                     source: 'osmData',
                     minzoom: 5,
@@ -102,12 +102,11 @@ function layerStyles() {
             name: 'Placówki opieki społecznej', // todo: localize layer name
         },
     };
-}
-const initialMapLayers = [
-    ...layerStyles()[backgroundLayerId].layers,
-    ...layerStyles()[helpPointsLayerId].layers,
-];
 
+const initialMapLayers = [
+    ...layerStyles.background.layers,
+    ...layerStyles.helpPoints.layers,
+];
 
 var map = new maplibregl.Map({
     container: 'map', // container id
@@ -186,15 +185,15 @@ map.addControl(geolocate, controlsLocation);
 
 // user interaction stuff
 // ----------------
-map.on('mouseenter', helpPointsLayerId + 'Circles', () => {
+map.on('mouseenter', `${layersDict.helpPoints}Circles`, () => {
     map.getCanvas().style.cursor = 'pointer';
 });
 
-map.on('mouseleave', helpPointsLayerId + 'Circles', () => {
+map.on('mouseleave', `${layersDict.helpPoints}Circles`, () => {
     map.getCanvas().style.cursor = '';
 });
 
-map.on('click', helpPointsLayerId + 'Circles', function (e) {
+map.on('click', `${layersDict.helpPoints}Circles`, function (e) {
     const lonlat = e.features[0].geometry.coordinates;
     const properties = e.features[0].properties;
     const namePl = e.features[0].properties['name:pl'];
@@ -234,7 +233,7 @@ function renderGoogleRouteLink(lonlat, properties) {
 }
 
 function toggleLayer(layerId) {
-    layerStyles()[layerId].layers.forEach(layer => {
+    layerStyles[layerId].layers.forEach(layer => {
         if (map.getLayer(layer.id)) {
             console.log("Removing " + layer.id + " layer from map.");
             map.removeLayer(layer.id);
