@@ -78,7 +78,7 @@ def process_feature_properties(properties: dict) -> dict:
     results = {}
 
     results["name:pl"] = coalesce(p.get("name:pl"), p.get("name"))
-    results["name:uk"] = coalesce(p.get("name:uk"), p.get("name"))
+    results["name:uk"] = coalesce(p.get("name:uk"), p.get("name:ua"), p.get("name"))
     results["name:en"] = coalesce(p.get("name:en"), p.get("name"))
 
     results["metadata"] = {k: v for k, v in properties.items() if k not in ("tags", "nodes")}
