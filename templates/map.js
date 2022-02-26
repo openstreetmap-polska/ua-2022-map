@@ -317,10 +317,17 @@ document.addEventListener('DOMContentLoaded', () => {
     (function legendIife() {
         const legend = document.getElementById('legend__wrapper');
         const list = document.createElement('ul');
-        function getLegendItem(id, displayedName) {
+        list.classList.add('legend__list')
+        function getLegendItem(id, displayName) {
             const legendItem = document.createElement('li');
             legendItem.classList.add('legend__item');
-            legendItem.innerHTML = `<input data-layer-id=${id} checked type="checkbox"> <span>${displayedName}</span>`
+            legendItem.innerHTML = `
+            <label class="checkbox">
+                <input checked type="checkbox" data-layer-id=${id}>
+                <span class="is-size-6">
+                    ${displayName}
+                </span>
+            </label>`;
             return legendItem
         }
     

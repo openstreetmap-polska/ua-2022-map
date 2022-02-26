@@ -3,6 +3,11 @@
     overflow-y: hidden;
   }
 
+#legend__wrapper .legend__list {
+  list-style: none;
+  margin-left: 0;
+}
+
   body {
     margin: 0;
     padding: 0;
