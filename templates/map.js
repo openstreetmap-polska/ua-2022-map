@@ -22,6 +22,16 @@ const layersDict = {
     socialFacilities: 'socialFacilities',
 }
 
+const layersVisibilityOnInit = {
+    [layersDict.background]: true,
+    [layersDict.helpPoints]: true,
+    [layersDict.socialFacilities]: false,
+}
+
+function getIsLayerVisibleOnInit(id) {
+    return layersVisibilityOnInit[id] ? 'visible' : 'none';
+}
+
 const sidebarDivId = 'sidebar-div';
 
 const dataLayerIds = [
@@ -39,6 +49,9 @@ const layersDefinitions = {
                     source: 'osmTiles',
                     minZoom: 0,
                     maxZoom: 19,
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.background)
+                    }
                 },
             ],
             name: 'OSM Carto tiles', // todo: localize layer name
@@ -57,6 +70,9 @@ const layersDefinitions = {
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 3,
                     },
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.helpPoints)
+                    },
                     filter: ['==', 'custom', 'punkt recepcyjny'],
                 }, {
                     id: `${layersDict.helpPoints}Labels`,
@@ -68,6 +84,7 @@ const layersDefinitions = {
                         'text-offset': [0, 3],
                         'text-size': 11,
                         ...textLayerDefaultLayoutParams,
+                        visibility: getIsLayerVisibleOnInit(layersDict.helpPoints)
                     },
                     paint: textLayerDefaultPaint,
                     filter: ['==', 'custom', 'punkt recepcyjny'],
@@ -88,6 +105,9 @@ const layersDefinitions = {
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 3,
                     },
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.socialFacilities)
+                    },
                     filter: ['==', ['get', 'amenity'], 'social_facility'],
                 }, {
                     id: `${layersDict.socialFacilities}Labels`,
@@ -99,6 +119,7 @@ const layersDefinitions = {
                         'text-offset': [0, 3],
                         'text-size': 8,
                         ...textLayerDefaultLayoutParams,
+                        visibility: getIsLayerVisibleOnInit(layersDict.socialFacilities)
                     },
                     paint: textLayerDefaultPaint,
                     filter: ['==', ['get', 'amenity'], 'social_facility'],
@@ -318,12 +339,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const legend = document.getElementById('legend__wrapper');
         const list = document.createElement('ul');
         list.classList.add('legend__list')
-        function getLegendItem(id, displayName) {
+
+        function addTogglingListener() {
+            list.addEventListener('click', e => {
+                const target = e.target;
+                if (target.tagName === 'INPUT') {
+                    const layerId = target.dataset.layerId
+                    toggleLayer(layerId);
+                }
+            })
+         }
+
+        function getLegendItem(id, displayName, visible) {
             const legendItem = document.createElement('li');
             legendItem.classList.add('legend__item');
             legendItem.innerHTML = `
             <label class="checkbox">
-                <input checked type="checkbox" data-layer-id=${id}>
+                <input ${visible ? 'checked' : ''} type="checkbox" data-layer-id=${id}>
                 <span class="is-size-6">
                     ${displayName}
                 </span>
@@ -333,19 +365,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
         function renderLegend(layers) {
             layers.forEach(layer => {
-            const legendItem = getLegendItem(layer.id, layer.name)
+            const legendItem = getLegendItem(layer.id, layer.name, layersVisibilityOnInit[layer.id])
                 list.appendChild(legendItem)
             })
             legend.appendChild(list)
         }
-        
-        list.addEventListener('click', e => {
-            const target = e.target;
-            if (target.tagName === 'INPUT') {
-                const layerId = target.dataset.layerId
-                toggleLayer(layerId);
-            }
-        })
+
+        addTogglingListener()
         renderLegend(usedLayersDefs)
       })();
 });
