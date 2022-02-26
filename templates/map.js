@@ -1,6 +1,6 @@
 var language = '{{ lang }}';
 
-const customLayerURL = "../custom.geojson";
+const customLayerURL = "../static/custom.geojson";
 const osmLayerURL = "../data/osm_data.geojson";
 
 const textLayerDefaultLayoutParams = {

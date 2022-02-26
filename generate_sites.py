@@ -21,7 +21,7 @@ languages = ("pl", "uk", "en")
 
 yaml = YAML()
 strings = yaml.load(
-    open(this_file_dir.joinpath("data", "strings.yaml"), mode="r", encoding="utf-8").read()
+    open(this_file_dir.joinpath("strings.yaml"), mode="r", encoding="utf-8").read()
 )
 
 
@@ -38,37 +38,20 @@ if __name__ == "__main__":
     default_dir = this_file_dir.joinpath("build").resolve()
     output_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else default_dir
     output_dir.mkdir(exist_ok=True)
+    static_dir = this_file_dir.joinpath("static").resolve()
 
-    if not output_dir.is_dir():
-        logger.error(f"Given path: {output_dir} is not a directory.")
-        sys.exit()
+    # clean up output dir
+    shutil.rmtree(output_dir.joinpath("static"), ignore_errors=True)
 
+    # generate templates in all languages
     for lang in languages:
         lang_dir = output_dir.joinpath(lang)
+        shutil.rmtree(lang_dir, ignore_errors=True)
         lang_dir.mkdir(exist_ok=True)
         render_and_save(output_directory=lang_dir, language=lang)
 
-    shutil.copy(
-        src=this_file_dir.joinpath("data", "custom.geojson").resolve(),
-        dst=this_file_dir.joinpath("build", "custom.geojson").resolve(),
-    )
-    shutil.copy(
-        src=this_file_dir.joinpath("data", "style.css").resolve(),
-        dst=this_file_dir.joinpath("build", "style.css").resolve(),
-    )
-    shutil.copy(
-        src=this_file_dir.joinpath("data", "meta-image.png").resolve(),
-        dst=this_file_dir.joinpath("build", "meta-image.png").resolve(),
-    )
-    shutil.copy(
-        src=this_file_dir.joinpath("data", "ua.png").resolve(),
-        dst=this_file_dir.joinpath("build", "ua.png").resolve(),
-    )
-    shutil.copy(
-        src=this_file_dir.joinpath("data", "pl.png").resolve(),
-        dst=this_file_dir.joinpath("build", "pl.png").resolve(),
-    )
-    shutil.copy(
-        src=this_file_dir.joinpath("data", "gb.png").resolve(),
-        dst=this_file_dir.joinpath("build", "gb.png").resolve(),
+    # copy static files
+    shutil.copytree(
+        src=static_dir,
+        dst=output_dir.joinpath("static"),
     )
