@@ -19,6 +19,14 @@ Commands:
 python3 -m venv venv
 source ./venv/bin/activate
 pip install -r requirements.txt
+./debug-app.py
+```
+
+Go to http://localhost:5000/en/ in the browser.
+
+## Build
+
+```bash
 python3 generate_sites.py
 python3 -m http.server
 ```
