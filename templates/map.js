@@ -578,15 +578,6 @@ function toggleSidebar() {
         console.log('Sidebar not found.');
 }
 
-function hideSidebar() {
-    let sidebar = document.getElementById(sidebarDivId);
-    if (sidebar) {
-        sidebar.classList.add('is-invisible');
-    } else {
-        console.log('Sidebar not found.');
-    }
-}
-
 function closeNavBurger() {
     document.getElementById('navMenu').classList.remove('is-active');
     document.getElementsByClassName('navbar-burger')[0].classList.remove('is-active');
@@ -595,7 +586,7 @@ function closeNavBurger() {
 // --------------------------------------------------------------------------------------
 // Bulma controls
 document.addEventListener('DOMContentLoaded', () => {
-
+    Array.from(document.getElementsByClassName('sidebar-button--toggle')).forEach(element => element.addEventListener('click', toggleSidebar));
     // Get all "navbar-burger" elements
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
