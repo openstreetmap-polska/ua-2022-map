@@ -66,3 +66,7 @@ contact_phone:
   uk: Телефонний номер
   pl: Numer telefonu
   en: Phone number
+refresh:
+  uk: Press <kbd>ctrl</kbd> + <kbd>f5</kbd> to refresh.
+  pl: Naciśnij <kbd>ctrl</kbd> + <kbd>f5</kbd> aby odświeżyć dane.
+  en: Press <kbd>ctrl</kbd> + <kbd>f5</kbd> to refresh points.
