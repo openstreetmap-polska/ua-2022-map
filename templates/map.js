@@ -569,10 +569,10 @@ function toggleLayer(layerId) {
     });
 }
 
-function showSidebar() {
+function toggleSidebar() {
     let sidebar = document.getElementById(sidebarDivId);
     if (sidebar) {
-        sidebar.classList.remove('is-invisible');
+        sidebar.classList.toggle('is-invisible');
         closeNavBurger();
     } else
         console.log('Sidebar not found.');
