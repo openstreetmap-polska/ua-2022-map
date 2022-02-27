@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import app
 import flask
 import flask_frozen

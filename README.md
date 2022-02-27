@@ -4,7 +4,30 @@ Map of reception points for refugees near Polish-Ukrainian border
 work in progress...
 
 
-# Local development environment setup
+# Development
+
+We provide a docker-based dev environment; to spin up the system, run
+
+```bash
+make
+make up
+make down
+```
+
+For development and iterating on the code, get into a shell in the container and re-run your scripts from there with
+
+```bash
+make sh
+```
+
+From inside the shell you can then execute your scripts and iterate, e.g.
+```
+/app # ./download_data.py
+/app # ./debug-app.py --host 0.0.0.0
+```
+
+If you prefer to run outside of docker instead, read on.
+
 Steps:
 1. Create Python virtual env
 2. Install dependencies
@@ -22,13 +45,13 @@ pip install -r requirements.txt
 ./debug-app.py
 ```
 
-Go to http://localhost:5000/en/ in the browser.
+Go to http://localhost:8000/en/ in the browser.
 
 ## Build
 
 ```bash
-python3 generate_sites.py
-python3 -m http.server --directory build
+python3 download_data.py
+python3 -m http.server 8000 --directory build
 ```
 
 Go to http://localhost:8000/en/ in the browser.

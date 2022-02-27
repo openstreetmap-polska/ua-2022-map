@@ -1,0 +1,8 @@
+version: "3.7"
+
+services:
+  api:
+    image: openstreetmap-polska/ua-2022-map
+    build:
+      context: .
+    init: true

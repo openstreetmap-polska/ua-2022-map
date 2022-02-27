@@ -10,4 +10,4 @@ ruamel.yaml.clib==0.2.6
 Shapely==1.8.1.post1
 urllib3==1.26.8
 Flask==2.0.1
-Frozen-Flask==0.14
+Frozen-Flask==0.18
