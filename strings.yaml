@@ -50,6 +50,10 @@ map:
   uk: карта
   pl: Mapa
   en: Map
+satellite:
+  uk: супутник
+  pl: Satelita
+  en: Satellite
 social_facilities:
   uk: Установи соціальної опіки
   pl: Placówki opieki społecznej

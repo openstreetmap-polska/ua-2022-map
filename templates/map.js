@@ -17,6 +17,7 @@ const controlsLocation = 'bottom-right';
 
 const layersDict = {
     background: 'background',
+    satellite: 'satellite',
     helpPoints: 'helpPoints',
     informationPoints: 'informationPoints',
     bloodDonation: 'bloodDonation',
@@ -29,6 +30,7 @@ const layersDict = {
 
 const layersVisibilityOnInit = {
     [layersDict.background]: true,
+    [layersDict.satellite]: false,
     [layersDict.helpPoints]: true,
     [layersDict.informationPoints]: true,
     [layersDict.bloodDonation]: false,
@@ -47,6 +49,7 @@ const sidebarDivId = 'sidebar-div';
 
 const usedLayersIds = [
     layersDict.background,
+    layersDict.satellite,
     layersDict.helpPoints,
     layersDict.informationPoints,
     layersDict.bloodDonation,
@@ -58,6 +61,23 @@ const usedLayersIds = [
 ];
 
 const layersDefinitions = {
+        [layersDict.satellite]: {
+            layers: [
+                {
+                    id: layersDict.satellite,
+                    type: 'raster',
+                    source: 'mapboxSatellite',
+                    minZoom: 0,
+                    maxZoom: 19,
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.satellite)
+                    }
+                },
+            ],
+            name: 'Mapbox {{ strings.satellite[lang] }}',
+            id: layersDict.satellite,
+            before: layersDict.satellite,
+        },
         [layersDict.background]: {
             layers: [
                 {
@@ -73,7 +93,7 @@ const layersDefinitions = {
             ],
             name: 'OSM Carto {{ strings.map[lang] }}',
             id: layersDict.background,
-            before: layersDict.helpPoints
+            before: layersDict.helpPoints,
         },
         [layersDict.helpPoints]: {
             layers: [
@@ -392,6 +412,18 @@ var map = new maplibregl.Map({
                     'raster-fade-duration': 100
                 },
                 attribution: `data © <a target="_top" rel="noopener" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.`,
+            },
+            mapboxSatellite: {
+                type: 'raster',
+                tiles: [
+                    'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=TODO_ADD_TOKEN'
+                ],
+                tileSize: 256,
+                maxzoom: 19,
+                paint: {
+                    'raster-fade-duration': 100
+                },
+                attribution: `data © <a target="_top" rel="noopener" href="https://www.mapbox.com/about/maps/">© Mapbox</a> <a target="_top" rel="noopener" href="http://www.openstreetmap.org/copyright">© OpenStreetMap</a> <a target="_top" rel="noopener" href="https://www.mapbox.com/map-feedback/">Improve this map</a> <a target="_top" rel="noopener" href="https://www.maxar.com/">© Maxar</a>`,
             },
             mediaWikiTiles: {
                 type: 'raster',
