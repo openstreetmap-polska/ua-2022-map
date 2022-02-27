@@ -337,9 +337,9 @@ const layersDefinitions = {
                     source: 'charityDropOff',
                     paint: {
                         'circle-color': '#11ee11',
-                        'circle-radius': 6,
+                        'circle-radius': 7,
                         'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 1,
+                        'circle-stroke-width': 2,
                     },
                     layout: {
                         visibility: getIsLayerVisibleOnInit(layersDict.charityDropOff)
@@ -515,7 +515,7 @@ function renderGoogleRouteLink(lonlat, properties) {
 }
 
 function renderName(properties, lang) {
-    let name = properties[`name:${lang}`] || properties['name'];
+    let name = properties[`name:${lang}`] || properties['name'] || properties['Name'];
     if (name) {
         return `<h1 class="is-size-5 pb-3">${name}</h1>`
     }
@@ -539,7 +539,7 @@ function renderDescription(properties, lang) {
 function renderPhoneNumber(properties) {
     let phone = properties['phone'] || properties['contact:phone'];
     if (phone) {
-        return `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong>${phone}</strong></p>`
+        return `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong><a href="tel:${phone}">${phone}</a></strong></p>`
     }
     else
     {
