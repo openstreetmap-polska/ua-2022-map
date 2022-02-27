@@ -408,12 +408,28 @@ map.addControl(geolocate, controlsLocation);
 // user interaction stuff
 // ----------------
 Object.entries(layersDict).forEach(x => {
-    map.on('mouseenter', `${x[1]}Circles`, () => {
-        map.getCanvas().style.cursor = 'pointer';
-    });
-    map.on('mouseleave', `${x[1]}Circles`, () => {
-        map.getCanvas().style.cursor = '';
-    });
+    if (x[1] !== 'background') {
+        map.on('mouseenter', `${x[1]}Circles`, () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', `${x[1]}Circles`, () => {
+            map.getCanvas().style.cursor = '';
+        });
+    }
+});
+
+Object.entries(layersDict).forEach(x => {
+    if (x[1] !== 'helpPoints' && x[1] !== 'background') {
+        map.on('click', `${x[1]}Circles`, function (e) {
+            const lonlat = e.features[0].geometry.coordinates;
+            const properties = e.features[0].properties;
+            const popupHTML = renderBasicPopup(lonlat, properties);
+            new maplibregl.Popup({maxWidth: '300px'})
+                .setLngLat(e.lngLat)
+                .setHTML(popupHTML)
+                .addTo(map);
+        });
+    }
 });
 
 map.on('click', `${layersDict.helpPoints}Circles`, function (e) {
@@ -433,6 +449,7 @@ map.on('click', `${layersDict.helpPoints}Circles`, function (e) {
         .setHTML(popupHTML)
         .addTo(map);
 });
+
 // ----------------
 function renderOSMRouteLink(lonlat, properties) {
     return `<div class="p-1"><a target="_blank" rel="noopener" class="button p-1 is-fullwidth is-link"
@@ -453,6 +470,17 @@ function renderGoogleRouteLink(lonlat, properties) {
         </svg>
         Google Maps {{ strings.navigation[lang] }}
         </a></div>`;
+}
+
+function renderBasicPopup(lonlat, properties) {
+    var popupHTML = `
+        ${renderOSMRouteLink(lonlat, properties)}
+        ${renderGoogleRouteLink(lonlat, properties)}
+    `;
+    if (properties.description) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.description}</p>`;
+    if (properties.note) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.note}</p>`;
+
+    return popupHTML;
 }
 
 function toggleLayer(layerId) {
