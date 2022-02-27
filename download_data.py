@@ -18,7 +18,8 @@ overpass_query = """
 [out:json][timeout:360];
 area(id:3600130919)->.wojLub;
 area(id:3600130957)->.wojPodk;
-//area(id:3600060199)->.ukra;
+area(id:3600049715)->.pol;
+area(id:3600060199)->.ukra;
 area(id:3600072380)->.ukra1;
 area(id:3600071064)->.ukra2;
 (
@@ -26,21 +27,31 @@ area(id:3600071064)->.ukra2;
   nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.wojPodk);
   nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.ukra1);
   nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.ukra2);
-  
+
   nwr[building=train_station](area.wojLub);
   nwr[building=train_station](area.wojPodk);
-  nwr[building=train_station](area.ukra1);
-  nwr[building=train_station](area.ukra2);
+
+  nwr[amenity=bus_station](area.wojLub);
+  nwr[amenity=bus_station](area.wojPodk);
 
   nwr[amenity=pharmacy](area.wojLub);
   nwr[amenity=pharmacy](area.wojPodk);
   nwr[amenity=pharmacy](area.ukra1);
   nwr[amenity=pharmacy](area.ukra2);
-  
-  nwr["office"="diplomatic"]["country"="UA"](area.wojLub);
-  nwr["office"="diplomatic"]["country"="UA"](area.wojPodk);
-  nwr["office"="diplomatic"]["country"="UA"](area.ukra1);
-  nwr["office"="diplomatic"]["country"="UA"](area.ukra2);
+
+  nwr[amenity=hospital](area.wojLub);
+  nwr[amenity=hospital](area.wojPodk);
+  nwr[amenity=hospital](area.ukra1);
+  nwr[amenity=hospital](area.ukra2);
+
+  nwr["office"="diplomatic"]["country"="UA"](area.pol);
+  nwr["office"="diplomatic"]["country"="UA"](area.ukra);
+
+  nwr["healthcare"="blood_donation"](area.pol);
+  nwr["healthcare"="blood_donation"](area.ukra);
+
+  nwr["information:for"="refugees"](area.pol);
+  nwr["information:for"="refugees"](area.ukra);
 );
 out center body qt;
 """
