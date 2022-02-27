@@ -66,6 +66,14 @@ contact_phone:
   uk: Телефонний номер
   pl: Numer telefonu
   en: Phone number
+charity_drop_off:
+  uk: Благодійні пункти збору
+  pl: Punkty zbiórek charytatywnych
+  en: Donation drop points
+charity_drop_off_singular:
+  uk: Благодійні пункти збору
+  pl: Punkt zbiórki charytatywnej
+  en: Donation drop point
 refresh:
   uk: Press <kbd>ctrl</kbd> + <kbd>f5</kbd> to refresh.
   pl: Naciśnij <kbd>ctrl</kbd> + <kbd>f5</kbd> aby odświeżyć dane.

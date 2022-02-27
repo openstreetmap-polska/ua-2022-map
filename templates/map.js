@@ -24,6 +24,7 @@ const layersDict = {
     pharmacies: 'pharmacies',
     hospitals: 'hospitals',
     diplomatic: 'diplomatic',
+    charityDropOff: 'charityDropOff'
 }
 
 const layersVisibilityOnInit = {
@@ -35,6 +36,7 @@ const layersVisibilityOnInit = {
     [layersDict.pharmacies]: false,
     [layersDict.hospitals]: false,
     [layersDict.diplomatic]: true,
+    [layersDict.charityDropOff]: true,
 }
 
 function getIsLayerVisibleOnInit(id) {
@@ -52,6 +54,7 @@ const usedLayersIds = [
     layersDict.pharmacies,
     layersDict.hospitals,
     layersDict.diplomatic,
+    layersDict.charityDropOff,
 ];
 
 const layersDefinitions = {
@@ -326,6 +329,39 @@ const layersDefinitions = {
             name: '{{ strings.consulate[lang] }}',
             id: layersDict.diplomatic,
         },
+        [layersDict.charityDropOff]: {
+            layers: [
+                {
+                    id: `${layersDict.charityDropOff}Circles`,
+                    type: 'circle',
+                    source: 'charityDropOff',
+                    paint: {
+                        'circle-color': '#11ee11',
+                        'circle-radius': 6,
+                        'circle-stroke-color': '#fff',
+                        'circle-stroke-width': 1,
+                    },
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.charityDropOff)
+                    },
+                }, {
+                    id: `${layersDict.charityDropOff}Labels`,
+                    type: 'symbol',
+                    source: 'charityDropOff',
+                    minzoom: 5,
+                    layout: {
+                        'text-field': '{{ strings.charity_drop_off_singular[lang] }} \n {Name}',
+                        'text-offset': [0, 3],
+                        'text-size': 7,
+                        ...textLayerDefaultLayoutParams,
+                        visibility: getIsLayerVisibleOnInit(layersDict.charityDropOff)
+                    },
+                    paint: textLayerDefaultPaint,
+                },
+            ],
+            name: '{{ strings.charity_drop_off[lang] }}',
+            id: layersDict.charityDropOff,
+        },
 };
 
 const usedLayersDefs = usedLayersIds.map(layerId => layersDefinitions[layerId]);
@@ -378,6 +414,11 @@ var map = new maplibregl.Map({
             osmData: {
                 type: 'geojson',
                 data: osmLayerURL,
+                maxzoom: 12,
+            },
+            charityDropOff: {
+                type: 'geojson',
+                data: 'https://dopomoha.pl/data/zbiorki.geojson',
                 maxzoom: 12,
             },
         },
