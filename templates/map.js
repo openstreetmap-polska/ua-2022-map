@@ -476,7 +476,7 @@ function renderGoogleRouteLink(lonlat, properties) {
 function renderName(properties, lang) {
     let name = properties[`name:${lang}`] || properties['name'];
     if (name) {
-        return `<h1 class="is-size-5 pb-2">${name}</h1>`
+        return `<h1 class="is-size-5 pb-3">${name}</h1>`
     }
     else
     {
@@ -487,7 +487,18 @@ function renderName(properties, lang) {
 function renderDescription(properties, lang) {
     let description = properties[`description:${lang}`] || properties['description'];
     if (description) {
-        return `<p class="pt-4 px-2 pb-2 is-size-7">${description}</p>`
+        return `<p class="pt-3 px-2 pb-2 is-size-7">${description}</p>`
+    }
+    else
+    {
+        return '';
+    }
+}
+
+function renderPhoneNumber(properties) {
+    let phone = properties['phone'] || properties['contact:phone'];
+    if (phone) {
+        return `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong>${phone}</strong></p>`
     }
     else
     {
@@ -501,6 +512,7 @@ function renderBasicPopup(lonlat, properties) {
         ${renderName(properties, language)}        
         ${renderOSMRouteLink(lonlat, properties)}
         ${renderGoogleRouteLink(lonlat, properties)}
+        ${renderPhoneNumber(properties)}  
         ${renderDescription(properties, language)}  
     `;
     if (properties.note) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.note}</p>`;
