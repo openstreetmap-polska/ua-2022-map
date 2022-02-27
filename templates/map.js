@@ -351,8 +351,8 @@ const layersDefinitions = {
                     minzoom: 5,
                     layout: {
                         'text-field': '{{ strings.charity_drop_off_singular[lang] }} \n {Name}',
-                        'text-offset': [0, 3],
-                        'text-size': 7,
+                        'text-offset': [0, 3.5],
+                        'text-size': 8,
                         ...textLayerDefaultLayoutParams,
                         visibility: getIsLayerVisibleOnInit(layersDict.charityDropOff)
                     },
