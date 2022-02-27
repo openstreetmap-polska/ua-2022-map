@@ -24,7 +24,19 @@ const layersDict = {
     pharmacies: 'pharmacies',
     hospitals: 'hospitals',
     diplomatic: 'diplomatic',
-    charityDropOff: 'charityDropOff'
+    charityDropOff: 'charityDropOff',
+}
+
+const layersColoursDict = {
+    background: '',
+    helpPoints: '#ffd500',
+    informationPoints: '#ffee00',
+    bloodDonation: '#990000',
+    socialFacilities: '#00d5ff',
+    pharmacies: '#880044',
+    hospitals: '#ff1111',
+    diplomatic: '#446688',
+    charityDropOff: '#11ee11',
 }
 
 const layersVisibilityOnInit = {
@@ -82,7 +94,7 @@ const layersDefinitions = {
                     type: 'circle',
                     source:  'osmData',
                     paint: {
-                        'circle-color': '#ffd500',
+                        'circle-color': layersColoursDict.helpPoints,
                         'circle-radius': 12,
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 3,
@@ -118,7 +130,7 @@ const layersDefinitions = {
                     type: 'circle',
                     source: 'osmData',
                     paint: {
-                        'circle-color': '#ffee00',
+                        'circle-color': layersColoursDict.informationPoints,
                         'circle-radius': 9,
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 2,
@@ -153,7 +165,7 @@ const layersDefinitions = {
                     type: 'circle',
                     source: 'osmData',
                     paint: {
-                        'circle-color': '#990000',
+                        'circle-color': layersColoursDict.bloodDonation,
                         'circle-radius': 6,
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 2,
@@ -188,7 +200,7 @@ const layersDefinitions = {
                     type: 'circle',
                     source: 'osmData',
                     paint: {
-                        'circle-color': '#00d5ff',
+                        'circle-color': layersColoursDict.socialFacilities,
                         'circle-radius': 7,
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 2,
@@ -231,7 +243,7 @@ const layersDefinitions = {
                     type: 'circle',
                     source: 'osmData',
                     paint: {
-                        'circle-color': '#880044',
+                        'circle-color': layersColoursDict.pharmacies,
                         'circle-radius': 5,
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 1,
@@ -266,7 +278,7 @@ const layersDefinitions = {
                     type: 'circle',
                     source: 'osmData',
                     paint: {
-                        'circle-color': '#ff1111',
+                        'circle-color': layersColoursDict.hospitals,
                         'circle-radius': 8,
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 2,
@@ -301,7 +313,7 @@ const layersDefinitions = {
                     type: 'circle',
                     source: 'osmData',
                     paint: {
-                        'circle-color': '#446688',
+                        'circle-color': layersColoursDict.diplomatic,
                         'circle-radius': 10,
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 2,
@@ -336,7 +348,7 @@ const layersDefinitions = {
                     type: 'circle',
                     source: 'charityDropOff',
                     paint: {
-                        'circle-color': '#11ee11',
+                        'circle-color': layersColoursDict.charityDropOff,
                         'circle-radius': 7,
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 2,
@@ -661,6 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <label class="checkbox">
                 <input ${visible ? 'checked' : ''} type="checkbox" data-layer-id=${id}>
                 <span class="is-size-6">
+                    <div style="background-color: ${layersColoursDict[id]}; width: 15px; height: 15px; display: inline-block; border-radius: 50%;"></div>
                     ${displayName}
                 </span>
             </label>`;
