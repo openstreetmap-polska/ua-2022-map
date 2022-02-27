@@ -50,7 +50,8 @@ area(id:3600071064)->.ukra2;
   nwr["office"="diplomatic"]["country"="UA"](area.ukra);
 
   nwr["healthcare"="blood_donation"](area.pol);
-  nwr["healthcare"="blood_donation"](area.ukra);
+  nwr["healthcare"="blood_donation"](area.ukra1);
+  nwr["healthcare"="blood_donation"](area.ukra2);
 
   nwr["information:for"="refugees"](area.pol);
   nwr["information:for"="refugees"](area.ukra);
