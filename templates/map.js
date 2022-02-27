@@ -77,7 +77,7 @@ const layersDefinitions = {
                 {
                     id: `${layersDict.helpPoints}Circles`,
                     type: 'circle',
-                    source: 'custom',
+                    source:  'osmData',
                     paint: {
                         'circle-color': '#ffd500',
                         'circle-radius': 12,
@@ -87,11 +87,12 @@ const layersDefinitions = {
                     layout: {
                         visibility: getIsLayerVisibleOnInit(layersDict.helpPoints)
                     },
-                    filter: ['==', 'custom', 'punkt recepcyjny'],
-                }, {
+                        filter: ['all', ['==', ['get', 'social_facility'], 'outreach'], ['==', ['get', 'social_facility:for'], 'refugee']],
+                    }, 
+                    {
                     id: `${layersDict.helpPoints}Labels`,
                     type: 'symbol',
-                    source: 'custom',
+                    source: 'osmData',
                     minzoom: 5,
                     layout: {
                         'text-field': '{name:{{ lang }}}',
@@ -101,7 +102,7 @@ const layersDefinitions = {
                         visibility: getIsLayerVisibleOnInit(layersDict.helpPoints)
                     },
                     paint: textLayerDefaultPaint,
-                    filter: ['==', 'custom', 'punkt recepcyjny'],
+                    filter: ['all', ['==', ['get', 'social_facility'], 'outreach'], ['==', ['get', 'social_facility:for'], 'refugee']],
                 },
             ],
             name: '{{ strings.reception_points[lang] }}',
@@ -419,7 +420,7 @@ Object.entries(layersDict).forEach(x => {
 });
 
 Object.entries(layersDict).forEach(x => {
-    if (x[1] !== 'helpPoints' && x[1] !== 'background') {
+    if (x[1] !== 'background') {
         map.on('click', `${x[1]}Circles`, function (e) {
             const lonlat = e.features[0].geometry.coordinates;
             const properties = e.features[0].properties;
@@ -432,23 +433,23 @@ Object.entries(layersDict).forEach(x => {
     }
 });
 
-map.on('click', `${layersDict.helpPoints}Circles`, function (e) {
-    const lonlat = e.features[0].geometry.coordinates;
-    const properties = e.features[0].properties;
-    const namePl = e.features[0].properties['name:pl'];
-    const nameUk = e.features[0].properties['name:uk'];
-    const popupHTML = `
-        <h1 class="is-size-5 pb-2">${nameUk}</h1>
-        <h2 class="is-size-6 pb-3">${namePl}</h2>
-        ${renderOSMRouteLink(lonlat, properties)}
-        ${renderGoogleRouteLink(lonlat, properties)}
-        <p class="pt-4 px-2 pb-2 is-size-7">${properties.description}</p>
-    `;
-    new maplibregl.Popup({maxWidth: '300px'})
-        .setLngLat(e.lngLat)
-        .setHTML(popupHTML)
-        .addTo(map);
-});
+// map.on('click', `${layersDict.helpPoints}Circles`, function (e) {
+//     const lonlat = e.features[0].geometry.coordinates;
+//     const properties = e.features[0].properties;
+//     const namePl = e.features[0].properties['name:pl'];
+//     const nameUk = e.features[0].properties['name:uk'];
+//     const popupHTML = `
+//         <h1 class="is-size-5 pb-2">${nameUk}</h1>
+//         <h2 class="is-size-6 pb-3">${namePl}</h2>
+//         ${renderOSMRouteLink(lonlat, properties)}
+//         ${renderGoogleRouteLink(lonlat, properties)}
+//         <p class="pt-4 px-2 pb-2 is-size-7">${properties.description}</p>
+//     `;
+//     new maplibregl.Popup({maxWidth: '300px'})
+//         .setLngLat(e.lngLat)
+//         .setHTML(popupHTML)
+//         .addTo(map);
+// });
 
 // ----------------
 function renderOSMRouteLink(lonlat, properties) {
@@ -472,12 +473,36 @@ function renderGoogleRouteLink(lonlat, properties) {
         </a></div>`;
 }
 
+function renderName(properties, lang) {
+    let name = properties[`name:${lang}`] || properties['name'];
+    if (name) {
+        return `<h1 class="is-size-5 pb-2">${name}</h1>`
+    }
+    else
+    {
+        return '';
+    }
+}
+
+function renderDescription(properties, lang) {
+    let description = properties[`description:${lang}`] || properties['description'];
+    if (description) {
+        return `<p class="pt-4 px-2 pb-2 is-size-7">${description}</p>`
+    }
+    else
+    {
+        return '';
+    }
+}
+
 function renderBasicPopup(lonlat, properties) {
+
     var popupHTML = `
+        ${renderName(properties, language)}        
         ${renderOSMRouteLink(lonlat, properties)}
         ${renderGoogleRouteLink(lonlat, properties)}
+        ${renderDescription(properties, language)}  
     `;
-    if (properties.description) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.description}</p>`;
     if (properties.note) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.note}</p>`;
 
     return popupHTML;
