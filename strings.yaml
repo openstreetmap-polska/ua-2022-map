@@ -30,3 +30,35 @@ layers:
   uk: шари
   pl: Warstwy
   en: Layers
+consulate:
+  uk: консульства
+  pl: Konsulaty
+  en: Consulates
+hospitals:
+  uk: Лікарні
+  pl: Szpitale
+  en: Hospitals
+pharmacies:
+  uk: Аптеки
+  pl: Apteki
+  en: Pharmacies
+reception_points:
+  uk: Прийомні пункти
+  pl: Punkty recepcyjne
+  en: Reception points
+map:
+  uk: карта
+  pl: Mapa
+  en: Map
+social_facilities:
+  uk: Установи соціальної опіки
+  pl: Placówki opieki społecznej
+  en: Social facilities
+information_points:
+  uk: Інформаційні пункти
+  pl: Punkty informacyjne
+  en: Information points
+blood_donation:
+  uk: Пункти здачі крові
+  pl: Punkty oddawania krwi
+  en: Blood donation points

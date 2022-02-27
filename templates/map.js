@@ -18,13 +18,23 @@ const controlsLocation = 'bottom-right';
 const layersDict = {
     background: 'background',
     helpPoints: 'helpPoints',
+    informationPoints: 'informationPoints',
+    bloodDonation: 'bloodDonation',
     socialFacilities: 'socialFacilities',
+    pharmacies: 'pharmacies',
+    hospitals: 'hospitals',
+    diplomatic: 'diplomatic',
 }
 
 const layersVisibilityOnInit = {
     [layersDict.background]: true,
     [layersDict.helpPoints]: true,
-    [layersDict.socialFacilities]: false,
+    [layersDict.informationPoints]: true,
+    [layersDict.bloodDonation]: false,
+    [layersDict.socialFacilities]: true,
+    [layersDict.pharmacies]: false,
+    [layersDict.hospitals]: false,
+    [layersDict.diplomatic]: true,
 }
 
 function getIsLayerVisibleOnInit(id) {
@@ -33,14 +43,15 @@ function getIsLayerVisibleOnInit(id) {
 
 const sidebarDivId = 'sidebar-div';
 
-const dataLayerIds = [
-    layersDict.helpPoints,
-];
-
 const usedLayersIds = [
     layersDict.background,
     layersDict.helpPoints,
+    layersDict.informationPoints,
+    layersDict.bloodDonation,
     layersDict.socialFacilities,
+    layersDict.pharmacies,
+    layersDict.hospitals,
+    layersDict.diplomatic,
 ];
 
 const layersDefinitions = {
@@ -57,7 +68,7 @@ const layersDefinitions = {
                     }
                 },
             ],
-            name: 'OSM Carto tiles', // todo: localize layer name
+            name: 'OSM Carto {{ strings.map[lang] }}',
             id: layersDict.background,
             before: layersDict.helpPoints
         },
@@ -69,7 +80,7 @@ const layersDefinitions = {
                     source: 'custom',
                     paint: {
                         'circle-color': '#ffd500',
-                        'circle-radius': 18,
+                        'circle-radius': 12,
                         'circle-stroke-color': '#fff',
                         'circle-stroke-width': 3,
                     },
@@ -85,7 +96,7 @@ const layersDefinitions = {
                     layout: {
                         'text-field': '{name:{{ lang }}}',
                         'text-offset': [0, 3],
-                        'text-size': 11,
+                        'text-size': 10,
                         ...textLayerDefaultLayoutParams,
                         visibility: getIsLayerVisibleOnInit(layersDict.helpPoints)
                     },
@@ -93,8 +104,78 @@ const layersDefinitions = {
                     filter: ['==', 'custom', 'punkt recepcyjny'],
                 },
             ],
-            name: 'Punkty pomocy', // todo: localize layer name
+            name: '{{ strings.reception_points[lang] }}',
             id: layersDict.helpPoints,
+        },
+        [layersDict.informationPoints]: {
+            layers: [
+                {
+                    id: `${layersDict.informationPoints}Circles`,
+                    type: 'circle',
+                    source: 'osmData',
+                    paint: {
+                        'circle-color': '#ffee00',
+                        'circle-radius': 9,
+                        'circle-stroke-color': '#fff',
+                        'circle-stroke-width': 2,
+                    },
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.informationPoints)
+                    },
+                    filter: ['==', ['get', 'information:for'], 'refugees'],
+                }, {
+                    id: `${layersDict.informationPoints}Labels`,
+                    type: 'symbol',
+                    source: 'osmData',
+                    minzoom: 5,
+                    layout: {
+                        'text-field': '{name:{{ lang }}}',
+                        'text-offset': [0, 3],
+                        'text-size': 10,
+                        ...textLayerDefaultLayoutParams,
+                        visibility: getIsLayerVisibleOnInit(layersDict.informationPoints)
+                    },
+                    paint: textLayerDefaultPaint,
+                    filter: ['==', ['get', 'information:for'], 'refugees'],
+                },
+            ],
+            name: '{{ strings.information_points[lang] }}',
+            id: layersDict.informationPoints,
+        },
+        [layersDict.bloodDonation]: {
+            layers: [
+                {
+                    id: `${layersDict.bloodDonation}Circles`,
+                    type: 'circle',
+                    source: 'osmData',
+                    paint: {
+                        'circle-color': '#990000',
+                        'circle-radius': 6,
+                        'circle-stroke-color': '#fff',
+                        'circle-stroke-width': 2,
+                    },
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.bloodDonation)
+                    },
+                    filter: ['==', ['get', 'healthcare'], 'blood_donation'],
+                }, {
+                    id: `${layersDict.bloodDonation}Labels`,
+                    type: 'symbol',
+                    source: 'osmData',
+                    minzoom: 5,
+                    layout: {
+                        'text-field': '{name:{{ lang }}}',
+                        'text-offset': [0, 3],
+                        'text-size': 7,
+                        ...textLayerDefaultLayoutParams,
+                        visibility: getIsLayerVisibleOnInit(layersDict.bloodDonation)
+                    },
+                    paint: textLayerDefaultPaint,
+                    filter: ['==', ['get', 'healthcare'], 'blood_donation'],
+                },
+            ],
+            name: '{{ strings.blood_donation[lang] }}',
+            id: layersDict.bloodDonation,
         },
         [layersDict.socialFacilities]: {
             layers: [
@@ -104,14 +185,18 @@ const layersDefinitions = {
                     source: 'osmData',
                     paint: {
                         'circle-color': '#00d5ff',
-                        'circle-radius': 10,
+                        'circle-radius': 7,
                         'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 3,
+                        'circle-stroke-width': 2,
                     },
                     layout: {
                         visibility: getIsLayerVisibleOnInit(layersDict.socialFacilities)
                     },
-                    filter: ['==', ['get', 'amenity'], 'social_facility'],
+                    filter: [
+                        'any',
+                        ['in', ['get', 'social_facility'], ['literal', ['shelter', 'food_bank', 'soup_kitchen']]],
+                        ['==', ['get', 'social_facility:for'], 'refugees'],
+                    ],
                 }, {
                     id: `${layersDict.socialFacilities}Labels`,
                     type: 'symbol',
@@ -125,11 +210,120 @@ const layersDefinitions = {
                         visibility: getIsLayerVisibleOnInit(layersDict.socialFacilities)
                     },
                     paint: textLayerDefaultPaint,
-                    filter: ['==', ['get', 'amenity'], 'social_facility'],
+                    filter: [
+                        'any',
+                        ['in', ['get', 'social_facility'], ['literal', ['shelter', 'food_bank', 'soup_kitchen']]],
+                        ['==', ['get', 'social_facility:for'], 'refugees'],
+                    ],
                 },
             ],
-            name: 'Placówki opieki społecznej', // todo: localize layer name
+            name: '{{ strings.social_facilities[lang] }}',
             id: layersDict.socialFacilities,
+        },
+        [layersDict.pharmacies]: {
+            layers: [
+                {
+                    id: `${layersDict.pharmacies}Circles`,
+                    type: 'circle',
+                    source: 'osmData',
+                    paint: {
+                        'circle-color': '#880044',
+                        'circle-radius': 5,
+                        'circle-stroke-color': '#fff',
+                        'circle-stroke-width': 1,
+                    },
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.pharmacies)
+                    },
+                    filter: ['==', ['get', 'amenity'], 'pharmacy'],
+                }, {
+                    id: `${layersDict.pharmacies}Labels`,
+                    type: 'symbol',
+                    source: 'osmData',
+                    minzoom: 5,
+                    layout: {
+                        'text-field': '{name:{{ lang }}}',
+                        'text-offset': [0, 3],
+                        'text-size': 7,
+                        ...textLayerDefaultLayoutParams,
+                        visibility: getIsLayerVisibleOnInit(layersDict.pharmacies)
+                    },
+                    paint: textLayerDefaultPaint,
+                    filter: ['==', ['get', 'amenity'], 'pharmacy'],
+                },
+            ],
+            name: '{{ strings.pharmacies[lang] }}',
+            id: layersDict.pharmacies,
+        },
+        [layersDict.hospitals]: {
+            layers: [
+                {
+                    id: `${layersDict.hospitals}Circles`,
+                    type: 'circle',
+                    source: 'osmData',
+                    paint: {
+                        'circle-color': '#ff1111',
+                        'circle-radius': 8,
+                        'circle-stroke-color': '#fff',
+                        'circle-stroke-width': 2,
+                    },
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.hospitals)
+                    },
+                    filter: ['==', ['get', 'amenity'], 'hospital'],
+                }, {
+                    id: `${layersDict.hospitals}Labels`,
+                    type: 'symbol',
+                    source: 'osmData',
+                    minzoom: 5,
+                    layout: {
+                        'text-field': '{name:{{ lang }}}',
+                        'text-offset': [0, 3],
+                        'text-size': 8,
+                        ...textLayerDefaultLayoutParams,
+                        visibility: getIsLayerVisibleOnInit(layersDict.hospitals)
+                    },
+                    paint: textLayerDefaultPaint,
+                    filter: ['==', ['get', 'amenity'], 'hospital'],
+                },
+            ],
+            name: '{{ strings.hospitals[lang] }}',
+            id: layersDict.hospitals,
+        },
+        [layersDict.diplomatic]: {
+            layers: [
+                {
+                    id: `${layersDict.diplomatic}Circles`,
+                    type: 'circle',
+                    source: 'osmData',
+                    paint: {
+                        'circle-color': '#446688',
+                        'circle-radius': 10,
+                        'circle-stroke-color': '#fff',
+                        'circle-stroke-width': 2,
+                    },
+                    layout: {
+                        visibility: getIsLayerVisibleOnInit(layersDict.diplomatic)
+                    },
+                    filter: ['all', ['==', ['get', 'office'], 'diplomatic'], ['==', ['get', 'country'], 'UA']],
+                }, {
+                    id: `${layersDict.diplomatic}Labels`,
+                    type: 'symbol',
+                    source: 'osmData',
+                    minzoom: 5,
+                    layout: {
+                        'text-field': '{name:{{ lang }}}',
+                        'text-offset': [0, 3],
+                        'text-size': 8,
+                        ...textLayerDefaultLayoutParams,
+                        visibility: getIsLayerVisibleOnInit(layersDict.diplomatic)
+                    },
+                    paint: textLayerDefaultPaint,
+                    filter: ['all', ['==', ['get', 'office'], 'diplomatic'], ['==', ['get', 'country'], 'UA']],
+                },
+            ],
+            name: '{{ strings.consulate[lang] }}',
+            id: layersDict.diplomatic,
         },
 };
 
