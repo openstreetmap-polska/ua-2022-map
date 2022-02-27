@@ -6,7 +6,6 @@ const osmLayerURL = "../data/osm_data.geojson";
 const textLayerDefaultLayoutParams = {
     'text-font': ['Open Sans Bold'],
     'text-letter-spacing': 0.05,
-    'text-overlap': 'always',
 };
 const textLayerDefaultPaint = {
     'text-color': '#050505',
