@@ -407,12 +407,13 @@ map.addControl(geolocate, controlsLocation);
 
 // user interaction stuff
 // ----------------
-map.on('mouseenter', `${layersDict.helpPoints}Circles`, () => {
-    map.getCanvas().style.cursor = 'pointer';
-});
-
-map.on('mouseleave', `${layersDict.helpPoints}Circles`, () => {
-    map.getCanvas().style.cursor = '';
+Object.entries(layersDict).forEach(x => {
+    map.on('mouseenter', `${x[1]}Circles`, () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', `${x[1]}Circles`, () => {
+        map.getCanvas().style.cursor = '';
+    });
 });
 
 map.on('click', `${layersDict.helpPoints}Circles`, function (e) {
