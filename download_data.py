@@ -135,6 +135,6 @@ if __name__ == "__main__":
 
     if not output_dir.is_dir():
         logger.error(f'Given path: "{output_dir}" is not a directory.')
-        sys.exit()
+        sys.exit(1) # exit with non-zero error code, see #3
 
     main(output_path=fp)
