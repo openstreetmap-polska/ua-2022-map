@@ -1,11 +1,11 @@
-import layers from '../static/data/layers.js'
+import layers from '../static/style/layers.js'
 
 const controlsLocation = 'bottom-right';
 
 const LANG = '{{lang}}'
 
 // we need to use url_for so flask freeze will include the file in build
-const dummyVariable = "{{ url_for('static', filename='data/layers.js') }}";
+const dummyVariable = "{{ url_for('static', filename='style/layers.js') }}";
 
 function getLayersState(layers, lang) {
     const layersDefinitions = {};
