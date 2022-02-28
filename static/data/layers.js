@@ -49,7 +49,7 @@ export default {
         "mapboxSatellite":{
             "type":"raster",
             "tiles":[
-                "https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHQtb3NtcCIsImEiOiJjbDA2bnNlbTMwNDNnM2lsdndsdmMzNGZxIn0.x3AmxBTJ0kfMXsSM2hyr7g"
+                "https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHQtb3NtcCIsImEiOiJjbDA2bmNzcTcwM3M2M2NsdmZnM2EzcGF2In0.IXOLX5Xw_C9wf0JyL3v6Yw"
             ],
             "tileSize":256,
             "maxzoom":19,
