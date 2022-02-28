@@ -1,7 +1,5 @@
 import layers from '../static/data/layers.js'
 
-const LANG = '{{ lang }}';
-
 const controlsLocation = 'bottom-right';
 
 function getLayersState(layers, lang) {

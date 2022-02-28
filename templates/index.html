@@ -5,6 +5,9 @@
   <title>{{ strings.title[lang] }}</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
   <meta content="#485fc7" name="theme-color">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon/favicon-16x16.png') }}">
+  <meta name="description" content="{{ strings.site_description[lang] }}">
 
   <!-- Facebook Meta Tags -->
   <meta content="website" property="og:type">
@@ -25,7 +28,7 @@
   <script defer src="https://openingh.openstreetmap.de/opening_hours.js/opening_hours+deps.min.js"></script>
 
   <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet"/>
-  <link href="../static/css/style.css" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
 </head>
 <body>
 
@@ -59,21 +62,21 @@
 <!--        </div>-->
 
         <div class="navbar-item px-1">
-          <a class="" href="../uk/">
-            <img src="../static/img/flags/ua.png" height="26px" width="35px" class="mt-2 lang-img" alt="Ukrainian language">
+          <a class="" href="{{ url_for('get_language_index', lang='uk') }}">
+            <img src="{{ url_for('static', filename='img/flags/ua.png') }}" height="26px" width="35px" class="mt-2 lang-img" alt="Ukrainian language">
           </a>
         </div>
 
 
         <div class="navbar-item px-1">
-          <a class="" href="../pl/">
-            <img src="../static/img/flags/pl.png" height="26px"  width="35px"  class="mt-2 lang-img" alt="Polish language">
+          <a class="" href="{{ url_for('get_language_index', lang='pl') }}">
+            <img src="{{ url_for('static', filename='img/flags/pl.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="Polish language">
           </a>
         </div>
 
         <div class="navbar-item px-1">
-          <a class="" href="../en/">
-            <img src="../static/img/flags/gb.png" height="26px"  width="35px"  class="mt-2 lang-img" alt="English language">
+          <a class="" href="{{ url_for('get_language_index', lang='en') }}">
+            <img src="{{ url_for('static', filename='img/flags/gb.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="English language">
           </a>
         </div>
 
@@ -152,7 +155,7 @@
   </div>
 
   <div id="map"></div>
-  <script src="./map.js" type="module"></script>
+  <script src="{{ url_for('get_language_mapjs', lang=lang) }}" type="module"></script>
 
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "da4ec9500cd74c4c8a08c72a1d70f491"}'></script>
