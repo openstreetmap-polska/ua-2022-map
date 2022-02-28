@@ -2,6 +2,8 @@ import layers from '../static/data/layers.js'
 
 const controlsLocation = 'bottom-right';
 
+const LANG = '{{lang}}'
+
 function getLayersState(layers, lang) {
     const layersDefinitions = {};
     const layersVisibilityState = {};
