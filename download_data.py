@@ -19,6 +19,7 @@ overpass_query = """
 area(id:3600130919)->.wojLub;
 area(id:3600130957)->.wojPodk;
 area(id:3600049715)->.pol;
+area(id:3600014296)->.slov;
 area(id:3600060199)->.ukra;
 area(id:3600072380)->.ukra1;
 area(id:3600071064)->.ukra2;
@@ -27,6 +28,7 @@ area(id:3600071064)->.ukra2;
   nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.wojPodk);
   nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.ukra1);
   nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.ukra2);
+  nwr[social_facility~"shelter|outreach|food_bank|soup_kitchen"](area.slov);
 
   nwr[building=train_station](area.wojLub);
   nwr[building=train_station](area.wojPodk);
@@ -48,7 +50,8 @@ area(id:3600071064)->.ukra2;
   nwr["office"="diplomatic"]["country"="UA"](area.ukra);
 
   nwr["healthcare"="blood_donation"](area.pol);
-  nwr["healthcare"="blood_donation"](area.ukra);
+  nwr["healthcare"="blood_donation"](area.ukra1);
+  nwr["healthcare"="blood_donation"](area.ukra2);
 
   nwr["information:for"="refugees"](area.pol);
   nwr["information:for"="refugees"](area.ukra);
@@ -135,6 +138,6 @@ if __name__ == "__main__":
 
     if not output_dir.is_dir():
         logger.error(f'Given path: "{output_dir}" is not a directory.')
-        sys.exit()
+        sys.exit(1) # exit with non-zero error code, see #3
 
     main(output_path=fp)
