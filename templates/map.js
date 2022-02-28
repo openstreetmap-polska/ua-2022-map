@@ -39,7 +39,6 @@ const layersColoursDict = {
 }
 
 const {layersDefinitions, layersVisibilityState} = getLayersState(layers.layers, LANG);
-console.log('~ layersDefinitions', layersDefinitions);
 const layersArray = Object.keys(layersDefinitions).map(id => layersDefinitions[id]);
 
 const sidebarDivId = 'sidebar-div';
