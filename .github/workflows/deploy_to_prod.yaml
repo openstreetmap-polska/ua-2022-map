@@ -30,8 +30,8 @@ jobs:
           ssh-port: ${{ secrets.SSH_HOST_PORT }}
       - name: Update download script with rsync
         run: |
-          rsync --update -e "ssh -p ${{ secrets.SSH_HOST_PORT }}" ./download_data.py ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_IP }}:/opt/scripts/download_data.py
+          rsync -e "ssh -p ${{ secrets.SSH_HOST_PORT }}" ./download_data.py ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_IP }}:/opt/scripts/download_data.py
       - name: Deploy site with rsync
         run: |
-          rsync --update --recursive --delete --exclude "data" -e "ssh -p ${{ secrets.SSH_HOST_PORT }}" \
+          rsync --recursive --delete --exclude "data" -e "ssh -p ${{ secrets.SSH_HOST_PORT }}" \
             ./build/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_IP }}:/var/www/html/
