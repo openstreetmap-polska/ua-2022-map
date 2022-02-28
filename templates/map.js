@@ -26,6 +26,18 @@ function getLayersState(layers, lang) {
     return {layersDefinitions, layersVisibilityState};
 }
 
+const layersColoursDict = {
+    background: '',
+    helpPoints: '#ffd500',
+    informationPoints: '#ffee00',
+    bloodDonation: '#990000',
+    socialFacilities: '#00d5ff',
+    pharmacies: '#880044',
+    hospitals: '#ff1111',
+    diplomatic: '#446688',
+    charityDropOff: '#11ee11',
+}
+
 const {layersDefinitions, layersVisibilityState} = getLayersState(layers.layers, LANG);
 const layersArray = Object.keys(layersDefinitions).map(id => layersDefinitions[id]);
 
@@ -251,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <label class="checkbox">
                 <input ${visible ? 'checked' : ''} type="checkbox" data-layer-id=${id}>
                 <span class="is-size-6">
+                    <div style="background-color: ${layersColoursDict[id]}; width: 15px; height: 15px; display: inline-block; border-radius: 50%;"></div>
                     ${displayName}
                 </span>
             </label>`;
