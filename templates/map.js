@@ -1,373 +1,37 @@
-var language = '{{ lang }}';
+import layers from '../static/data/layers.js'
 
-const customLayerURL = "../static/custom.geojson";
-const osmLayerURL = "../data/osm_data.geojson";
-
-const textLayerDefaultLayoutParams = {
-    'text-font': ['Open Sans Bold'],
-    'text-letter-spacing': 0.05,
-};
-const textLayerDefaultPaint = {
-    'text-color': '#050505',
-    'text-halo-color': 'rgba(255, 255, 255, 0.9)',
-    'text-halo-width': 2,
-};
+const LANG = '{{ lang }}';
 
 const controlsLocation = 'bottom-right';
 
-const layersDict = {
-    background: 'background',
-    helpPoints: 'helpPoints',
-    informationPoints: 'informationPoints',
-    bloodDonation: 'bloodDonation',
-    socialFacilities: 'socialFacilities',
-    pharmacies: 'pharmacies',
-    hospitals: 'hospitals',
-    diplomatic: 'diplomatic',
-    charityDropOff: 'charityDropOff'
+function getLayersState(layers, lang) {
+    const layersDefinitions = {};
+    const layersVisibilityState = {};
+    layers.forEach(layer => {
+        const { group } = layer.metadata;
+        const { visibility } = layer.layout;
+        if(!layersDefinitions[group]) {
+            layersVisibilityState[group] = visibility === 'visible';
+        }
+        if(layersDefinitions[group]) {
+            layersDefinitions[group].layers.push(layer);
+            return
+        }
+        layersDefinitions[group] = {
+            layers: [layer],
+            id: group,
+            name: layer.metadata.name[lang],
+        }
+    });
+    return {layersDefinitions, layersVisibilityState};
 }
 
-const layersVisibilityOnInit = {
-    [layersDict.background]: true,
-    [layersDict.helpPoints]: true,
-    [layersDict.informationPoints]: true,
-    [layersDict.bloodDonation]: false,
-    [layersDict.socialFacilities]: true,
-    [layersDict.pharmacies]: false,
-    [layersDict.hospitals]: false,
-    [layersDict.diplomatic]: true,
-    [layersDict.charityDropOff]: true,
-}
-
-function getIsLayerVisibleOnInit(id) {
-    return layersVisibilityOnInit[id] ? 'visible' : 'none';
-}
+const {layersDefinitions, layersVisibilityState} = getLayersState(layers.layers, LANG);
+const layersArray = Object.keys(layersDefinitions).map(id => layersDefinitions[id]);
 
 const sidebarDivId = 'sidebar-div';
 
-const usedLayersIds = [
-    layersDict.background,
-    layersDict.helpPoints,
-    layersDict.informationPoints,
-    layersDict.bloodDonation,
-    layersDict.socialFacilities,
-    layersDict.pharmacies,
-    layersDict.hospitals,
-    layersDict.diplomatic,
-    layersDict.charityDropOff,
-];
-
-const layersDefinitions = {
-        [layersDict.background]: {
-            layers: [
-                {
-                    id: layersDict.background,
-                    type: 'raster',
-                    source: 'osmTiles',
-                    minZoom: 0,
-                    maxZoom: 19,
-                    layout: {
-                        visibility: getIsLayerVisibleOnInit(layersDict.background)
-                    }
-                },
-            ],
-            name: 'OSM Carto {{ strings.map[lang] }}',
-            id: layersDict.background,
-            before: layersDict.helpPoints
-        },
-        [layersDict.helpPoints]: {
-            layers: [
-                {
-                    id: `${layersDict.helpPoints}Circles`,
-                    type: 'circle',
-                    source:  'osmData',
-                    paint: {
-                        'circle-color': '#ffd500',
-                        'circle-radius': 12,
-                        'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 3,
-                    },
-                    layout: {
-                        visibility: getIsLayerVisibleOnInit(layersDict.helpPoints)
-                    },
-                        filter: ['all', ['==', ['get', 'social_facility'], 'outreach'], ['==', ['get', 'social_facility:for'], 'refugee']],
-                    }, 
-                    {
-                    id: `${layersDict.helpPoints}Labels`,
-                    type: 'symbol',
-                    source: 'osmData',
-                    minzoom: 5,
-                    layout: {
-                        'text-field': '{name:{{ lang }}}',
-                        'text-offset': [0, 3],
-                        'text-size': 10,
-                        ...textLayerDefaultLayoutParams,
-                        visibility: getIsLayerVisibleOnInit(layersDict.helpPoints)
-                    },
-                    paint: textLayerDefaultPaint,
-                    filter: ['all', ['==', ['get', 'social_facility'], 'outreach'], ['==', ['get', 'social_facility:for'], 'refugee']],
-                },
-            ],
-            name: '{{ strings.reception_points[lang] }}',
-            id: layersDict.helpPoints,
-        },
-        [layersDict.informationPoints]: {
-            layers: [
-                {
-                    id: `${layersDict.informationPoints}Circles`,
-                    type: 'circle',
-                    source: 'osmData',
-                    paint: {
-                        'circle-color': '#ffee00',
-                        'circle-radius': 9,
-                        'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 2,
-                    },
-                    layout: {
-                        visibility: getIsLayerVisibleOnInit(layersDict.informationPoints)
-                    },
-                    filter: ['==', ['get', 'information:for'], 'refugees'],
-                }, {
-                    id: `${layersDict.informationPoints}Labels`,
-                    type: 'symbol',
-                    source: 'osmData',
-                    minzoom: 5,
-                    layout: {
-                        'text-field': '{name:{{ lang }}}',
-                        'text-offset': [0, 3],
-                        'text-size': 10,
-                        ...textLayerDefaultLayoutParams,
-                        visibility: getIsLayerVisibleOnInit(layersDict.informationPoints)
-                    },
-                    paint: textLayerDefaultPaint,
-                    filter: ['==', ['get', 'information:for'], 'refugees'],
-                },
-            ],
-            name: '{{ strings.information_points[lang] }}',
-            id: layersDict.informationPoints,
-        },
-        [layersDict.bloodDonation]: {
-            layers: [
-                {
-                    id: `${layersDict.bloodDonation}Circles`,
-                    type: 'circle',
-                    source: 'osmData',
-                    paint: {
-                        'circle-color': '#990000',
-                        'circle-radius': 6,
-                        'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 2,
-                    },
-                    layout: {
-                        visibility: getIsLayerVisibleOnInit(layersDict.bloodDonation)
-                    },
-                    filter: ['==', ['get', 'healthcare'], 'blood_donation'],
-                }, {
-                    id: `${layersDict.bloodDonation}Labels`,
-                    type: 'symbol',
-                    source: 'osmData',
-                    minzoom: 5,
-                    layout: {
-                        'text-field': '{name:{{ lang }}}',
-                        'text-offset': [0, 3],
-                        'text-size': 7,
-                        ...textLayerDefaultLayoutParams,
-                        visibility: getIsLayerVisibleOnInit(layersDict.bloodDonation)
-                    },
-                    paint: textLayerDefaultPaint,
-                    filter: ['==', ['get', 'healthcare'], 'blood_donation'],
-                },
-            ],
-            name: '{{ strings.blood_donation[lang] }}',
-            id: layersDict.bloodDonation,
-        },
-        [layersDict.socialFacilities]: {
-            layers: [
-                {
-                    id: `${layersDict.socialFacilities}Circles`,
-                    type: 'circle',
-                    source: 'osmData',
-                    paint: {
-                        'circle-color': '#00d5ff',
-                        'circle-radius': 7,
-                        'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 2,
-                    },
-                    layout: {
-                        visibility: getIsLayerVisibleOnInit(layersDict.socialFacilities)
-                    },
-                    filter: [
-                        'any',
-                        ['in', ['get', 'social_facility'], ['literal', ['shelter', 'food_bank', 'soup_kitchen']]],
-                        ['==', ['get', 'social_facility:for'], 'refugees'],
-                    ],
-                }, {
-                    id: `${layersDict.socialFacilities}Labels`,
-                    type: 'symbol',
-                    source: 'osmData',
-                    minzoom: 5,
-                    layout: {
-                        'text-field': '{name:{{ lang }}}',
-                        'text-offset': [0, 3],
-                        'text-size': 8,
-                        ...textLayerDefaultLayoutParams,
-                        visibility: getIsLayerVisibleOnInit(layersDict.socialFacilities)
-                    },
-                    paint: textLayerDefaultPaint,
-                    filter: [
-                        'any',
-                        ['in', ['get', 'social_facility'], ['literal', ['shelter', 'food_bank', 'soup_kitchen']]],
-                        ['==', ['get', 'social_facility:for'], 'refugees'],
-                    ],
-                },
-            ],
-            name: '{{ strings.social_facilities[lang] }}',
-            id: layersDict.socialFacilities,
-        },
-        [layersDict.pharmacies]: {
-            layers: [
-                {
-                    id: `${layersDict.pharmacies}Circles`,
-                    type: 'circle',
-                    source: 'osmData',
-                    paint: {
-                        'circle-color': '#880044',
-                        'circle-radius': 5,
-                        'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 1,
-                    },
-                    layout: {
-                        visibility: getIsLayerVisibleOnInit(layersDict.pharmacies)
-                    },
-                    filter: ['==', ['get', 'amenity'], 'pharmacy'],
-                }, {
-                    id: `${layersDict.pharmacies}Labels`,
-                    type: 'symbol',
-                    source: 'osmData',
-                    minzoom: 5,
-                    layout: {
-                        'text-field': '{name:{{ lang }}}',
-                        'text-offset': [0, 3],
-                        'text-size': 7,
-                        ...textLayerDefaultLayoutParams,
-                        visibility: getIsLayerVisibleOnInit(layersDict.pharmacies)
-                    },
-                    paint: textLayerDefaultPaint,
-                    filter: ['==', ['get', 'amenity'], 'pharmacy'],
-                },
-            ],
-            name: '{{ strings.pharmacies[lang] }}',
-            id: layersDict.pharmacies,
-        },
-        [layersDict.hospitals]: {
-            layers: [
-                {
-                    id: `${layersDict.hospitals}Circles`,
-                    type: 'circle',
-                    source: 'osmData',
-                    paint: {
-                        'circle-color': '#ff1111',
-                        'circle-radius': 8,
-                        'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 2,
-                    },
-                    layout: {
-                        visibility: getIsLayerVisibleOnInit(layersDict.hospitals)
-                    },
-                    filter: ['==', ['get', 'amenity'], 'hospital'],
-                }, {
-                    id: `${layersDict.hospitals}Labels`,
-                    type: 'symbol',
-                    source: 'osmData',
-                    minzoom: 5,
-                    layout: {
-                        'text-field': '{name:{{ lang }}}',
-                        'text-offset': [0, 3],
-                        'text-size': 8,
-                        ...textLayerDefaultLayoutParams,
-                        visibility: getIsLayerVisibleOnInit(layersDict.hospitals)
-                    },
-                    paint: textLayerDefaultPaint,
-                    filter: ['==', ['get', 'amenity'], 'hospital'],
-                },
-            ],
-            name: '{{ strings.hospitals[lang] }}',
-            id: layersDict.hospitals,
-        },
-        [layersDict.diplomatic]: {
-            layers: [
-                {
-                    id: `${layersDict.diplomatic}Circles`,
-                    type: 'circle',
-                    source: 'osmData',
-                    paint: {
-                        'circle-color': '#446688',
-                        'circle-radius': 10,
-                        'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 2,
-                    },
-                    layout: {
-                        visibility: getIsLayerVisibleOnInit(layersDict.diplomatic)
-                    },
-                    filter: ['all', ['==', ['get', 'office'], 'diplomatic'], ['==', ['get', 'country'], 'UA']],
-                }, {
-                    id: `${layersDict.diplomatic}Labels`,
-                    type: 'symbol',
-                    source: 'osmData',
-                    minzoom: 5,
-                    layout: {
-                        'text-field': '{name:{{ lang }}}',
-                        'text-offset': [0, 3],
-                        'text-size': 8,
-                        ...textLayerDefaultLayoutParams,
-                        visibility: getIsLayerVisibleOnInit(layersDict.diplomatic)
-                    },
-                    paint: textLayerDefaultPaint,
-                    filter: ['all', ['==', ['get', 'office'], 'diplomatic'], ['==', ['get', 'country'], 'UA']],
-                },
-            ],
-            name: '{{ strings.consulate[lang] }}',
-            id: layersDict.diplomatic,
-        },
-        [layersDict.charityDropOff]: {
-            layers: [
-                {
-                    id: `${layersDict.charityDropOff}Circles`,
-                    type: 'circle',
-                    source: 'charityDropOff',
-                    paint: {
-                        'circle-color': '#11ee11',
-                        'circle-radius': 7,
-                        'circle-stroke-color': '#fff',
-                        'circle-stroke-width': 2,
-                    },
-                    layout: {
-                        visibility: getIsLayerVisibleOnInit(layersDict.charityDropOff)
-                    },
-                }, {
-                    id: `${layersDict.charityDropOff}Labels`,
-                    type: 'symbol',
-                    source: 'charityDropOff',
-                    minzoom: 5,
-                    layout: {
-                        'text-field': '{{ strings.charity_drop_off_singular[lang] }} \n {Name}',
-                        'text-offset': [0, 3.5],
-                        'text-size': 8,
-                        ...textLayerDefaultLayoutParams,
-                        visibility: getIsLayerVisibleOnInit(layersDict.charityDropOff)
-                    },
-                    paint: textLayerDefaultPaint,
-                },
-            ],
-            name: '{{ strings.charity_drop_off[lang] }}',
-            id: layersDict.charityDropOff,
-        },
-};
-
-const usedLayersDefs = usedLayersIds.map(layerId => layersDefinitions[layerId]);
-const separatedLayersDefs = usedLayersDefs.reduce((acc, layer) => [...acc, ...layer.layers], []);
-
-var map = new maplibregl.Map({
+const map = new maplibregl.Map({
     container: 'map', // container id
     center: [24.055, 50.538], // starting position [lng, lat]
     zoom: 7, // starting zoom
@@ -375,55 +39,7 @@ var map = new maplibregl.Map({
     maxPitch: 0,
     dragRotate: false,
     hash: 'map',
-    style: {
-        version: 8,
-        glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
-        sources: {
-            osmTiles: {
-                type: 'raster',
-                tiles: [
-                    'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                ],
-                tileSize: 256,
-                maxzoom: 19,
-                paint: {
-                    'raster-fade-duration': 100
-                },
-                attribution: `data © <a target="_top" rel="noopener" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.`,
-            },
-            mediaWikiTiles: {
-                type: 'raster',
-                tiles: [
-                    'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png?lang=uk'
-                ],
-                tileSize: 256,
-                maxzoom: 19,
-                paint: {
-                    'raster-fade-duration': 100
-                },
-                attribution: `map: <a target="_top" rel="noopener" href="https://foundation.wikimedia.org/wiki/Maps_Terms_of_Use">WikiMedia</a>; data: © <a target="_top" rel="noopener" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.`,
-            },
-            custom: {
-                type: 'geojson',
-                data: customLayerURL,
-                maxzoom: 12,
-                generateId: true,
-            },
-            osmData: {
-                type: 'geojson',
-                data: osmLayerURL,
-                maxzoom: 12,
-            },
-            charityDropOff: {
-                type: 'geojson',
-                data: 'https://dopomoha.pl/data/zbiorki.geojson',
-                maxzoom: 12,
-            },
-        },
-        layers: separatedLayersDefs,
-    },
+    style: layers
 });
 
 // controlls stuff
@@ -449,20 +65,20 @@ map.addControl(geolocate, controlsLocation);
 
 // user interaction stuff
 // ----------------
-Object.entries(layersDict).forEach(x => {
-    if (x[1] !== 'background') {
-        map.on('mouseenter', `${x[1]}Circles`, () => {
+Object.entries(layersDefinitions).forEach(x => {
+    if (x[0] !== 'background') {
+        map.on('mouseenter', `${x[0]}Circles`, () => {
             map.getCanvas().style.cursor = 'pointer';
         });
-        map.on('mouseleave', `${x[1]}Circles`, () => {
+        map.on('mouseleave', `${x[0]}Circles`, () => {
             map.getCanvas().style.cursor = '';
         });
     }
 });
 
-Object.entries(layersDict).forEach(x => {
-    if (x[1] !== 'background') {
-        map.on('click', `${x[1]}Circles`, function (e) {
+Object.entries(layersDefinitions).forEach(x => {
+    if (x[0] !== 'background') {
+        map.on('click', `${x[0]}Circles`, function (e) {
             const lonlat = e.features[0].geometry.coordinates;
             const properties = e.features[0].properties;
             const popupHTML = renderBasicPopup(lonlat, properties);
@@ -473,24 +89,6 @@ Object.entries(layersDict).forEach(x => {
         });
     }
 });
-
-// map.on('click', `${layersDict.helpPoints}Circles`, function (e) {
-//     const lonlat = e.features[0].geometry.coordinates;
-//     const properties = e.features[0].properties;
-//     const namePl = e.features[0].properties['name:pl'];
-//     const nameUk = e.features[0].properties['name:uk'];
-//     const popupHTML = `
-//         <h1 class="is-size-5 pb-2">${nameUk}</h1>
-//         <h2 class="is-size-6 pb-3">${namePl}</h2>
-//         ${renderOSMRouteLink(lonlat, properties)}
-//         ${renderGoogleRouteLink(lonlat, properties)}
-//         <p class="pt-4 px-2 pb-2 is-size-7">${properties.description}</p>
-//     `;
-//     new maplibregl.Popup({maxWidth: '300px'})
-//         .setLngLat(e.lngLat)
-//         .setHTML(popupHTML)
-//         .addTo(map);
-// });
 
 // ----------------
 function renderOSMRouteLink(lonlat, properties) {
@@ -550,11 +148,11 @@ function renderPhoneNumber(properties) {
 function renderBasicPopup(lonlat, properties) {
 
     var popupHTML = `
-        ${renderName(properties, language)}        
+        ${renderName(properties, LANG)}
         ${renderOSMRouteLink(lonlat, properties)}
         ${renderGoogleRouteLink(lonlat, properties)}
         ${renderPhoneNumber(properties)}  
-        ${renderDescription(properties, language)}  
+        ${renderDescription(properties, LANG)}  
     `;
     if (properties.note) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.note}</p>`;
 
@@ -562,11 +160,12 @@ function renderBasicPopup(lonlat, properties) {
 }
 
 function toggleLayer(layerId) {
-    const currentState = map.getLayoutProperty(layersDefinitions[layerId].layers[0].id, 'visibility')
-    const newState = !currentState || currentState === 'visible' ? 'none' : 'visible';
+    const currentState = layersVisibilityState[layerId];
+    const newState = currentState ? 'none' : 'visible';
     layersDefinitions[layerId].layers.forEach(layer => {
         map.setLayoutProperty(layer.id, 'visibility', newState)
     });
+    layersVisibilityState[layerId] = !currentState;
 }
 
 function toggleSidebar() {
@@ -660,13 +259,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
         function renderLegend(layers) {
             layers.forEach(layer => {
-            const legendItem = getLegendItem(layer.id, layer.name, layersVisibilityOnInit[layer.id])
+            const legendItem = getLegendItem(layer.id, layer.name, layersVisibilityState[layer.id])
                 list.appendChild(legendItem)
             })
             legend.appendChild(list)
         }
 
         addTogglingListener()
-        renderLegend(usedLayersDefs)
+        renderLegend(layersArray)
       })();
 });
