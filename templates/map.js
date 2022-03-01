@@ -105,6 +105,13 @@ Object.entries(layersDefinitions).forEach(x => {
     }
 });
 
+map.on('load', () => {
+    (function setLabelsLangauge(lang) {
+        const labelLayers =  map.getStyle().layers.filter(layer => layer.type === 'symbol' && layer.layout['text-field'])
+        labelLayers.forEach(layer => map.setLayoutProperty(layer.id, 'text-field', `{name:${lang}}`));
+    })(LANG);
+})
+
 function renderPopupRouteLink(text, href, hideOnDesktop) {
     return `<div class="p-1">
         <a target="_blank" rel="noopener" class="button p-1 is-fullwidth is-link ${hideOnDesktop ? 'is-hidden-desktop' : ''}"
