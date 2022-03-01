@@ -107,8 +107,12 @@ Object.entries(layersDefinitions).forEach(x => {
 
 map.on('load', () => {
     (function setLabelsLangauge(lang) {
-        const labelLayers =  map.getStyle().layers.filter(layer => layer.type === 'symbol' && layer.layout['text-field'])
+        const labelLayers =  map.getStyle().layers.filter(layer => layer.type === 'symbol' && layer.layout['text-field'] && layer.id !== 'charityDropOffLabels')
         labelLayers.forEach(layer => map.setLayoutProperty(layer.id, 'text-field', `{name:${lang}}`));
+    })(LANG);
+    (function setCharityDropoffPointLabel(lang) {
+        map.setLayoutProperty("charityDropOffLabels", 'text-field', `{{strings.charity_drop_off_singular[lang]}} \n {name}`)
+
     })(LANG);
 })
 
