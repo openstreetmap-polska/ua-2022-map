@@ -17,7 +17,7 @@ export default {
       "ukrainianTiles": {
         "type": "raster",
         "tiles": [
-          "https://d3d6y4q08jt7an.cloudfront.net/hot/{z}/{x}/{y}.png"
+          "https://dopomoha.pl/hot/{z}/{x}/{y}.png"
         ],
         "tileSize": 256,
         "maxzoom": 19,
