@@ -105,6 +105,17 @@ Object.entries(layersDefinitions).forEach(x => {
     }
 });
 
+map.on('load', () => {
+    (function setLabelsLangauge(lang) {
+        const labelLayers =  map.getStyle().layers.filter(layer => layer.type === 'symbol' && layer.layout['text-field'] && layer.id !== 'charityDropOffLabels')
+        labelLayers.forEach(layer => map.setLayoutProperty(layer.id, 'text-field', `{name:${lang}}`));
+    })(LANG);
+    (function setCharityDropoffPointLabel(lang) {
+        map.setLayoutProperty("charityDropOffLabels", 'text-field', `{{strings.charity_drop_off_singular[lang]}} \n {name}`)
+
+    })(LANG);
+})
+
 function renderPopupRouteLink(text, href, hideOnDesktop) {
     return `<div class="p-1">
         <a target="_blank" rel="noopener" class="button p-1 is-fullwidth is-link ${hideOnDesktop ? 'is-hidden-desktop' : ''}"
@@ -152,12 +163,12 @@ function renderPhoneNumber(properties) {
 function renderBasicPopup(lonlat, properties) {
     const renderGeoUri = !/^((?!chrome|android).)*safari/i.test(navigator.userAgent)
     const popupHTML = `
-        ${renderName(properties, language)}
+        ${renderName(properties, LANG)}
         ${renderPopupRouteLink(`OpenStreetMap {{ strings.navigation[lang] }}`, `https://www.openstreetmap.org/directions?from=&to=${lonlat[1]}%2C${lonlat[0]}#map=14/${lonlat[1]}/${lonlat[0]}`)}
         ${renderPopupRouteLink(`Google Maps {{ strings.navigation[lang] }}`, `https://www.google.com/maps/dir/?api=1&destination=${lonlat[1]}%2C${lonlat[0]}`)}
         ${renderGeoUri ? renderPopupRouteLink('GeoURI', `geo:${lonlat[1]},${lonlat[0]}`, true) : ''}
         ${renderPhoneNumber(properties)}
-        ${renderDescription(properties, language)}
+        ${renderDescription(properties, LANG)}
     `;
     if (properties.note) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.note}</p>`;
 
