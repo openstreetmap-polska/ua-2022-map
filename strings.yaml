@@ -11,11 +11,11 @@ site_description:
   pl: Interaktywna mapa punktów pomocy dla Ukraińców 
   en: Interactive map of places with help for Ukrainians
 offer_help:
-  uk: placeholder
+  uk: хочу допомогти
   pl: Chcę pomóc
   en: Offer help
 need_help:
-  uk: placeholder
+  uk: потребую допомоги
   pl: Potrzebuję pomocy
   en: Need help
 contact_us:
@@ -79,6 +79,6 @@ charity_drop_off_singular:
   pl: Punkt zbiórki charytatywnej
   en: Donation drop point
 refresh:
-  uk: Press <kbd>ctrl</kbd> + <kbd>f5</kbd> to refresh.
+  uk: Натисніть <kbd>ctrl</kbd> + <kbd>f5</kbd> щоб оновити дані.
   pl: Naciśnij <kbd>ctrl</kbd> + <kbd>f5</kbd> aby odświeżyć dane.
   en: Press <kbd>ctrl</kbd> + <kbd>f5</kbd> to refresh points.
