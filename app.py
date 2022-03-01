@@ -15,7 +15,18 @@ App = flask.Flask(__name__)
 
 @App.route('/')
 def get_index():
-    return ''
+    return '''<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <title></title>
+            <meta http-equiv="Refresh" content="0; url='/uk/#map=7/50.538/24.055'" />
+        </head>
+        <body>
+
+        </body>
+        </html>
+    '''
 
 
 @App.route('/<lang>/index.html')
