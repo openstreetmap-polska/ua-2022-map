@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  api:
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./templates:/app/templates
+      - ./static:/app/static
+      - ./strings.yaml:/app/strings.yaml
+      - ./requirements.txt:/app/requirements.txt
+      - ./generate_sites.py:/app/generate_sites.py
+      - ./download_data.py:/app/download_data.py
+      - ./app.py:/app/app.py
+      - ./debug-app.py:/app/debug-app.py
