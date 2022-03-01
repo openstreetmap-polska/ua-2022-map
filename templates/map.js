@@ -49,6 +49,7 @@ const sidebarDivId = 'sidebar-div';
 const map = new maplibregl.Map({
     container: 'map', // container id
     center: [24.055, 50.538], // starting position [lng, lat]
+    zoom: 7, // starting zoom
     maxZoom: 19, // max zoom to allow
     maxPitch: 0,
     dragRotate: false,
