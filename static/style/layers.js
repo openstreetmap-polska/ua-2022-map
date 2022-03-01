@@ -663,7 +663,7 @@ export default {
           "source": "charityDropOff",
           "minzoom": 5,
           "layout": {
-              "text-field": "Punkt zbiórki charytatywnej \n {Name}",
+              "text-field": "Punkt zbiórki charytatywnej \n {name}",
               "text-offset": [
                   0,
                   3.5
