@@ -47,6 +47,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: pip install -r requirements.txt --upgrade pip awscli
+      - name: Download OSM data
+        run: python download_data.py
       - name: Generate from templates
         run: python generate_sites.py
       - name: Deploy site with aws s3
