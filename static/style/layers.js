@@ -14,6 +14,16 @@ export default {
         "paint": {"raster-fade-duration": 100},
         "attribution": "data © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
       },
+      "ukrainianTiles": {
+        "type": "raster",
+        "tiles": [
+          "https://d3d6y4q08jt7an.cloudfront.net/hot/{z}/{x}/{y}.png"
+        ],
+        "tileSize": 256,
+        "maxzoom": 19,
+        "paint": {"raster-fade-duration": 100},
+        "attribution": "data © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
+      },
       "mediaWikiTiles": {
         "type": "raster",
         "tiles": ["https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png?lang=uk"],
@@ -46,7 +56,7 @@ export default {
                 "uk": "OSM Carto"
             }
         },
-        "source": "osmTiles",
+        "source": "ukrainianTiles",
         "layout": {
             "visibility": "visible"
         }
