@@ -22,12 +22,6 @@ export default {
         "paint": {"raster-fade-duration": 100},
         "attribution": "map: <a target=\"_top\" rel=\"noopener\" href=\"https://foundation.wikimedia.org/wiki/Maps_Terms_of_Use\">WikiMedia</a>; data: © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
       },
-      "custom": {
-        "type": "geojson",
-        "data": "../static/custom.geojson",
-        "maxzoom": 12,
-        "generateId": true
-      },
       "osmData": {
         "type": "geojson",
         "data": "../data/osm_data.geojson",
