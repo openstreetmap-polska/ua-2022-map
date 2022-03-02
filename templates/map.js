@@ -114,8 +114,7 @@ map.on('load', () => {
         map.setLayoutProperty("charityDropOffLabels", 'text-field', `{{strings.charity_drop_off_singular[lang]}} \n {name}`)
     })(LANG);
     (function setBackgroudLayerOnInit(lang) {
-        console.log('~ lang', lang);
-        const id = lang === 'uk' ? 'background' : 'osmTiles';
+        const id = lang === 'uk' ? 'osmTilesUk' : 'osmTiles';
         toggleLayer(id)
         document.querySelector(`[data-layer-id='${id}']`).checked = true
     })(LANG);
@@ -181,15 +180,12 @@ function renderBasicPopup(lonlat, properties) {
 }
 
 function toggleLayer(layerId) {
-    console.log('~ layerId', layerId);
     const currentState = layersVisibilityState[layerId];
-    console.log('~ currentState', currentState);
     const newState = currentState ? 'none' : 'visible';
     layersDefinitions[layerId].layers.forEach(layer => {
         map.setLayoutProperty(layer.id, 'visibility', newState)
     });
     layersVisibilityState[layerId] = !currentState;
-    console.log('~ layersVisibilityState', layersVisibilityState);
 }
 
 function toggleSidebar() {

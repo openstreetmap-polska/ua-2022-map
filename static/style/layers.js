@@ -14,7 +14,7 @@ export default {
         "paint": {"raster-fade-duration": 100},
         "attribution": "data © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
       },
-      "ukrainianTiles": {
+      "osmTilesUk": {
         "type": "raster",
         "tiles": [
           "https://dopomoha.pl/hot/{z}/{x}/{y}.png"
@@ -62,17 +62,17 @@ export default {
         }
         },
       {
-        "id": "background",
+        "id": "osmTilesUk",
         "type": "raster",
         "metadata": {
-            "group": "background",
+            "group": "osmTilesUk",
             "name": {
                 "pl": "OSM Carto - język ukraiński",
                 "en": "OSM Carto - ukrainian language",
                 "uk": "OSM Carto - українська мова"
             }
         },
-        "source": "ukrainianTiles",
+        "source": "osmTilesUk",
         "layout": {
             "visibility": "none"
         }
