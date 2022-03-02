@@ -7,26 +7,62 @@ const LANG = '{{lang}}'
 // we need to use url_for so flask freeze will include the file in build
 const dummyVariable = "{{ url_for('static', filename='style/layers.js') }}";
 
+function loadLayersVisibilitySave() {
+
+    let state;
+    if (typeof localStorage !== 'undefined') {
+
+        state = localStorage.getItem('layers');
+        if (state) try {
+
+            state = JSON.parse(state);
+
+        } catch (e) { console.warn(e) }
+    }
+
+    if(!state)
+        return {};
+
+    return state;
+}
+
 function getLayersState(layers, lang) {
-    const layersDefinitions = {};
-    const layersVisibilityState = {};
+
+    const definitions = {};
+    const visibilities = loadLayersVisibilitySave();
+
     layers.forEach(layer => {
+
         const { group } = layer.metadata;
         const { visibility } = layer.layout;
-        if(!layersDefinitions[group]) {
-            layersVisibilityState[group] = visibility === 'visible';
+
+        if (visibilities.hasOwnProperty(group)) {
+
+            layer.layout.visibility = (visibilities[group] ? 'visible' : 'none');
+
+        } else if (!definitions[group]) {
+            // takes state from definitions when not present
+            visibilities[group] = (visibility === 'visible');
         }
-        if(layersDefinitions[group]) {
-            layersDefinitions[group].layers.push(layer);
-            return
-        }
-        layersDefinitions[group] = {
-            layers: [layer],
-            id: group,
-            name: layer.metadata.name[lang],
+
+        if (definitions[group]) {
+
+            definitions[group].layers.push(layer);
+
+        } else {
+
+            definitions[group] = {
+                layers: [layer],
+                id: group,
+                name: layer.metadata.name[lang],
+            }
         }
     });
-    return {layersDefinitions, layersVisibilityState};
+
+    return {
+        layersDefinitions: definitions,
+        layersVisibilityState: visibilities
+    };
 }
 
 const layersColoursDict = {
@@ -234,6 +270,9 @@ function toggleLayer(layerId) {
         map.setLayoutProperty(layer.id, 'visibility', newState)
     });
     layersVisibilityState[layerId] = !currentState;
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('layers', JSON.stringify(layersVisibilityState));
+    }
 }
 
 function toggleSidebar() {
