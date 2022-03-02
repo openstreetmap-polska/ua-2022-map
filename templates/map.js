@@ -46,10 +46,47 @@ const layersArray = Object.keys(layersDefinitions).map(id => layersDefinitions[i
 
 const sidebarDivId = 'sidebar-div';
 
+function loadCenter() {
+
+    let center;
+    if (typeof localStorage !== 'undefined') {
+
+        center = localStorage.getItem("center");
+        if (center) try {
+
+            center = JSON.parse(center);
+
+        } catch (e) { console.warn(e) }
+    }
+
+    if (!center || !center.lng || typeof center.lng !== 'number' || !center.lat || typeof center.lat !== 'number')
+        return { lng: 24.055, lat: 50.538 };
+
+    return center;
+}
+
+function loadZoom() {
+
+    let zoom;
+    if (typeof localStorage !== 'undefined') {
+
+        zoom = localStorage.getItem("zoom");
+        if (zoom) {
+
+            zoom = parseFloat(zoom);
+        }
+    }
+
+    if (!zoom || typeof zoom !== 'number')
+        return 7;
+
+    return zoom;
+}
+
 const map = new maplibregl.Map({
     container: 'map', // container id
-    center: [24.055, 50.538], // starting position [lng, lat]
-    zoom: 7, // starting zoom
+    center: loadCenter(), // starting position [lng, lat]
+    zoom: loadZoom(), // starting zoom
     maxZoom: 19, // max zoom to allow
     maxPitch: 0,
     dragRotate: false,
@@ -115,6 +152,21 @@ map.on('load', () => {
 
     })(LANG);
 })
+
+// saves showed geolocation in local storage
+if (typeof localStorage !== 'undefined') {
+
+    const saveCenter = (() => localStorage.setItem("center", JSON.stringify(map.getCenter())));
+    const saveZoom = (() => localStorage.setItem("zoom", map.getZoom()));
+
+    // map.on('dragstart', saveCenter);
+    map.on('drag', saveCenter);
+    // map.on('dragend', saveCenter);
+
+    // map.on('zoomstart', saveZoom);
+    map.on('zoom', saveZoom);
+    // map.on('zoomend', saveZoom);
+}
 
 function renderPopupRouteLink(text, href, hideOnDesktop) {
     return `<div class="p-1">
