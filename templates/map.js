@@ -2,6 +2,18 @@ import layers from '../static/style/layers.js'
 
 const controlsLocation = 'bottom-right';
 
+const layersColoursDict = {
+    background: '',
+    helpPoints: '#ffd500',
+    informationPoints: '#ffee00',
+    bloodDonation: '#990000',
+    socialFacilities: '#00d5ff',
+    pharmacies: '#880044',
+    hospitals: '#ff1111',
+    diplomatic: '#446688',
+    charityDropOff: '#11ee11',
+}
+
 const LANG = '{{lang}}'
 
 // we need to use url_for so flask freeze will include the file in build
@@ -29,19 +41,7 @@ function getLayersState(layers, lang) {
     return {layersDefinitions, layersVisibilityState};
 }
 
-const layersColoursDict = {
-    background: '',
-    helpPoints: '#ffd500',
-    informationPoints: '#ffee00',
-    bloodDonation: '#990000',
-    socialFacilities: '#00d5ff',
-    pharmacies: '#880044',
-    hospitals: '#ff1111',
-    diplomatic: '#446688',
-    charityDropOff: '#11ee11',
-}
-
-const {layersDefinitions, layersVisibilityState} = getLayersState(layers.layers, LANG);
+const { layersDefinitions, layersVisibilityState } = getLayersState(layers.layers, LANG);
 const layersArray = Object.keys(layersDefinitions).map(id => layersDefinitions[id]);
 
 const sidebarDivId = 'sidebar-div';
@@ -112,7 +112,12 @@ map.on('load', () => {
     })(LANG);
     (function setCharityDropoffPointLabel(lang) {
         map.setLayoutProperty("charityDropOffLabels", 'text-field', `{{strings.charity_drop_off_singular[lang]}} \n {name}`)
-
+    })(LANG);
+    (function setBackgroudLayerOnInit(lang) {
+        console.log('~ lang', lang);
+        const id = lang === 'uk' ? 'background' : 'osmTiles';
+        toggleLayer(id)
+        document.querySelector(`[data-layer-id='${id}']`).checked = true
     })(LANG);
 })
 
@@ -176,12 +181,15 @@ function renderBasicPopup(lonlat, properties) {
 }
 
 function toggleLayer(layerId) {
+    console.log('~ layerId', layerId);
     const currentState = layersVisibilityState[layerId];
+    console.log('~ currentState', currentState);
     const newState = currentState ? 'none' : 'visible';
     layersDefinitions[layerId].layers.forEach(layer => {
         map.setLayoutProperty(layer.id, 'visibility', newState)
     });
     layersVisibilityState[layerId] = !currentState;
+    console.log('~ layersVisibilityState', layersVisibilityState);
 }
 
 function toggleSidebar() {

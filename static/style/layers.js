@@ -45,20 +45,36 @@ export default {
     },
     "glyphs": "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
     "layers": [
-      {
-        "id": "background",
+    {
+        "id": "osmTiles",
         "type": "raster",
         "metadata": {
-            "group": "background",
+            "group": "osmTiles",
             "name": {
                 "pl": "OSM Carto",
                 "en": "OSM Carto",
                 "uk": "OSM Carto"
             }
         },
+        "source": "osmTiles",
+        "layout": {
+            "visibility": "none"
+        }
+        },
+      {
+        "id": "background",
+        "type": "raster",
+        "metadata": {
+            "group": "background",
+            "name": {
+                "pl": "OSM Carto - język ukraiński",
+                "en": "OSM Carto - ukrainian language",
+                "uk": "OSM Carto - українська мова"
+            }
+        },
         "source": "ukrainianTiles",
         "layout": {
-            "visibility": "visible"
+            "visibility": "none"
         }
       },
       {
