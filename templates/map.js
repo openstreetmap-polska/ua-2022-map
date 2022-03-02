@@ -187,6 +187,9 @@ map.on('load', () => {
         map.setLayoutProperty("charityDropOffLabels", 'text-field', `{{strings.charity_drop_off_singular[lang]}} \n {name}`)
     })(LANG);
     (function setBackgroudLayerOnInit(lang) {
+        if(localStorage && localStorage.getItem('layers')) {
+            return
+        }
         const id = lang === 'uk' ? 'osmTilesUk' : 'osmTiles';
         toggleLayer(id)
         document.querySelector(`[data-layer-id='${id}']`).checked = true
