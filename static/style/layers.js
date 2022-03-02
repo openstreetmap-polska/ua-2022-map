@@ -171,7 +171,7 @@ export default {
                   "get",
                   "information:for"
               ],
-              "refugees"
+              "refugee"
           ],
           "layout": {
               "visibility": "visible"
@@ -202,7 +202,7 @@ export default {
                   "get",
                   "information:for"
               ],
-              "refugees"
+              "refugee"
           ],
           "layout": {
               "text-field": "{name:pl}",
@@ -328,7 +328,7 @@ export default {
                       "get",
                       "social_facility:for"
                   ],
-                  "refugees"
+                  "refugee"
               ]
           ],
           "layout": {
@@ -377,7 +377,7 @@ export default {
                       "get",
                       "social_facility:for"
                   ],
-                  "refugees"
+                  "refugee"
               ]
           ],
           "layout": {
