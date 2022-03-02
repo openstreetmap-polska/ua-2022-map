@@ -31,10 +31,10 @@ area(id:3600071064)->.ukra2;
   nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.ukra2);
   nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.slov);
 
-  nwr["social_facility:for"~"refugees"](area.pol); 
-  nwr["social_facility:for"~"refugees"](area.ukra1);
-  nwr["social_facility:for"~"refugees"](area.ukra2);
-  nwr["social_facility:for"~"refugees"](area.slov);
+  nwr["social_facility:for"~"refugee"](area.pol); 
+  nwr["social_facility:for"~"refugee"](area.ukra1);
+  nwr["social_facility:for"~"refugee"](area.ukra2);
+  nwr["social_facility:for"~"refugee"](area.slov);
 
   nwr[building=train_station](area.wojLub);
   nwr[building=train_station](area.wojPodk);
