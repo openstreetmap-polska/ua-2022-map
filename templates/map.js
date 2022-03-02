@@ -19,26 +19,62 @@ const LANG = '{{lang}}'
 // we need to use url_for so flask freeze will include the file in build
 const dummyVariable = "{{ url_for('static', filename='style/layers.js') }}";
 
+function loadLayersVisibilitySave() {
+
+    let state;
+    if (typeof localStorage !== 'undefined') {
+
+        state = localStorage.getItem('layers');
+        if (state) try {
+
+            state = JSON.parse(state);
+
+        } catch (e) { console.warn(e) }
+    }
+
+    if(!state)
+        return {};
+
+    return state;
+}
+
 function getLayersState(layers, lang) {
-    const layersDefinitions = {};
-    const layersVisibilityState = {};
+
+    const definitions = {};
+    const visibilities = loadLayersVisibilitySave();
+
     layers.forEach(layer => {
+
         const { group } = layer.metadata;
         const { visibility } = layer.layout;
-        if(!layersDefinitions[group]) {
-            layersVisibilityState[group] = visibility === 'visible';
+
+        if (visibilities.hasOwnProperty(group)) {
+
+            layer.layout.visibility = (visibilities[group] ? 'visible' : 'none');
+
+        } else if (!definitions[group]) {
+            // takes state from definitions when not present
+            visibilities[group] = (visibility === 'visible');
         }
-        if(layersDefinitions[group]) {
-            layersDefinitions[group].layers.push(layer);
-            return
-        }
-        layersDefinitions[group] = {
-            layers: [layer],
-            id: group,
-            name: layer.metadata.name[lang],
+
+        if (definitions[group]) {
+
+            definitions[group].layers.push(layer);
+
+        } else {
+
+            definitions[group] = {
+                layers: [layer],
+                id: group,
+                name: layer.metadata.name[lang],
+            }
         }
     });
-    return {layersDefinitions, layersVisibilityState};
+
+    return {
+        layersDefinitions: definitions,
+        layersVisibilityState: visibilities
+    };
 }
 
 const { layersDefinitions, layersVisibilityState } = getLayersState(layers.layers, LANG);
@@ -46,10 +82,47 @@ const layersArray = Object.keys(layersDefinitions).map(id => layersDefinitions[i
 
 const sidebarDivId = 'sidebar-div';
 
+function loadCenter() {
+
+    let center;
+    if (typeof localStorage !== 'undefined') {
+
+        center = localStorage.getItem("center");
+        if (center) try {
+
+            center = JSON.parse(center);
+
+        } catch (e) { console.warn(e) }
+    }
+
+    if (!center || !center.lng || typeof center.lng !== 'number' || !center.lat || typeof center.lat !== 'number')
+        return { lng: 24.055, lat: 50.538 };
+
+    return center;
+}
+
+function loadZoom() {
+
+    let zoom;
+    if (typeof localStorage !== 'undefined') {
+
+        zoom = localStorage.getItem("zoom");
+        if (zoom) {
+
+            zoom = parseFloat(zoom);
+        }
+    }
+
+    if (!zoom || typeof zoom !== 'number')
+        return 7;
+
+    return zoom;
+}
+
 const map = new maplibregl.Map({
     container: 'map', // container id
-    center: [24.055, 50.538], // starting position [lng, lat]
-    zoom: 7, // starting zoom
+    center: loadCenter(), // starting position [lng, lat]
+    zoom: loadZoom(), // starting zoom
     maxZoom: 19, // max zoom to allow
     maxPitch: 0,
     dragRotate: false,
@@ -120,6 +193,21 @@ map.on('load', () => {
     })(LANG);
 })
 
+// saves showed geolocation in local storage
+if (typeof localStorage !== 'undefined') {
+
+    const saveCenter = (() => localStorage.setItem("center", JSON.stringify(map.getCenter())));
+    const saveZoom = (() => localStorage.setItem("zoom", map.getZoom()));
+
+    // map.on('dragstart', saveCenter);
+    map.on('drag', saveCenter);
+    // map.on('dragend', saveCenter);
+
+    // map.on('zoomstart', saveZoom);
+    map.on('zoom', saveZoom);
+    // map.on('zoomend', saveZoom);
+}
+
 function renderPopupRouteLink(text, href, hideOnDesktop) {
     return `<div class="p-1">
         <a target="_blank" rel="noopener" class="button p-1 is-fullwidth is-link ${hideOnDesktop ? 'is-hidden-desktop' : ''}"
@@ -186,6 +274,9 @@ function toggleLayer(layerId) {
         map.setLayoutProperty(layer.id, 'visibility', newState)
     });
     layersVisibilityState[layerId] = !currentState;
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('layers', JSON.stringify(layersVisibilityState));
+    }
 }
 
 function toggleSidebar() {
