@@ -25,6 +25,7 @@ area(id:3600014296)->.slov;
 area(id:3600060199)->.ukra;
 area(id:3600072380)->.ukra1;
 area(id:3600071064)->.ukra2;
+area(id:3600090689)->.rom;
 (
   nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.pol); 
   nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.ukra1);
@@ -61,6 +62,7 @@ area(id:3600071064)->.ukra2;
 
   nwr["information:for"="refugee"](area.pol);
   nwr["information:for"="refugee"](area.ukra);
+  nwr["information:for"="refugee"](area.rom);
 );
 out center body qt;
 """
