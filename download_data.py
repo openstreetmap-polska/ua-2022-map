@@ -36,7 +36,8 @@ area(id:3600090689)->.rom;
   nwr["social_facility:for"~"refugee"](area.ukra1);
   nwr["social_facility:for"~"refugee"](area.ukra2);
   nwr["social_facility:for"~"refugee"](area.slov);
-
+  nwr["social_facility:for"~"refugee"](area.rom);
+  
   nwr[building=train_station](area.wojLub);
   nwr[building=train_station](area.wojPodk);
 
