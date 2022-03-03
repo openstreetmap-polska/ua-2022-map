@@ -257,7 +257,7 @@ function renderPhoneNumber(properties) {
 
 function renderBasicPopup(lonlat, properties) {
     const renderGeoUri = !/^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-    const popupHTML = `
+    let popupHTML = `
         ${renderName(properties, LANG)}
         ${renderPopupRouteLink(`OpenStreetMap {{ strings.navigation[lang] }}`, `https://www.openstreetmap.org/directions?from=&to=${lonlat[1]}%2C${lonlat[0]}#map=14/${lonlat[1]}/${lonlat[0]}`)}
         ${renderPopupRouteLink(`Google Maps {{ strings.navigation[lang] }}`, `https://www.google.com/maps/dir/?api=1&destination=${lonlat[1]}%2C${lonlat[0]}`)}
