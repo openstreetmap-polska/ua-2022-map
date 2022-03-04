@@ -17,7 +17,7 @@ logger.setLevel(logging.INFO)
 overpass_api_url = "https://lz4.overpass-api.de/api/interpreter"
 
 overpass_query = """
-    [out:json][timeout:400];
+    [out:json][timeout:420];
     area(id:3600130919)->.wojLub;
     area(id:3600130957)->.wojPodk;
     area(id:3600049715)->.pol;
@@ -59,12 +59,7 @@ overpass_query = """
     nwr[amenity=hospital](area.ukra1);
     nwr[amenity=hospital](area.ukra2);
 
-    nwr["office"="diplomatic"]["country"="UA"](area.pol);
-    nwr["office"="diplomatic"]["country"="UA"](area.slov);
-    nwr["office"="diplomatic"]["country"="UA"](area.bul);
-    nwr["office"="diplomatic"]["country"="UA"](area.rom);
-    nwr["office"="diplomatic"]["country"="UA"](area.mol);
-    nwr["office"="diplomatic"]["country"="UA"](area.hun);
+    nwr["office"="diplomatic"]["country"="UA"](34.741612,-13.5351,71.016960,38.320313);
 
     nwr["healthcare"="blood_donation"](area.pol);
     nwr["healthcare"="blood_donation"](area.ukra1);
