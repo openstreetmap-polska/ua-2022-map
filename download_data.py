@@ -17,53 +17,55 @@ logger.setLevel(logging.INFO)
 overpass_api_url = "https://lz4.overpass-api.de/api/interpreter"
 
 overpass_query = """
-[out:json][timeout:400];
-area(id:3600130919)->.wojLub;
-area(id:3600130957)->.wojPodk;
-area(id:3600049715)->.pol;
-area(id:3600014296)->.slov;
-area(id:3600060199)->.ukra;
-area(id:3600072380)->.ukra1;
-area(id:3600071064)->.ukra2;
-area(id:3600090689)->.rom;
-(
-  nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.pol); 
-  nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.ukra1);
-  nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.ukra2);
-  nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.slov);
+    [out:json][timeout:400];
+    area(id:3600130919)->.wojLub;
+    area(id:3600130957)->.wojPodk;
+    area(id:3600049715)->.pol;
+    area(id:3600014296)->.slov;
+    area(id:3600060199)->.ukra;
+    area(id:3600072380)->.ukra1;
+    area(id:3600071064)->.ukra2;
+    area(id:3600090689)->.rom;
+    area(id:3600186382)->.bul;
+    (
+    nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.pol); 
+    nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.ukra1);
+    nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.ukra2);
+    nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.slov);
 
-  nwr["social_facility:for"~"refugee"](area.pol); 
-  nwr["social_facility:for"~"refugee"](area.ukra1);
-  nwr["social_facility:for"~"refugee"](area.ukra2);
-  nwr["social_facility:for"~"refugee"](area.slov);
-  nwr["social_facility:for"~"refugee"](area.rom);
-  
-  nwr[building=train_station](area.wojLub);
-  nwr[building=train_station](area.wojPodk);
+    nwr["social_facility:for"~"refugee"](area.pol); 
+    nwr["social_facility:for"~"refugee"](area.ukra1);
+    nwr["social_facility:for"~"refugee"](area.ukra2);
+    nwr["social_facility:for"~"refugee"](area.slov);
+    nwr["social_facility:for"~"refugee"](area.rom);
+    nwr["social_facility:for"~"refugee"](area.bul);
+    
+    nwr[building=train_station](area.wojLub);
+    nwr[building=train_station](area.wojPodk);
 
-  nwr[amenity=bus_station](area.wojLub);
-  nwr[amenity=bus_station](area.wojPodk);
+    nwr[amenity=bus_station](area.wojLub);
+    nwr[amenity=bus_station](area.wojPodk);
 
-  nwr[amenity=pharmacy](area.wojLub);
-  nwr[amenity=pharmacy](area.wojPodk);
-  nwr[amenity=pharmacy](area.ukra1);
-  nwr[amenity=pharmacy](area.ukra2);
+    nwr[amenity=pharmacy](area.wojLub);
+    nwr[amenity=pharmacy](area.wojPodk);
+    nwr[amenity=pharmacy](area.ukra1);
+    nwr[amenity=pharmacy](area.ukra2);
 
-  nwr[amenity=hospital](area.wojLub);
-  nwr[amenity=hospital](area.wojPodk);
-  nwr[amenity=hospital](area.ukra1);
-  nwr[amenity=hospital](area.ukra2);
+    nwr[amenity=hospital](area.wojLub);
+    nwr[amenity=hospital](area.wojPodk);
+    nwr[amenity=hospital](area.ukra1);
+    nwr[amenity=hospital](area.ukra2);
 
-  nwr["office"="diplomatic"]["country"="UA"](area.pol);
-  nwr["office"="diplomatic"]["country"="UA"](area.ukra);
+    nwr["office"="diplomatic"]["country"="UA"](area.pol);
+    nwr["office"="diplomatic"]["country"="UA"](area.ukra);
 
-  nwr["healthcare"="blood_donation"](area.pol);
-  nwr["healthcare"="blood_donation"](area.ukra1);
-  nwr["healthcare"="blood_donation"](area.ukra2);
+    nwr["healthcare"="blood_donation"](area.pol);
+    nwr["healthcare"="blood_donation"](area.ukra1);
+    nwr["healthcare"="blood_donation"](area.ukra2);
 
-  nwr["information:for"="refugee"](area.pol);
-  nwr["information:for"="refugee"](area.ukra);
-  nwr["information:for"="refugee"](area.rom);
+    nwr["information:for"="refugee"](area.pol);
+    nwr["information:for"="refugee"](area.ukra);
+    nwr["information:for"="refugee"](area.rom);
 );
 out center body qt;
 """
