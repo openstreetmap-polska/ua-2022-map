@@ -646,7 +646,7 @@ export default {
           },
           "source": "charityDropOff",
           "layout": {
-              "visibility": "visible"
+              "visibility": "none"
           },
           "paint": {
               "circle-color": "#11ee11",
@@ -679,7 +679,7 @@ export default {
                   "Open Sans Bold"
               ],
               "text-letter-spacing": 0.05,
-              "visibility": "visible"
+              "visibility": "none"
           },
           "paint": {
               "text-color": "#050505",
