@@ -27,6 +27,9 @@ overpass_query = """
     area(id:3600071064)->.ukra2;
     area(id:3600090689)->.rom;
     area(id:3600186382)->.bul;
+    area(id:3600058974)->.mol;
+    area(id:3600021335)->.hun; 
+    
     (
     nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.pol); 
     nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.ukra1);
@@ -57,7 +60,11 @@ overpass_query = """
     nwr[amenity=hospital](area.ukra2);
 
     nwr["office"="diplomatic"]["country"="UA"](area.pol);
-    nwr["office"="diplomatic"]["country"="UA"](area.ukra);
+    nwr["office"="diplomatic"]["country"="UA"](area.slov);
+    nwr["office"="diplomatic"]["country"="UA"](area.bul);
+    nwr["office"="diplomatic"]["country"="UA"](area.rom);
+    nwr["office"="diplomatic"]["country"="UA"](area.mol);
+    nwr["office"="diplomatic"]["country"="UA"](area.hun);
 
     nwr["healthcare"="blood_donation"](area.pol);
     nwr["healthcare"="blood_donation"](area.ukra1);
