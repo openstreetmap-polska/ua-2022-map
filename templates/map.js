@@ -16,6 +16,9 @@ const layersColoursDict = {
 
 const LANG = '{{lang}}'
 
+// change this with updates to layer visibility in style to reset settings set by users locally
+const localStorageLayersItemId = 'layers-v2';
+
 // we need to use url_for so flask freeze will include the file in build
 const dummyVariable = "{{ url_for('static', filename='style/layers.js') }}";
 
@@ -24,7 +27,7 @@ function loadLayersVisibilitySave() {
     let state;
     if (typeof localStorage !== 'undefined') {
 
-        state = localStorage.getItem('layers');
+        state = localStorage.getItem(localStorageLayersItemId);
         if (state) try {
 
             state = JSON.parse(state);
@@ -242,7 +245,7 @@ map.on('load', () => {
         map.setLayoutProperty("charityDropOffLabels", 'text-field', `{{strings.charity_drop_off_singular[lang]}} \n {name}`)
     })(LANG);
     (function setBackgroudLayerOnInit(lang) {
-        if(localStorage && localStorage.getItem('layers')) {
+        if(localStorage && localStorage.getItem(localStorageLayersItemId)) {
             return
         }
         const id = lang === 'uk' ? 'osmTilesUk' : 'osmTiles';
@@ -333,7 +336,7 @@ function toggleLayer(layerId) {
     });
     layersVisibilityState[layerId] = !currentState;
     if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('layers', JSON.stringify(layersVisibilityState));
+        localStorage.setItem(localStorageLayersItemId, JSON.stringify(layersVisibilityState));
     }
 }
 
