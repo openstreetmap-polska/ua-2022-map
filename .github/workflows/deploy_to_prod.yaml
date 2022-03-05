@@ -33,7 +33,7 @@ jobs:
           rsync --verbose -e "ssh -p ${{ secrets.SSH_HOST_PORT }}" ./download_data.py ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_IP }}:/opt/scripts/download_data.py
       - name: Run download script
         run: |
-          ssh -t -p ${{ secrets.SSH_HOST_PORT }} -l ${{ secrets.SSH_USER }} ${{ secrets.SSH_HOST_IP }} /home/${{ secrets.SSH_USER }}/venv/bin/python /opt/scripts/download_data.py /var/www/data/ >> /opt/scripts/download_data.log 2>&1 &
+          ssh -t -p ${{ secrets.SSH_HOST_PORT }} -l ${{ secrets.SSH_USER }} ${{ secrets.SSH_HOST_IP }} "/home/${{ secrets.SSH_USER }}/venv/bin/python /opt/scripts/download_data.py /var/www/data/ >> /opt/scripts/download_data.log 2>&1 &"
       - name: Deploy site with rsync
         run: |
           rsync --verbose --recursive --delete --exclude "data" -e "ssh -p ${{ secrets.SSH_HOST_PORT }}" \
