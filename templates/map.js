@@ -303,7 +303,7 @@ function renderDescription(properties, lang) {
 }
 
 function renderPhoneNumber(properties) {
-    let phone = properties['phone'] || properties['contact:phone'];
+    const phone = properties['phone'];
     if (phone) {
         return `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong><a href="tel:${phone}">${phone}</a></strong></p>`
     }

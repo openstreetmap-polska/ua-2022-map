@@ -29,20 +29,20 @@ overpass_query = """
     area(id:3600186382)->.bul;
     area(id:3600058974)->.mol;
     area(id:3600021335)->.hun; 
-    
+
     (
-    nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.pol); 
+    nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.pol);
     nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.ukra1);
     nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.ukra2);
     nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.slov);
 
-    nwr["social_facility:for"~"refugee"](area.pol); 
+    nwr["social_facility:for"~"refugee"](area.pol);
     nwr["social_facility:for"~"refugee"](area.ukra1);
     nwr["social_facility:for"~"refugee"](area.ukra2);
     nwr["social_facility:for"~"refugee"](area.slov);
     nwr["social_facility:for"~"refugee"](area.rom);
     nwr["social_facility:for"~"refugee"](area.bul);
-    
+        
     nwr[building=train_station](area.wojLub);
     nwr[building=train_station](area.wojPodk);
 
@@ -97,11 +97,17 @@ def coalesce(*args) -> str:
     return ""
 
 
-def keep_tag(tag: str) -> bool:
+def concatenate_tags(*tags, separator: str = ";") -> str:
+    non_none_tags = list(filter(None, tags))
+    return separator.join(non_none_tags)
+
+
+def keep_key(tag: str) -> bool:
     tags_to_ignore = (
         re.compile("^name.*"),
         re.compile("^source$"),
         re.compile("^ref.*"),
+        re.compile("^.*phone$")
     )
     for pattern in tags_to_ignore:
         if pattern.match(tag):
@@ -112,10 +118,12 @@ def keep_tag(tag: str) -> bool:
 def process_feature_properties(properties: dict) -> dict:
 
     p = properties["tags"]
-    results = {k: v for k, v in p.items() if keep_tag(k)}
+    results = {key: tag for key, tag in p.items() if keep_key(key)}
     results["name:pl"] = coalesce(p.get("name:pl"), p.get("name"))
     results["name:uk"] = coalesce(p.get("name:uk"), p.get("name:ua"), p.get("name"))
     results["name:en"] = coalesce(p.get("name:en"), p.get("name"))
+
+    results["phone"] = concatenate_tags(p.get("phone"), p.get("contact:phone"), separator=";")
 
     return results
 
