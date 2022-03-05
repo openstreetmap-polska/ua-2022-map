@@ -305,8 +305,8 @@ function renderDescription(properties, lang) {
 function renderPhoneNumber(properties) {
     const phone = properties['phone'];
     if (phone) {
-        phone = phone.split(';').map(number => `<a href="tel:${number}">${number}</a>`);
-        return `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong>${phone.join(' ')}</strong></p>`;
+        const phones = phone.split(';').map(number => `<a href="tel:${number}">${number}</a>`);
+        return `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong>${phones.join('; ')}</strong></p>`;
     }
     else
     {
