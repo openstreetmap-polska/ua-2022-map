@@ -304,10 +304,10 @@ function renderDescription(properties, lang) {
 
 function renderPhoneNumber(properties) {
     let phone = properties['phone'] || properties['contact:phone']; 
-    const singlePhoneNumber = (phone) => `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong><a href="tel:${phone}"> ${phone} </a></strong></p>`;
+
     if (phone) {
-        let phone_numbers = phone.split(';');
-        return phone_numbers.map(number => singlePhoneNumber(number)).join('<br>');
+        phone = phone.split(';').map(number => `<a href="tel:${number}">${number}</a>`);
+        return `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong>${phone.join(' ')}</strong></p>`;
     }
     else
     {
