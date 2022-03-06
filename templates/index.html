@@ -69,7 +69,7 @@
 
       <div class="navbar-item px-1">
         <a class="active-lang" href="{{ url_for('get_language_index', lang=lang) }}">
-          <img src="{{ url_for('static', filename='img/flags/' + ('ua' if language == 'uk' else language) + '.png') }}" height="26px" width="35px" class="mt-2 lang-img" alt="Selected language">
+          <img src="{{ url_for('static', filename='img/flags/' + ('ua' if lang == 'uk' else lang) + '.png') }}" height="26px" width="35px" class="mt-2 lang-img" alt="Selected language">
         </a>
       </div>
 
