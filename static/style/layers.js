@@ -34,7 +34,7 @@ export default {
       },
       "osmData": {
         "type": "geojson",
-        "data": "../data/osm_data.geojson",
+        "data": "https://dopomoha.pl/data/osm_data.geojson",
         "maxzoom": 12
       },
       "charityDropOff": {
