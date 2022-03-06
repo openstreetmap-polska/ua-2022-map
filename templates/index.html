@@ -29,6 +29,8 @@
   <script defer src="https://openingh.openstreetmap.de/opening_hours.js/opening_hours+deps.min.js"></script>
 
   <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bulma-checkradio@2.1.2/dist/css/bulma-checkradio.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bulma-switch@2.0.4/dist/css/bulma-switch.min.css" rel="stylesheet"/>
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
 
 
@@ -48,6 +50,42 @@
         </svg>
       </a>
 
+      <div class="navbar-item is-hidden-mobile">
+        <div class="field">
+        <label for="switchMode">{{ strings.offer_help[lang] }} &nbsp;</label>
+          <input id="switchMode" type="checkbox" name="switch mode" class="switch is-white is-outlined" checked="checked">
+          <label for="switchMode">&nbsp;{{ strings.need_help[lang] }}</label>
+        </div>
+      </div>
+
+      <div class="navbar-item is-right px-1 is-hidden-desktop">
+        <a class="button is-white is-outlined has-text-weight-light sidebar-button--toggle">
+          <svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M12,16L19.36,10.27L21,9L12,2L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,21.07L21,14.07L19.37,12.8L12,18.54Z" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="navbar-item px-1 is-hidden-desktop">
+        <a class="active-lang" href="{{ url_for('get_language_index', lang=lang) }}">
+          <img src="{{ url_for('static', filename='img/flags/' + ('ua' if lang == 'uk' else lang) + '.png') }}" height="26px" width="35px" class="mt-2 lang-img" alt="Selected language">
+        </a>
+      </div>
+
+      <div class="navbar-item has-dropdown is-hidden-desktop">
+        <a class="navbar-link"></a>
+
+        <div class="navbar-dropdown">
+          {% for language in ('en', 'pl', 'uk') if language != lang %}
+            <div class="navbar-item px-1 is-hidden-desktop">
+              <a class="" href="{{ url_for('get_language_index', lang=language) }}">
+                <img src="{{ url_for('static', filename='img/flags/' + ('ua' if language == 'uk' else language) + '.png') }}" height="26px" width="35px" class="mt-2 lang-img" alt="Language: {{ language.upper() }}">
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
       <a aria-expanded="false" aria-label="menu" class="navbar-burger has-text-white-ter is-transparent"
          data-target="navMenu"
          role="button">
@@ -55,6 +93,7 @@
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
+
     </div>
 
     <div class="navbar-menu has-background-link" id="navMenu">
@@ -68,22 +107,21 @@
 <!--             href="mailto:">{{ strings.need_help[lang] }}</a>-->
 <!--        </div>-->
 
-        <div class="navbar-item px-1">
-          <a class="" href="{{ url_for('get_language_index', lang='uk') }}">
+        <div class="navbar-item px-1 is-hidden-mobile">
+          <a class="{% if lang == 'uk' %}active-lang{% endif %}" href="{{ url_for('get_language_index', lang='uk') }}">
             <img src="{{ url_for('static', filename='img/flags/ua.png') }}" height="26px" width="35px" class="mt-2 lang-img" alt="Ukrainian language">
           </a>
         </div>
 
-
-        <div class="navbar-item px-1">
-          <a class="" href="{{ url_for('get_language_index', lang='pl') }}">
+        <div class="navbar-item px-1 is-hidden-mobile">
+          <a class="{% if lang == 'pl' %}active-lang{% endif %}" href="{{ url_for('get_language_index', lang='pl') }}">
             <img src="{{ url_for('static', filename='img/flags/pl.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="Polish language">
           </a>
         </div>
 
-        <div class="navbar-item px-1">
-          <a class="" href="{{ url_for('get_language_index', lang='en') }}">
-            <img src="{{ url_for('static', filename='img/flags/gb.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="English language">
+        <div class="navbar-item px-1 is-hidden-mobile">
+          <a class="{% if lang == 'en' %}active-lang{% endif %}" href="{{ url_for('get_language_index', lang='en') }}">
+            <img src="{{ url_for('static', filename='img/flags/en.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="English language">
           </a>
         </div>
 
@@ -109,12 +147,12 @@
           </a>
         </div>
 
-        <div class="navbar-item px-1">
+        <div class="navbar-item is-right px-1 is-hidden-touch">
           <a class="button is-white is-outlined has-text-weight-light sidebar-button--toggle">
             <svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24">
               <path fill="currentColor" d="M12,16L19.36,10.27L21,9L12,2L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,21.07L21,14.07L19.37,12.8L12,18.54Z" />
-          </svg>
-        </a>
+            </svg>
+          </a>
         </div>
 
         <div class="navbar-item pb-0 is-white">
@@ -135,7 +173,9 @@
       <div id="sidebar-header">
         <div class="columns is-vcentered is-flex mr-0">
           <div class="column ml-4 my-3">
-            <p class="title has-text-weight-light" id="sidebar-caption">{{ strings.layers[lang] }}</p>
+            <p class="title is-4 has-text-grey has-text-weight-light" id="sidebar-caption"><svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M12,16L19.36,10.27L21,9L12,2L3,9L4.63,10.27M12,18.54L4.62,12.81L3,14.07L12,21.07L21,14.07L19.37,12.8L12,18.54Z" />
+          </svg> {{ strings.layers[lang] }}</p>
           </div>
           <button aria-label="Zamknij ekran boczny"
                   class="delete is-medium is-hidden-touch is-pulled-right close-button mr-2 sidebar-button--toggle"
@@ -146,7 +186,7 @@
         </div>
       </div>
   
-      <div class="card-content pt-1 pb-4">
+      <div class="card-content pl-3 pt-1 pb-4">
         <div class="content" id="sidebar-content-div">
           <div id="legend__wrapper">
           </div>
@@ -154,7 +194,7 @@
       </div>
       
       <footer class="card-footer">
-        <div class="notification is-link is-light is-hidden-mobile has-text-centered py-1 is-size-7" style="width:100%">
+        <div class="notification is-white-bis is-light is-hidden-mobile has-text-centered py-1 is-size-7 has-text-grey" style="width:100%">
            {{ strings.refresh[lang] | safe }}
         </div>
       </footer>

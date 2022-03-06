@@ -14,6 +14,17 @@ const layersColoursDict = {
     charityDropOff: '#11ee11',
 }
 
+const modesSettings = {
+    'forUkrainian': {
+        'layersToDisable': ['charityDropOff'],
+        'layersToEnable': [],
+    },
+    'forPole': {
+        'layersToDisable': [],
+        'layersToEnable': ['charityDropOff'],
+    },
+}
+
 const LANG = '{{lang}}'
 
 // change this with updates to layer visibility in style to reset settings set by users locally
@@ -21,6 +32,35 @@ const localStorageLayersItemId = 'layers-v2';
 
 // we need to use url_for so flask freeze will include the file in build
 const dummyVariable = "{{ url_for('static', filename='style/layers.js') }}";
+
+function toggleMode() {
+    const modes = {
+        'forUkrainian': 'forPole',
+        'forPole': 'forUkrainian',
+    }
+    const newMode = modes[getMode()];
+    const settings = modesSettings[newMode];
+    settings.layersToDisable.forEach(layerGroupId => disableLayer(layerGroupId));
+    settings.layersToEnable.forEach(layerGroupId => enableLayer(layerGroupId));
+    saveMode(newMode);
+}
+
+function getMode() {
+    let mode;
+    if (typeof localStorage !== 'undefined') {
+        mode = localStorage.getItem('mode');
+    }
+
+    if(!mode) {
+        return 'forUkrainian';
+    }
+
+    return mode;
+}
+
+function saveMode(mode) {
+    localStorage.setItem('mode', mode);
+}
 
 function loadLayersVisibilitySave() {
 
@@ -252,6 +292,7 @@ map.on('load', () => {
         toggleLayer(id)
         document.querySelector(`[data-layer-id='${id}']`).checked = true
     })(LANG);
+    document.getElementById('switchMode').onclick = toggleMode;
 })
 
 // saves showed geolocation in local storage
@@ -341,6 +382,28 @@ function toggleLayer(layerId) {
     }
 }
 
+function enableLayer(layerId) {
+    layersDefinitions[layerId].layers.forEach(layer => {
+        map.setLayoutProperty(layer.id, 'visibility', 'visible')
+    });
+    document.querySelector(`[data-layer-id='${layerId}']`).checked = true;
+    layersVisibilityState[layerId] = true;
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(localStorageLayersItemId, JSON.stringify(layersVisibilityState));
+    }
+}
+
+function disableLayer(layerId) {
+    layersDefinitions[layerId].layers.forEach(layer => {
+        map.setLayoutProperty(layer.id, 'visibility', 'none')
+    });
+    document.querySelector(`[data-layer-id='${layerId}']`).checked = false;
+    layersVisibilityState[layerId] = false;
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(localStorageLayersItemId, JSON.stringify(layersVisibilityState));
+    }
+}
+
 function toggleSidebar() {
     let sidebar = document.getElementById(sidebarDivId);
     if (sidebar) {
@@ -401,6 +464,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Functions
+    function getAll(selector) {
+        return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
+    }
+
+    // Dropdowns
+    var $dropdowns = getAll('.has-dropdown:not(.is-hoverable)');
+    console.log($dropdowns.length);
+    if ($dropdowns.length > 0) {
+        $dropdowns.forEach(function ($el) {
+            $el.addEventListener('click', function (event) {
+                event.stopPropagation();
+                $el.classList.toggle('is-active');
+            });
+        });
+
+        document.addEventListener('click', function (event) {
+            closeDropdowns();
+        });
+    }
+
+    function closeDropdowns() {
+        $dropdowns.forEach(function ($el) {
+            $el.classList.remove('is-active');
+        });
+    }
+
+    // Close dropdowns if ESC pressed
+    document.addEventListener('keydown', function (event) {
+        var e = event || window.event;
+        if (e.keyCode === 27) {
+            closeDropdowns();
+        }
+    });
+
     // Render legend
     (function legendIife() {
         const legend = document.getElementById('legend__wrapper');
@@ -421,13 +519,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const legendItem = document.createElement('li');
             legendItem.classList.add('legend__item');
             legendItem.innerHTML = `
-            <label class="checkbox">
-                <input ${visible ? 'checked' : ''} type="checkbox" data-layer-id=${id}>
-                <span class="is-size-6">
-                    <div style="background-color: ${layersColoursDict[id]}; width: 15px; height: 15px; display: inline-block; border-radius: 50%;"></div>
-                    ${displayName}
-                </span>
-            </label>`;
+            <input class="is-checkradio is-info" id="chkbx${id}" type="checkbox" ${visible ? 'checked' : ''} type="checkbox" data-layer-id=${id}>
+            <label for="chkbx${id}"><span class="is-size-6">
+                <div style="background-color: ${layersColoursDict[id]}; width: 15px; height: 15px; display: inline-block; border-radius: 50%;"></div>
+                ${displayName}
+            </span></label>`;
             return legendItem
         }
 
@@ -442,4 +538,14 @@ document.addEventListener('DOMContentLoaded', () => {
         addTogglingListener()
         renderLegend(layersArray)
       })();
+
+      if (getMode() === 'forUkrainian') {
+        document.getElementById('switchMode').checked = true;
+      } else {
+        document.getElementById('switchMode').checked = false;
+      }
+
+      if (window.innerWidth > 1024) {
+        document.getElementById(sidebarDivId).classList.toggle('is-invisible');
+      }
 });
