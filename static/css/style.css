@@ -155,3 +155,7 @@
 {
   border: 1px solid #a1ace2;
 }
+
+a.active-lang {
+    border-bottom:1px solid white;
+}
