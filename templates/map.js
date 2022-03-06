@@ -510,4 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('switchMode').checked = false;
       }
 
+      if (window.innerWidth > 1024) {
+        document.getElementById(sidebarDivId).classList.toggle('is-invisible');
+      }
 });

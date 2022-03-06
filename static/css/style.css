@@ -51,7 +51,8 @@
     .sidebar-right {
       position: relative;
       float: right;
-      right: 40px;
+      right: 50px;
+      top: 48px;
       z-index: 1;
       margin: 0.5rem !important;
       width: 425px;
