@@ -159,3 +159,55 @@
 a.active-lang {
     border-bottom:1px solid white;
 }
+
+.navbar-link:not(.is-arrowless) {
+  padding-right: 2em;
+  height: 40px;
+}
+
+/* https://stackoverflow.com/questions/67163374/how-to-fix-bulma-navbar-dropdown-when-it-is-in-the-navbar-brand-section */
+@media screen and (max-width:1023px) {
+.navbar-brand .navbar-dropdown.is-boxed {
+    border-radius: 6px;
+    border-top: none;
+    box-shadow: 0 8px 8px rgba(10,10,10,.1),0 0 0 1px rgba(10,10,10,.1);
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    top: calc(100% + (-4px));
+    transform: translateY(-5px);
+    transition-duration: 86ms;
+    transition-property: opacity,transform;
+}
+.navbar-brand .navbar-dropdown {
+    background-color: #fff;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top: 2px solid #dbdbdb;
+    box-shadow: 0 8px 8px rgba(10,10,10,.1);
+    display: none;
+    font-size: .875rem;
+    left: 0;
+    min-width: 100%;
+    position: absolute;
+    top: 100%;
+    z-index: 20;
+}
+.navbar.is-spaced .navbar-brand  .navbar-item.is-active .navbar-dropdown,
+.navbar-brand .navbar-item.is-active .navbar-dropdown.is-boxed,
+.navbar.is-spaced .navbar-brand .navbar-item.is-hoverable:focus .navbar-dropdown,
+.navbar-brand .navbar-item.is-hoverable:focus .navbar-dropdown.is-boxed,
+.navbar.is-spaced .navbar-brand .navbar-item.is-hoverable:focus-within .navbar-dropdown,
+.navbar-brand .navbar-item.is-hoverable:focus-within .navbar-dropdown.is-boxed,
+.navbar.is-spaced .navbar-brand .navbar-item.is-hoverable:hover .navbar-dropdown,
+.navbar-brand .navbar-item.is-hoverable:hover .navbar-dropdown.is-boxed {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+.navbar-brand .navbar-item.is-active .navbar-dropdown,
+.navbar-brand .navbar-item.is-hoverable:focus .navbar-dropdown,
+.navbar-brand .navbar-item.is-hoverable:focus-within .navbar-dropdown,
+.navbar-brand .navbar-item.is-hoverable:hover .navbar-dropdown {
+    display: block;
+}

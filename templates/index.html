@@ -67,6 +67,26 @@
         </a>
       </div>
 
+      <div class="navbar-item px-1">
+        <a class="active-lang" href="{{ url_for('get_language_index', lang=lang) }}">
+          <img src="{{ url_for('static', filename='img/flags/' + lang + '.png') }}" height="26px" width="35px" class="mt-2 lang-img" alt="Selected language">
+        </a>
+      </div>
+
+      <div class="navbar-item has-dropdown">
+        <a class="navbar-link"></a>
+
+        <div class="navbar-dropdown">
+          {% for language in ('en', 'pl', 'uk') if language != lang %}
+            <div class="navbar-item px-1 is-hidden-desktop">
+              <a class="" href="{{ url_for('get_language_index', lang=language) }}">
+                <img src="{{ url_for('static', filename='img/flags/' + ('ua' if language == 'uk' else language) + '.png') }}" height="26px" width="35px" class="mt-2 lang-img" alt="Language: {{ language.upper() }}">
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
       <a aria-expanded="false" aria-label="menu" class="navbar-burger has-text-white-ter is-transparent"
          data-target="navMenu"
          role="button">
@@ -88,21 +108,21 @@
 <!--             href="mailto:">{{ strings.need_help[lang] }}</a>-->
 <!--        </div>-->
 
-        <div class="navbar-item px-1">
+        <div class="navbar-item px-1 is-hidden-mobile">
           <a class="{% if lang == 'uk' %}active-lang{% endif %}" href="{{ url_for('get_language_index', lang='uk') }}">
             <img src="{{ url_for('static', filename='img/flags/ua.png') }}" height="26px" width="35px" class="mt-2 lang-img" alt="Ukrainian language">
           </a>
         </div>
 
-        <div class="navbar-item px-1">
+        <div class="navbar-item px-1 is-hidden-mobile">
           <a class="{% if lang == 'pl' %}active-lang{% endif %}" href="{{ url_for('get_language_index', lang='pl') }}">
             <img src="{{ url_for('static', filename='img/flags/pl.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="Polish language">
           </a>
         </div>
 
-        <div class="navbar-item px-1">
+        <div class="navbar-item px-1 is-hidden-mobile">
           <a class="{% if lang == 'en' %}active-lang{% endif %}" href="{{ url_for('get_language_index', lang='en') }}">
-            <img src="{{ url_for('static', filename='img/flags/gb.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="English language">
+            <img src="{{ url_for('static', filename='img/flags/en.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="English language">
           </a>
         </div>
 
