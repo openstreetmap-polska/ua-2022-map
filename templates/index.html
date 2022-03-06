@@ -29,6 +29,8 @@
   <script defer src="https://openingh.openstreetmap.de/opening_hours.js/opening_hours+deps.min.js"></script>
 
   <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bulma-checkradio@2.1.2/dist/css/bulma-checkradio.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bulma-switch@2.0.4/dist/css/bulma-switch.min.css" rel="stylesheet"/>
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
 
 
@@ -48,6 +50,16 @@
         </svg>
       </a>
 
+      <div class="navbar-item is-hidden-mobile">
+        <span class="">{{ strings.offer_help[lang] }}</span>
+        &nbsp;
+        <div class="field">
+          <input id="switchMode" type="checkbox" name="switch mode" class="switch is-white is-outlined" checked="checked">
+          <label for="switchMode">{{ strings.need_help[lang] }}</label>
+        </div>
+      </div>
+
+
       <a aria-expanded="false" aria-label="menu" class="navbar-burger has-text-white-ter is-transparent"
          data-target="navMenu"
          role="button">
@@ -55,6 +67,7 @@
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
+
     </div>
 
     <div class="navbar-menu has-background-link" id="navMenu">
