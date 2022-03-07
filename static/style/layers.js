@@ -58,7 +58,7 @@ export default {
         },
         "source": "osmTiles",
         "layout": {
-            "visibility": "none"
+            "visibility": "visible"
         }
         },
       {

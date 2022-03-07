@@ -285,12 +285,17 @@ map.on('load', () => {
         map.setLayoutProperty("charityDropOffLabels", 'text-field', `{{strings.charity_drop_off_singular[lang]}} \n {name}`)
     })(LANG);
     (function setBackgroudLayerOnInit(lang) {
-        if(localStorage && localStorage.getItem(localStorageLayersItemId)) {
-            return
+        // disabling that for now since i think we want the background to change between language changes
+//        if(localStorage && localStorage.getItem(localStorageLayersItemId)) {
+//            return
+//        }
+        if (lang === 'uk') {
+            enableLayer('osmTilesUk');
+            disableLayer('osmTiles');
+        } else {
+            enableLayer('osmTiles');
+            disableLayer('osmTilesUk');
         }
-        const id = lang === 'uk' ? 'osmTilesUk' : 'osmTiles';
-        toggleLayer(id)
-        document.querySelector(`[data-layer-id='${id}']`).checked = true
     })(LANG);
     document.getElementById('switchMode').onclick = toggleMode;
 })
@@ -471,7 +476,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Dropdowns
     var $dropdowns = getAll('.has-dropdown:not(.is-hoverable)');
-    console.log($dropdowns.length);
     if ($dropdowns.length > 0) {
         $dropdowns.forEach(function ($el) {
             $el.addEventListener('click', function (event) {
