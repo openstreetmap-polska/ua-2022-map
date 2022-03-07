@@ -169,7 +169,7 @@ def split_geojson(geojson: dict) -> Dict[str, dict]:
         "pharmacies": (
             lambda p:
                 True if (
-                        p.get("amenity", "") == "pharmacies"
+                        p.get("amenity", "") == "pharmacy"
                 ) else False
         ),
         "hospitals": (
