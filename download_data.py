@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import logging
-from typing import Union
+from typing import Union, Dict
 import requests
 import json
 import sys
@@ -58,6 +58,7 @@ overpass_query = """
 out center body qt;
 """
 
+
 def query_overpass_api(
     query: str,
     api_url: str = overpass_api_url,
@@ -91,9 +92,10 @@ def concatenate_tags(*tags, separator: str = ";") -> str:
 def keep_key(tag: str) -> bool:
     tags_to_ignore = (
         re.compile("^name.*"),
-        re.compile("^source$"),
+        re.compile("^source.*"),
         re.compile("^ref.*"),
-        re.compile("^.*phone$")
+        re.compile("^.*phone$"),
+        re.compile("^addr:.*"),
     )
     for pattern in tags_to_ignore:
         if pattern.match(tag):
@@ -108,6 +110,14 @@ def process_feature_properties(properties: dict) -> dict:
     results["name:pl"] = coalesce(p.get("name:pl"), p.get("name"))
     results["name:uk"] = coalesce(p.get("name:uk"), p.get("name:ua"), p.get("name"))
     results["name:en"] = coalesce(p.get("name:en"), p.get("name"))
+    results["name:ru"] = coalesce(p.get("name:ru"), p.get("name"))
+
+    if p.get("addr:housenumber"):
+        results["address"] = (
+            coalesce(p.get("addr:city"), p.get("addr:place")) + " " +
+            (p.get("addr:street", "") + " " if p.get("addr:street", "") else "") +
+            p.get("addr:housenumber")
+        )
 
     results["phone"] = concatenate_tags(p.get("phone"), p.get("contact:phone"), separator=";")
 
@@ -128,22 +138,105 @@ def process_geojson(data: dict) -> dict:
     }
 
 
-def main(output_path: Union[str, Path]) -> None:
+def split_geojson(geojson: dict) -> Dict[str, dict]:
+    routers = {
+        "reception_points": (
+            lambda p:
+                True if (
+                    p.get("social_facility", "") == "outreach"
+                    and
+                    p.get("social_facility:for", "") in ("refugee", "refugees")
+                ) else False
+        ),
+        "information_points": (
+            lambda p:
+                True if (
+                    p.get("information:for", "") in ("refugee", "refugees")
+                ) else False
+        ),
+        "blood_donation_points": (
+            lambda p:
+                True if (
+                    p.get("healthcare", "") == "blood_donation"
+                ) else False
+        ),
+        "social_facilities": (
+            lambda p:
+                True if (
+                        p.get("social_facility", "") in ("food_bank", "soup_kitchen")
+                ) else False
+        ),
+        "pharmacies": (
+            lambda p:
+                True if (
+                        p.get("amenity", "") == "pharmacies"
+                ) else False
+        ),
+        "hospitals": (
+            lambda p:
+                True if (
+                        p.get("amenity", "") == "hospital"
+                ) else False
+        ),
+        "consulates": (
+            lambda p:
+                True if (
+                        p.get("office", "") == "diplomatic"
+                        and
+                        p.get("country", "") == "UA"
+                ) else False
+        ),
+        "train_stations": (
+            lambda p:
+                True if (
+                        p.get("building", "") == "train_station"
+                ) else False
+        ),
+        "bus_stations": (
+            lambda p:
+            True if (
+                    p.get("amenity", "") == "bus_station"
+            ) else False
+        ),
+    }
+    results = {}
+
+    logger.info(f"Splitting geojson containing: {len(geojson['features'])} features.")
+    for feature in geojson["features"]:
+        for layer_name, test in routers.items():
+            if test(feature["properties"]):
+                if results.get(layer_name):
+                    results[layer_name]["features"].append(feature)
+                else:
+                    results[layer_name] = {
+                        "type": "FeatureCollection",
+                        "features": [feature],
+                    }
+
+    logger.info(f"Results have {len(results.keys())} layers.")
+    for layer, gj in results.items():
+        logger.info(f"Layer: {layer} with: {len(gj['features'])} features.")
+
+    return results
+
+
+def main(output_dir: Union[str, Path]) -> None:
     data = query_overpass_api(overpass_query)
     geojson_data = json2geojson(data)
     processed_data = process_geojson(geojson_data)
-    save_json(output_path, processed_data)
+    save_json(file_path=output_dir.joinpath('osm_data.geojson'), data=processed_data)
+    layers = split_geojson(processed_data)
+    for name, gj in layers.items():
+        save_json(file_path=output_dir.joinpath(name + '.geojson'), data=gj)
 
 
 if __name__ == "__main__":
-    #print(sys.argv[1])
 
     this_files_dir = Path(__file__).parent.resolve()
     output_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else this_files_dir
-    fp = output_dir.joinpath('osm_data.geojson')
 
     if not output_dir.is_dir():
         logger.error(f'Given path: "{output_dir}" is not a directory.')
-        sys.exit(1) # exit with non-zero error code, see #3
+        sys.exit(1)  # exit with non-zero error code
 
-    main(output_path=fp)
+    main(output_dir=output_dir)
