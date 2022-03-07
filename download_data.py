@@ -31,10 +31,10 @@ overpass_query = """
     nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.pol);
     nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.slov);
 
-    nwr["social_facility:for"~"refugee"](area.pol);
-    nwr["social_facility:for"~"refugee"](area.slov);
-    nwr["social_facility:for"~"refugee"](area.rom);
-    nwr["social_facility:for"~"refugee"](area.bul);
+    nwr["social_facility:for"~"refugee|refugees"](area.pol);
+    nwr["social_facility:for"~"refugee|refugees"](area.slov);
+    nwr["social_facility:for"~"refugee|refugees"](area.rom);
+    nwr["social_facility:for"~"refugee|refugees"](area.bul);
         
     nwr[building=train_station](area.wojLub);
     nwr[building=train_station](area.wojPodk);
@@ -143,8 +143,6 @@ def split_geojson(geojson: dict) -> Dict[str, dict]:
         "reception_points": (
             lambda p:
                 True if (
-                    p.get("social_facility", "") == "outreach"
-                    and
                     p.get("social_facility:for", "") in ("refugee", "refugees")
                 ) else False
         ),
