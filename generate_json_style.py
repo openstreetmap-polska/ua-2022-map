@@ -39,11 +39,12 @@ def main(wd: Path) -> None:
 
 if __name__ == "__main__":
 
-    this_files_dir = Path(__file__).parent.joinpath('static/style/').resolve()
+    this_files_dir = Path(__file__).parent.resolve().joinpath('static/style/').resolve()
     work_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else this_files_dir
 
     if not work_dir.is_dir():
         logger.error(f'Given path: "{work_dir}" is not a directory.')
         sys.exit(1)  # exit with non-zero error code
+    logger.info(f'Work dir is: {work_dir}')
 
     main(wd=work_dir)
