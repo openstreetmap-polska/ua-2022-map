@@ -24,23 +24,55 @@ export default {
         "paint": {"raster-fade-duration": 100},
         "attribution": "data © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
       },
-      "mediaWikiTiles": {
-        "type": "raster",
-        "tiles": ["https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png?lang=uk"],
-        "tileSize": 256,
-        "maxzoom": 19,
-        "paint": {"raster-fade-duration": 100},
-        "attribution": "map: <a target=\"_top\" rel=\"noopener\" href=\"https://foundation.wikimedia.org/wiki/Maps_Terms_of_Use\">WikiMedia</a>; data: © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
-      },
-      "osmData": {
+      "bloodDonationPoints": {
         "type": "geojson",
-        "data": "https://dopomoha.pl/data/osm_data.geojson",
-        "maxzoom": 12
+        "data": "https://dopomoha.pl/data/blood_donation_points.geojson",
+        "cluster": false
+      },
+      "busStations": {
+        "type": "geojson",
+        "data": "https://dopomoha.pl/data/bus_stations.geojson",
+        "cluster": true
+      },
+      "consulates": {
+        "type": "geojson",
+        "data": "https://dopomoha.pl/data/consulates.geojson",
+        "cluster": true
+      },
+      "hospitals": {
+        "type": "geojson",
+        "data": "https://dopomoha.pl/data/hospitals.geojson",
+        "cluster": true
+      },
+      "informationPoints": {
+        "type": "geojson",
+        "data": "https://dopomoha.pl/data/information_points.geojson",
+        "cluster": true
+      },
+      "pharmacies": {
+        "type": "geojson",
+        "data": "https://dopomoha.pl/data/pharmacies.geojson",
+        "cluster": true
+      },
+      "receptionPoints": {
+        "type": "geojson",
+        "data": "https://dopomoha.pl/data/reception_points.geojson",
+        "cluster": true
+      },
+      "socialFacilities": {
+        "type": "geojson",
+        "data": "https://dopomoha.pl/data/social_facilities.geojson",
+        "cluster": true
+      },
+      "trainStations": {
+        "type": "geojson",
+        "data": "https://dopomoha.pl/data/train_stations.geojson",
+        "cluster": true
       },
       "charityDropOff": {
         "type": "geojson",
         "data": "https://dopomoha.pl/data/zbiorki.geojson",
-        "maxzoom": 12
+        "cluster": true
       }
     },
     "sprite": "https://dopomoha.pl/static/style/sprite",
@@ -79,7 +111,7 @@ export default {
         }
       },
       {
-          "id": "helpPointsCircles",
+          "id": "helpPointsClusters",
           "type": "circle",
           "metadata": {
               "group": "helpPoints",
@@ -89,26 +121,8 @@ export default {
                   "uk": "Прийомні пункти"
               }
           },
-          "source": "osmData",
-          "filter": [
-              "all",
-              [
-                  "==",
-                  [
-                      "get",
-                      "social_facility"
-                  ],
-                  "outreach"
-              ],
-              [
-                  "==",
-                  [
-                      "get",
-                      "social_facility:for"
-                  ],
-                  "refugee"
-              ]
-          ],
+          "source": "receptionPoints",
+          "filter": ["has", "point_count"],
           "layout": {
               "visibility": "visible"
           },
@@ -120,7 +134,7 @@ export default {
           }
       },
       {
-          "id": "helpPointsLabels",
+          "id": "helpPointsSymbols",
           "type": "symbol",
           "metadata": {
               "group": "helpPoints",
@@ -130,38 +144,18 @@ export default {
                   "uk": "Прийомні пункти"
               }
           },
-          "source": "osmData",
+          "source": "receptionPoints",
           "minzoom": 5,
-          "filter": [
-              "all",
-              [
-                  "==",
-                  [
-                      "get",
-                      "social_facility"
-                  ],
-                  "outreach"
-              ],
-              [
-                  "==",
-                  [
-                      "get",
-                      "social_facility:for"
-                  ],
-                  "refugee"
-              ]
-          ],
+          "filter": ["!", ["has", "point_count"]],
           "layout": {
-              "text-field": "{name:pl}",
-              "text-offset": [
-                  0,
-                  3
-              ],
+              "text-field": "{name}",
+              "text-offset": [0, 3],
               "text-size": 10,
-              "text-font": [
-                  "Open Sans Bold"
-              ],
+              "text-font": ["Open Sans Bold"],
               "text-letter-spacing": 0.05,
+              "text-allow-overlap": false,
+              "icon-image": "amenity_social_facility",
+              "icon-size": 1,
               "visibility": "visible"
           },
           "paint": {
@@ -171,7 +165,7 @@ export default {
           }
       },
       {
-          "id": "informationPointsCircles",
+          "id": "informationPointsClusters",
           "type": "circle",
           "metadata": {
               "group": "informationPoints",
@@ -181,15 +175,8 @@ export default {
                   "uk": "Інформаційні пункти"
               }
           },
-          "source": "osmData",
-          "filter": [
-              "==",
-              [
-                  "get",
-                  "information:for"
-              ],
-              "refugee"
-          ],
+          "source": "informationPoints",
+          "filter": ["has", "point_count"],
           "layout": {
               "visibility": "visible"
           },
@@ -201,7 +188,7 @@ export default {
           }
       },
       {
-          "id": "informationPointsLabels",
+          "id": "informationPointsSymbols",
           "type": "symbol",
           "metadata": {
               "group": "informationPoints",
@@ -211,18 +198,11 @@ export default {
                   "uk": "Інформаційні пункти"
               }
           },
-          "source": "osmData",
+          "source": "informationPoints",
           "minzoom": 5,
-          "filter": [
-              "==",
-              [
-                  "get",
-                  "information:for"
-              ],
-              "refugee"
-          ],
+          "filter": ["!", ["has", "point_count"]],
           "layout": {
-              "text-field": "{name:pl}",
+              "text-field": "{name}",
               "text-offset": [
                   0,
                   3
@@ -232,6 +212,9 @@ export default {
                   "Open Sans Bold"
               ],
               "text-letter-spacing": 0.05,
+              "text-allow-overlap": false,
+              "icon-image": "place-4",
+              "icon-size": 1,
               "visibility": "visible"
           },
           "paint": {
@@ -241,7 +224,7 @@ export default {
           }
       },
       {
-          "id": "bloodDonationCircles",
+          "id": "bloodDonationClusters",
           "type": "circle",
           "metadata": {
               "group": "bloodDonation",
@@ -251,15 +234,8 @@ export default {
                   "uk": "Пункти здачі крові"
               }
           },
-          "source": "osmData",
-          "filter": [
-              "==",
-              [
-                  "get",
-                  "healthcare"
-              ],
-              "blood_donation"
-          ],
+          "source": "bloodDonationPoints",
+          "filter": ["has", "point_count"],
           "layout": {
               "visibility": "none"
           },
@@ -271,7 +247,7 @@ export default {
           }
       },
       {
-          "id": "bloodDonationLabels",
+          "id": "bloodDonationSymbols",
           "type": "symbol",
           "metadata": {
               "group": "bloodDonation",
@@ -281,18 +257,11 @@ export default {
                   "uk": "Пункти здачі крові"
               }
           },
-          "source": "osmData",
+          "source": "bloodDonationPoints",
           "minzoom": 5,
-          "filter": [
-              "==",
-              [
-                  "get",
-                  "healthcare"
-              ],
-              "blood_donation"
-          ],
+          "filter": ["!", ["has", "point_count"]],
           "layout": {
-              "text-field": "{name:pl}",
+              "text-field": "{name}",
               "text-offset": [
                   0,
                   3
@@ -302,6 +271,9 @@ export default {
                   "Open Sans Bold"
               ],
               "text-letter-spacing": 0.05,
+              "text-allow-overlap": false,
+              "icon-image": "place-4",
+              "icon-size": 1,
               "visibility": "none"
           },
           "paint": {
@@ -311,7 +283,7 @@ export default {
           }
       },
       {
-          "id": "socialFacilitiesCircles",
+          "id": "socialFacilitiesClusters",
           "type": "circle",
           "metadata": {
               "group": "socialFacilities",
@@ -321,26 +293,8 @@ export default {
                   "uk": "Установи соціальної опіки"
               }
           },
-          "source": "osmData",
-          "filter": [
-            "any",
-            [
-                "==",
-                [
-                    "get",
-                    "social_facility"
-                ],
-                "food_bank"
-            ],
-            [
-                "==",
-                [
-                    "get",
-                    "social_facility"
-                ],
-                "soup_kitchen"
-            ]
-        ],
+          "source": "socialFacilities",
+          "filter": ["has", "point_count"],
           "layout": {
               "visibility": "visible"
           },
@@ -352,7 +306,7 @@ export default {
           }
       },
       {
-          "id": "socialFacilitiesLabels",
+          "id": "socialFacilitiesSymbols",
           "type": "symbol",
           "metadata": {
               "group": "socialFacilities",
@@ -362,29 +316,11 @@ export default {
                   "uk": "Установи соціальної опіки"
               }
           },
-          "source": "osmData",
+          "source": "socialFacilities",
           "minzoom": 5,
-          "filter": [
-            "any",
-            [
-                "==",
-                [
-                    "get",
-                    "social_facility"
-                ],
-                "food_bank"
-            ],
-            [
-                "==",
-                [
-                    "get",
-                    "social_facility"
-                ],
-                "soup_kitchen"
-            ]
-        ],
+          "filter": ["!", ["has", "point_count"]],
           "layout": {
-              "text-field": "{name:pl}",
+              "text-field": "{name}",
               "text-offset": [
                   0,
                   3
@@ -394,6 +330,9 @@ export default {
                   "Open Sans Bold"
               ],
               "text-letter-spacing": 0.05,
+              "text-allow-overlap": false,
+              "icon-image": "place-4",
+              "icon-size": 1,
               "visibility": "visible"
           },
           "paint": {
@@ -403,7 +342,7 @@ export default {
           }
       },
       {
-          "id": "pharmaciesCircles",
+          "id": "pharmaciesClusters",
           "type": "circle",
           "metadata": {
               "group": "pharmacies",
@@ -413,15 +352,8 @@ export default {
                   "uk": "Аптеки"
               }
           },
-          "source": "osmData",
-          "filter": [
-              "==",
-              [
-                  "get",
-                  "amenity"
-              ],
-              "pharmacy"
-          ],
+          "source": "pharmacies",
+          "filter": ["has", "point_count"],
           "layout": {
               "visibility": "none"
           },
@@ -433,7 +365,7 @@ export default {
           }
       },
       {
-          "id": "pharmaciesLabels",
+          "id": "pharmaciesSymbols",
           "type": "symbol",
           "metadata": {
               "group": "pharmacies",
@@ -443,18 +375,11 @@ export default {
                   "uk": "Аптеки"
               }
           },
-          "source": "osmData",
+          "source": "pharmacies",
           "minzoom": 5,
-          "filter": [
-              "==",
-              [
-                  "get",
-                  "amenity"
-              ],
-              "pharmacy"
-          ],
+          "filter": ["!", ["has", "point_count"]],
           "layout": {
-              "text-field": "{name:pl}",
+              "text-field": "{name}",
               "text-offset": [
                   0,
                   3
@@ -464,6 +389,9 @@ export default {
                   "Open Sans Bold"
               ],
               "text-letter-spacing": 0.05,
+              "text-allow-overlap": false,
+              "icon-image": "place-4",
+              "icon-size": 1,
               "visibility": "none"
           },
           "paint": {
@@ -473,7 +401,7 @@ export default {
           }
       },
       {
-          "id": "hospitalsCircles",
+          "id": "hospitalsClusters",
           "type": "circle",
           "metadata": {
               "group": "hospitals",
@@ -483,15 +411,8 @@ export default {
                   "uk": "Лікарні"
               }
           },
-          "source": "osmData",
-          "filter": [
-              "==",
-              [
-                  "get",
-                  "amenity"
-              ],
-              "hospital"
-          ],
+          "source": "hospitals",
+          "filter": ["has", "point_count"],
           "layout": {
               "visibility": "none"
           },
@@ -503,7 +424,7 @@ export default {
           }
       },
       {
-          "id": "hospitalsLabels",
+          "id": "hospitalsSymbols",
           "type": "symbol",
           "metadata": {
               "group": "hospitals",
@@ -513,18 +434,11 @@ export default {
                   "uk": "Лікарні"
               }
           },
-          "source": "osmData",
+          "source": "hospitals",
           "minzoom": 5,
-          "filter": [
-              "==",
-              [
-                  "get",
-                  "amenity"
-              ],
-              "hospital"
-          ],
+          "filter": ["!", ["has", "point_count"]],
           "layout": {
-              "text-field": "{name:pl}",
+              "text-field": "{name}",
               "text-offset": [
                   0,
                   3
@@ -534,6 +448,9 @@ export default {
                   "Open Sans Bold"
               ],
               "text-letter-spacing": 0.05,
+              "text-allow-overlap": false,
+              "icon-image": "place-4",
+              "icon-size": 1,
               "visibility": "none"
           },
           "paint": {
@@ -543,7 +460,7 @@ export default {
           }
       },
       {
-          "id": "diplomaticCircles",
+          "id": "diplomaticClusters",
           "type": "circle",
           "metadata": {
               "group": "diplomatic",
@@ -553,26 +470,8 @@ export default {
                   "uk": "консульства"
               }
           },
-          "source": "osmData",
-          "filter": [
-              "all",
-              [
-                  "==",
-                  [
-                      "get",
-                      "office"
-                  ],
-                  "diplomatic"
-              ],
-              [
-                  "==",
-                  [
-                      "get",
-                      "country"
-                  ],
-                  "UA"
-              ]
-          ],
+          "source": "consulates",
+          "filter": ["has", "point_count"],
           "layout": {
               "visibility": "visible"
           },
@@ -584,7 +483,7 @@ export default {
           }
       },
       {
-          "id": "diplomaticLabels",
+          "id": "diplomaticSymbols",
           "type": "symbol",
           "metadata": {
               "group": "diplomatic",
@@ -594,29 +493,11 @@ export default {
                   "uk": "консульства"
               }
           },
-          "source": "osmData",
+          "source": "consulates",
           "minzoom": 5,
-          "filter": [
-              "all",
-              [
-                  "==",
-                  [
-                      "get",
-                      "office"
-                  ],
-                  "diplomatic"
-              ],
-              [
-                  "==",
-                  [
-                      "get",
-                      "country"
-                  ],
-                  "UA"
-              ]
-          ],
+          "filter": ["!", ["has", "point_count"]],
           "layout": {
-              "text-field": "{name:pl}",
+              "text-field": "{name}",
               "text-offset": [
                   0,
                   3
@@ -626,6 +507,9 @@ export default {
                   "Open Sans Bold"
               ],
               "text-letter-spacing": 0.05,
+              "text-allow-overlap": false,
+              "icon-image": "place-4",
+              "icon-size": 1,
               "visibility": "visible"
           },
           "paint": {
@@ -635,7 +519,7 @@ export default {
           }
       },
       {
-          "id": "charityDropOffCircles",
+          "id": "charityDropOffClusters",
           "type": "circle",
           "metadata": {
               "group": "charityDropOff",
@@ -646,6 +530,7 @@ export default {
               }
           },
           "source": "charityDropOff",
+          "filter": ["has", "point_count"],
           "layout": {
               "visibility": "none"
           },
@@ -657,7 +542,7 @@ export default {
           }
       },
       {
-          "id": "charityDropOffLabels",
+          "id": "charityDropOffSymbols",
           "type": "symbol",
           "metadata": {
               "group": "charityDropOff",
@@ -668,6 +553,7 @@ export default {
               }
           },
           "source": "charityDropOff",
+          "filter": ["!", ["has", "point_count"]],
           "minzoom": 5,
           "layout": {
               "text-field": "Punkt zbiórki charytatywnej \n {name}",
@@ -680,6 +566,9 @@ export default {
                   "Open Sans Bold"
               ],
               "text-letter-spacing": 0.05,
+              "text-allow-overlap": false,
+              "icon-image": "place-4",
+              "icon-size": 1,
               "visibility": "none"
           },
           "paint": {
@@ -689,5 +578,5 @@ export default {
           }
       }
     ],
-    "id": "53fam6b4c"
+    "id": "dopomoha"
 }
