@@ -96,6 +96,8 @@ def keep_key(tag: str) -> bool:
         re.compile("^ref.*"),
         re.compile("^.*phone$"),
         re.compile("^addr:.*"),
+        re.compile("^alt_name.*"),
+        re.compile("^official_name.*"),
     )
     for pattern in tags_to_ignore:
         if pattern.match(tag):
@@ -107,6 +109,7 @@ def process_feature_properties(properties: dict) -> dict:
 
     p = properties["tags"]
     results = {key: tag for key, tag in p.items() if keep_key(key)}
+    results["name"] = p.get("name", "")
     results["name:pl"] = coalesce(p.get("name:pl"), p.get("name"))
     results["name:uk"] = coalesce(p.get("name:uk"), p.get("name:ua"), p.get("name"))
     results["name:en"] = coalesce(p.get("name:en"), p.get("name"))
