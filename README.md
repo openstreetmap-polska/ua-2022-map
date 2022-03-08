@@ -55,3 +55,17 @@ python3 -m http.server 8000 --directory build
 ```
 
 Go to http://localhost:8000/en/ in the browser.
+
+## Generating sprites
+
+Install NVM then:
+```bash
+nvm use 8
+npm install -g @mapbox/spritezero-cli
+```
+
+Generate sprites by running:
+```bash
+nvm use 8
+spritezero --ratio 4 ./static/style/sprite ./static/icons/
+```

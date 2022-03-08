@@ -43,6 +43,7 @@ export default {
         "maxzoom": 12
       }
     },
+    "sprite": "https://dopomoha.pl/static/style/sprite",
     "glyphs": "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
     "layers": [
     {
