@@ -1,6 +1,8 @@
-export default {
+{
     "version": 8,
-    "metadata": { "maputnik:renderer": "mbgljs" },
+    "metadata": {
+        "maputnik:renderer": "mbgljs"
+    },
     "sources": {
         "osmTiles": {
             "type": "raster",
@@ -11,7 +13,9 @@ export default {
             ],
             "tileSize": 256,
             "maxzoom": 19,
-            "paint": { "raster-fade-duration": 100 },
+            "paint": {
+                "raster-fade-duration": 100
+            },
             "attribution": "data © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
         },
         "osmTilesUk": {
@@ -21,7 +25,9 @@ export default {
             ],
             "tileSize": 256,
             "maxzoom": 19,
-            "paint": { "raster-fade-duration": 100 },
+            "paint": {
+                "raster-fade-duration": 100
+            },
             "attribution": "data © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
         },
         "bloodDonationPoints": {
@@ -75,7 +81,7 @@ export default {
             "cluster": true
         }
     },
-    "sprite": "http://127.0.0.1:8000/static/style/sprite/sprite",  //https://dopomoha.pl/static/style/sprite",
+    "sprite": "<ADD SPRITE LINK>",
     "glyphs": "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
     "layers": [
         {
@@ -122,7 +128,10 @@ export default {
                 }
             },
             "source": "receptionPoints",
-            "filter": ["has", "point_count"],
+            "filter": [
+                "has",
+                "point_count"
+            ],
             "layout": {
                 "visibility": "visible"
             },
@@ -146,12 +155,23 @@ export default {
             },
             "source": "receptionPoints",
             "minzoom": 5,
-            "filter": ["!", ["has", "point_count"]],
+            "filter": [
+                "!",
+                [
+                    "has",
+                    "point_count"
+                ]
+            ],
             "layout": {
                 "text-field": "{name}",
-                "text-offset": [0, 3],
+                "text-offset": [
+                    0,
+                    3
+                ],
                 "text-size": 10,
-                "text-font": ["Open Sans Bold"],
+                "text-font": [
+                    "Open Sans Bold"
+                ],
                 "text-letter-spacing": 0.05,
                 "text-allow-overlap": false,
                 "icon-image": "office_d",
@@ -164,7 +184,7 @@ export default {
                 "text-halo-width": 2,
                 "icon-color": "#ffd500",
                 "icon-halo-color": "white",
-                "icon-halo-width": 3,
+                "icon-halo-width": 4
             }
         },
         {
@@ -179,7 +199,10 @@ export default {
                 }
             },
             "source": "informationPoints",
-            "filter": ["has", "point_count"],
+            "filter": [
+                "has",
+                "point_count"
+            ],
             "layout": {
                 "visibility": "visible"
             },
@@ -203,7 +226,13 @@ export default {
             },
             "source": "informationPoints",
             "minzoom": 5,
-            "filter": ["!", ["has", "point_count"]],
+            "filter": [
+                "!",
+                [
+                    "has",
+                    "point_count"
+                ]
+            ],
             "layout": {
                 "text-field": "{name}",
                 "text-offset": [
@@ -226,7 +255,7 @@ export default {
                 "text-halo-width": 2,
                 "icon-color": "#ffee00",
                 "icon-halo-color": "white",
-                "icon-halo-width": 3,
+                "icon-halo-width": 4
             }
         },
         {
@@ -241,7 +270,10 @@ export default {
                 }
             },
             "source": "bloodDonationPoints",
-            "filter": ["has", "point_count"],
+            "filter": [
+                "has",
+                "point_count"
+            ],
             "layout": {
                 "visibility": "none"
             },
@@ -265,7 +297,13 @@ export default {
             },
             "source": "bloodDonationPoints",
             "minzoom": 5,
-            "filter": ["!", ["has", "point_count"]],
+            "filter": [
+                "!",
+                [
+                    "has",
+                    "point_count"
+                ]
+            ],
             "layout": {
                 "text-field": "{name}",
                 "text-offset": [
@@ -288,7 +326,7 @@ export default {
                 "text-halo-width": 2,
                 "icon-color": "#990000",
                 "icon-halo-color": "white",
-                "icon-halo-width": 3,
+                "icon-halo-width": 4
             }
         },
         {
@@ -303,7 +341,10 @@ export default {
                 }
             },
             "source": "socialFacilities",
-            "filter": ["has", "point_count"],
+            "filter": [
+                "has",
+                "point_count"
+            ],
             "layout": {
                 "visibility": "visible"
             },
@@ -327,7 +368,13 @@ export default {
             },
             "source": "socialFacilities",
             "minzoom": 5,
-            "filter": ["!", ["has", "point_count"]],
+            "filter": [
+                "!",
+                [
+                    "has",
+                    "point_count"
+                ]
+            ],
             "layout": {
                 "text-field": "{name}",
                 "text-offset": [
@@ -350,7 +397,7 @@ export default {
                 "text-halo-width": 2,
                 "icon-color": "#00d5ff",
                 "icon-halo-color": "white",
-                "icon-halo-width": 3,
+                "icon-halo-width": 4
             }
         },
         {
@@ -365,7 +412,10 @@ export default {
                 }
             },
             "source": "pharmacies",
-            "filter": ["has", "point_count"],
+            "filter": [
+                "has",
+                "point_count"
+            ],
             "layout": {
                 "visibility": "none"
             },
@@ -389,7 +439,13 @@ export default {
             },
             "source": "pharmacies",
             "minzoom": 5,
-            "filter": ["!", ["has", "point_count"]],
+            "filter": [
+                "!",
+                [
+                    "has",
+                    "point_count"
+                ]
+            ],
             "layout": {
                 "text-field": "{name}",
                 "text-offset": [
@@ -412,7 +468,7 @@ export default {
                 "text-halo-width": 2,
                 "icon-color": "#880044",
                 "icon-halo-color": "white",
-                "icon-halo-width": 3,
+                "icon-halo-width": 4
             }
         },
         {
@@ -427,7 +483,10 @@ export default {
                 }
             },
             "source": "hospitals",
-            "filter": ["has", "point_count"],
+            "filter": [
+                "has",
+                "point_count"
+            ],
             "layout": {
                 "visibility": "none"
             },
@@ -451,7 +510,13 @@ export default {
             },
             "source": "hospitals",
             "minzoom": 5,
-            "filter": ["!", ["has", "point_count"]],
+            "filter": [
+                "!",
+                [
+                    "has",
+                    "point_count"
+                ]
+            ],
             "layout": {
                 "text-field": "{name}",
                 "text-offset": [
@@ -474,7 +539,7 @@ export default {
                 "text-halo-width": 2,
                 "icon-color": "#ff1111",
                 "icon-halo-color": "white",
-                "icon-halo-width": 3,
+                "icon-halo-width": 4
             }
         },
         {
@@ -489,7 +554,10 @@ export default {
                 }
             },
             "source": "consulates",
-            "filter": ["has", "point_count"],
+            "filter": [
+                "has",
+                "point_count"
+            ],
             "layout": {
                 "visibility": "visible"
             },
@@ -513,7 +581,13 @@ export default {
             },
             "source": "consulates",
             "minzoom": 5,
-            "filter": ["!", ["has", "point_count"]],
+            "filter": [
+                "!",
+                [
+                    "has",
+                    "point_count"
+                ]
+            ],
             "layout": {
                 "text-field": "{name}",
                 "text-offset": [
@@ -536,7 +610,7 @@ export default {
                 "text-halo-width": 2,
                 "icon-color": "#446688",
                 "icon-halo-color": "white",
-                "icon-halo-width": 3,
+                "icon-halo-width": 4
             }
         },
         {
@@ -551,7 +625,10 @@ export default {
                 }
             },
             "source": "charityDropOff",
-            "filter": ["has", "point_count"],
+            "filter": [
+                "has",
+                "point_count"
+            ],
             "layout": {
                 "visibility": "none"
             },
@@ -574,7 +651,13 @@ export default {
                 }
             },
             "source": "charityDropOff",
-            "filter": ["!", ["has", "point_count"]],
+            "filter": [
+                "!",
+                [
+                    "has",
+                    "point_count"
+                ]
+            ],
             "minzoom": 5,
             "layout": {
                 "text-field": "Punkt zbiórki charytatywnej \n {name}",
@@ -598,7 +681,7 @@ export default {
                 "text-halo-width": 2,
                 "icon-color": "#11ee11",
                 "icon-halo-color": "white",
-                "icon-halo-width": 3,
+                "icon-halo-width": 4
             }
         }
     ],

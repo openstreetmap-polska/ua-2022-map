@@ -133,4 +133,3 @@ dmypy.json
 *.code-workspace
 
 osm_data.geojson
-layers.json

@@ -22,8 +22,6 @@ jobs:
         run: pip install -r requirements.txt --upgrade pip
       - name: Generate from templates
         run: python generate_sites.py
-      - name: Generate style json
-        run: python generate_json_style.py "./build/static/style/"
       - name: Install SSH Key
         uses: kielabokkie/ssh-key-and-known-hosts-action@v1
         with:

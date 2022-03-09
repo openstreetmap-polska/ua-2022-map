@@ -1,4 +1,4 @@
-import layers from '../static/style/layers.js'
+import layers from '../static/style/layers.json' assert { type: "json" };
 
 const controlsLocation = 'bottom-right';
 
@@ -51,7 +51,7 @@ function getMode() {
         mode = localStorage.getItem('mode');
     }
 
-    if(!mode) {
+    if (!mode) {
         return 'forUkrainian';
     }
 
@@ -75,7 +75,7 @@ function loadLayersVisibilitySave() {
         } catch (e) { console.warn(e) }
     }
 
-    if(!state)
+    if (!state)
         return {};
 
     return state;
@@ -165,55 +165,55 @@ function loadZoom() {
 // Geocoder control setup:
 // Based on this https://maplibre.org/maplibre-gl-js-docs/example/geocoder/
 const geocoder_api = {
-  forwardGeocode: async (config) => {
-    const features = [];
-    try {
-      // Set bounds to search within poland
-      // viewbox=<x1>,<y1>,<x2>,<y2>
-      // https://boundingbox.klokantech.com/
+    forwardGeocode: async (config) => {
+        const features = [];
+        try {
+            // Set bounds to search within poland
+            // viewbox=<x1>,<y1>,<x2>,<y2>
+            // https://boundingbox.klokantech.com/
 
-      // NOTE: One option to try is to use bounds to limit the results.
-      // We can get the bounds as follows and then use them in the nominatim API request via the viewbox parameter.
-      // let bounds = map.getBounds();
-      // bounds.toArray().join(',')
+            // NOTE: One option to try is to use bounds to limit the results.
+            // We can get the bounds as follows and then use them in the nominatim API request via the viewbox parameter.
+            // let bounds = map.getBounds();
+            // bounds.toArray().join(',')
 
-      const pl_bounds = "11.82,48.36,27.39,55.16";
-      let request =
-        "https://nominatim.openstreetmap.org/search?q=" +
-        config.query +
-        `&viewbox=${pl_bounds}&bounded=1` +
-        "&format=geojson&polygon_geojson=1&addressdetails=1";
-      const response = await fetch(request);
-      const geojson = await response.json();
-      for (let feature of geojson.features) {
-        let center = [
-          feature.bbox[0] + (feature.bbox[2] - feature.bbox[0]) / 2,
-          feature.bbox[1] + (feature.bbox[3] - feature.bbox[1]) / 2,
-        ];
-        let point = {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: center,
-          },
-          place_name: feature.properties.display_name,
-          properties: feature.properties,
-          text: feature.properties.display_name,
-          place_type: ["place"],
-          center: center,
+            const pl_bounds = "11.82,48.36,27.39,55.16";
+            let request =
+                "https://nominatim.openstreetmap.org/search?q=" +
+                config.query +
+                `&viewbox=${pl_bounds}&bounded=1` +
+                "&format=geojson&polygon_geojson=1&addressdetails=1";
+            const response = await fetch(request);
+            const geojson = await response.json();
+            for (let feature of geojson.features) {
+                let center = [
+                    feature.bbox[0] + (feature.bbox[2] - feature.bbox[0]) / 2,
+                    feature.bbox[1] + (feature.bbox[3] - feature.bbox[1]) / 2,
+                ];
+                let point = {
+                    type: "Feature",
+                    geometry: {
+                        type: "Point",
+                        coordinates: center,
+                    },
+                    place_name: feature.properties.display_name,
+                    properties: feature.properties,
+                    text: feature.properties.display_name,
+                    place_type: ["place"],
+                    center: center,
+                };
+                features.push(point);
+            }
+        } catch (e) {
+            console.error(`Failed to forwardGeocode with error: ${e}`);
+        }
+
+        return {
+            features: features,
         };
-        features.push(point);
-      }
-    } catch (e) {
-      console.error(`Failed to forwardGeocode with error: ${e}`);
-    }
-
-    return {
-      features: features,
-    };
-  },
+    },
 };
-    
+
 const map = new maplibregl.Map({
     container: 'map', // container id
     center: loadCenter(), // starting position [lng, lat]
@@ -236,7 +236,7 @@ map.dragRotate.disable();
 // disable map rotation using touch rotation gesture
 map.touchZoomRotate.disableRotation();
 
-let control = new maplibregl.NavigationControl({showCompass: false});
+let control = new maplibregl.NavigationControl({ showCompass: false });
 map.addControl(control, controlsLocation);
 
 // Geocoder control setup:
@@ -264,11 +264,21 @@ Object.entries(layersDefinitions).forEach(x => {
 
 Object.entries(layersDefinitions).forEach(x => {
     if (x[0] !== 'background') {
-        map.on('click', `${x[0]}Circles`, function (e) {
+        map.on('click', `${x[0]}Symbols`, function (e) {
             const lonlat = e.features[0].geometry.coordinates;
             const properties = e.features[0].properties;
             const popupHTML = renderBasicPopup(lonlat, properties);
-            new maplibregl.Popup({maxWidth: '300px'})
+            new maplibregl.Popup({ maxWidth: '300px' })
+                .setLngLat(e.lngLat)
+                .setHTML(popupHTML)
+                .addTo(map);
+        });
+
+        map.on('click', `${x[0]}Clusters`, function (e) {
+            const lonlat = e.features[0].geometry.coordinates;
+            const properties = e.features[0].properties;
+            const popupHTML = `<div>Available ${properties.point_count} elements. Zoom map to see.</div>`;
+            new maplibregl.Popup({ maxWidth: '300px' })
                 .setLngLat(e.lngLat)
                 .setHTML(popupHTML)
                 .addTo(map);
@@ -278,7 +288,7 @@ Object.entries(layersDefinitions).forEach(x => {
 
 map.on('load', () => {
     (function setLabelsLangauge(lang) {
-        const labelLayers =  map.getStyle().layers.filter(layer => layer.type === 'symbol' && layer.layout['text-field'] && layer.id !== 'charityDropOffSymbols')
+        const labelLayers = map.getStyle().layers.filter(layer => layer.type === 'symbol' && layer.layout['text-field'] && layer.id !== 'charityDropOffSymbols')
         labelLayers.forEach(layer => map.setLayoutProperty(layer.id, 'text-field', `{name:${lang}}`));
     })(LANG);
     (function setCharityDropoffPointLabel(lang) {
@@ -286,9 +296,9 @@ map.on('load', () => {
     })(LANG);
     (function setBackgroudLayerOnInit(lang) {
         // disabling that for now since i think we want the background to change between language changes
-//        if(localStorage && localStorage.getItem(localStorageLayersItemId)) {
-//            return
-//        }
+        //        if(localStorage && localStorage.getItem(localStorageLayersItemId)) {
+        //            return
+        //        }
         if (lang === 'uk') {
             enableLayer('osmTilesUk');
             disableLayer('osmTiles');
@@ -331,8 +341,7 @@ function renderName(properties, lang) {
     if (name) {
         return `<h1 class="is-size-5 pb-3">${name}</h1>`
     }
-    else
-    {
+    else {
         return '';
     }
 }
@@ -342,8 +351,7 @@ function renderDescription(properties, lang) {
     if (description) {
         return `<p class="pt-3 px-2 pb-2 is-size-7">${description}</p>`
     }
-    else
-    {
+    else {
         return '';
     }
 }
@@ -354,8 +362,7 @@ function renderPhoneNumber(properties) {
         const phones = phone.split(';').map(number => `<a href="tel:${number}">${number}</a>`);
         return `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong>${phones.join('; ')}</strong></p>`;
     }
-    else
-    {
+    else {
         return '';
     }
 }
@@ -517,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     toggleLayer(layerId);
                 }
             })
-         }
+        }
 
         function getLegendItem(id, displayName, visible) {
             const legendItem = document.createElement('li');
@@ -533,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function renderLegend(layers) {
             layers.forEach(layer => {
-            const legendItem = getLegendItem(layer.id, layer.name, layersVisibilityState[layer.id])
+                const legendItem = getLegendItem(layer.id, layer.name, layersVisibilityState[layer.id])
                 list.appendChild(legendItem)
             })
             legend.appendChild(list)
@@ -541,15 +548,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         addTogglingListener()
         renderLegend(layersArray)
-      })();
+    })();
 
-      if (getMode() === 'forUkrainian') {
+    if (getMode() === 'forUkrainian') {
         document.getElementById('switchMode').checked = true;
-      } else {
+    } else {
         document.getElementById('switchMode').checked = false;
-      }
+    }
 
-      if (window.innerWidth > 1024) {
+    if (window.innerWidth > 1024) {
         document.getElementById(sidebarDivId).classList.toggle('is-invisible');
-      }
+    }
 });

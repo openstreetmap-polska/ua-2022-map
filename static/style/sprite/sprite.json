@@ -1,0 +1,74 @@
+{
+  "blood_d": {
+    "height": 120,
+    "pixelRatio": 4,
+    "width": 120,
+    "x": 0,
+    "y": 0,
+    "sdf": true
+  },
+  "bus_d": {
+    "height": 120,
+    "pixelRatio": 4,
+    "width": 120,
+    "x": 120,
+    "y": 0,
+    "sdf": true
+  },
+  "charity_d": {
+    "height": 120,
+    "pixelRatio": 4,
+    "width": 120,
+    "x": 0,
+    "y": 120,
+    "sdf": true
+  },
+  "embassy_d": {
+    "height": 120,
+    "pixelRatio": 4,
+    "width": 120,
+    "x": 120,
+    "y": 120,
+    "sdf": true
+  },
+  "hospital_d": {
+    "height": 120,
+    "pixelRatio": 4,
+    "width": 120,
+    "x": 240,
+    "y": 0,
+    "sdf": true
+  },
+  "information_d": {
+    "height": 120,
+    "pixelRatio": 4,
+    "width": 120,
+    "x": 360,
+    "y": 0,
+    "sdf": true
+  },
+  "office_d": {
+    "height": 120,
+    "pixelRatio": 4,
+    "width": 120,
+    "x": 240,
+    "y": 120,
+    "sdf": true
+  },
+  "pharmacy_d": {
+    "height": 120,
+    "pixelRatio": 4,
+    "width": 120,
+    "x": 360,
+    "y": 120,
+    "sdf": true
+  },
+  "social_d": {
+    "height": 120,
+    "pixelRatio": 4,
+    "width": 120,
+    "x": 0,
+    "y": 240,
+    "sdf": true
+  }
+}
