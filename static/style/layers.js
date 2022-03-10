@@ -69,7 +69,7 @@ export default {
             "group": "osmTilesUk",
             "name": {
                 "pl": "OSM Carto - język ukraiński",
-                "en": "OSM Carto - ukrainian language",
+                "en": "OSM Carto - Ukrainian language",
                 "uk": "OSM Carto - українська мова"
             }
         },
