@@ -237,16 +237,20 @@ map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
 
 let control = new maplibregl.NavigationControl({showCompass: false});
-map.addControl(control, controlsLocation);
-
-// Geocoder control setup:
-map.addControl(new MaplibreGeocoder(geocoder_api, { maplibregl: maplibregl }));
+let scaleControl = new maplibregl.ScaleControl();
 let geolocate = new maplibregl.GeolocateControl({
     positionOptions: {
         enableHighAccuracy: true
     }
 });
+
+// add controls
+map.addControl(scaleControl, controlsLocation);
+map.addControl(control, controlsLocation);
+map.addControl(new MaplibreGeocoder(geocoder_api, { maplibregl: maplibregl }));
 map.addControl(geolocate, controlsLocation);
+
+
 // ----------------
 
 // user interaction stuff
