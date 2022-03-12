@@ -34,7 +34,7 @@ logger.setLevel(logging.INFO)
 overpass_api_url = "https://lz4.overpass-api.de/api/interpreter"
 
 overpass_query = """
-    [out:json][timeout:420];
+    [out:json][timeout:900];
     area(id:3600104401)->.woj_ZP; 
     area(id:3600130914)->.woj_SK; 
     area(id:3600130919)->.woj_LU; 
