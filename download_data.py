@@ -9,6 +9,23 @@ from pathlib import Path
 import re
 
 from osm2geojson import json2geojson
+# woj. zgodnie z kod ISO 3166-2
+# województwo zachodniopomorskie	woj_ZP	3600104401
+# województwo świętokrzyskie	    woj_SK	3600130914
+# województwo lubelskie	            woj_LU	3600130919
+# województwo mazowieckie	        woj_MZ	3600130935
+# województwo podkarpackie	        woj_PK	3600130957
+# województwo lubuskie	            woj_LB	3600130969
+# województwo wielkopolskie	        woj_WP	3600130971
+# województwo pomorskie	            woj_PM	3600130975
+# województwo kujawsko-pomorskie	woj_KP	3600223407
+# województwo warmińsko-mazurskie	woj_WN	3600223408
+# województwo dolnośląskie	        woj_DS	3600224457
+# województwo łódzkie	            woj_LD	3600224458
+# województwo małopolskie	        woj_MA	3600224459
+# województwo opolskie	            woj_OP	3600224460
+# województwo podlaskie	            woj_PD	3600224461
+# województwo śląskie	            woj_SL	3600224462
 
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__file__)
@@ -18,8 +35,22 @@ overpass_api_url = "https://lz4.overpass-api.de/api/interpreter"
 
 overpass_query = """
     [out:json][timeout:420];
-    area(id:3600130919)->.wojLub;
-    area(id:3600130957)->.wojPodk;
+    area(id:3600104401)->.woj_ZP; 
+    area(id:3600130914)->.woj_SK; 
+    area(id:3600130919)->.woj_LU; 
+    area(id:3600130935)->.woj_MZ; 
+    area(id:3600130957)->.woj_PK; 
+    area(id:3600130969)->.woj_LB; 
+    area(id:3600130971)->.woj_WP; 
+    area(id:3600130975)->.woj_PM; 
+    area(id:3600223407)->.woj_KP; 
+    area(id:3600223408)->.woj_WN; 
+    area(id:3600224457)->.woj_DS; 
+    area(id:3600224458)->.woj_LD; 
+    area(id:3600224459)->.woj_MA; 
+    area(id:3600224460)->.woj_OP; 
+    area(id:3600224461)->.woj_PD; 
+    area(id:3600224462)->.woj_SL; 
     area(id:3600049715)->.pol;
     area(id:3600014296)->.slov;
     area(id:3600090689)->.rom;
@@ -36,17 +67,13 @@ overpass_query = """
     nwr["social_facility:for"~"refugee|refugees"](area.rom);
     nwr["social_facility:for"~"refugee|refugees"](area.bul);
         
-    nwr[building=train_station](area.wojLub);
-    nwr[building=train_station](area.wojPodk);
+    nwr[building=train_station](area.pol);
 
-    nwr[amenity=bus_station](area.wojLub);
-    nwr[amenity=bus_station](area.wojPodk);
+    nwr[amenity=bus_station](area.pol);
 
-    nwr[amenity=pharmacy](area.wojLub);
-    nwr[amenity=pharmacy](area.wojPodk);
+    nwr[amenity=pharmacy](area.pol);
 
-    nwr[amenity=hospital](area.wojLub);
-    nwr[amenity=hospital](area.wojPodk);
+    nwr[amenity=hospital](area.pol);
 
     nwr["office"="diplomatic"]["country"="UA"](34.741612,-13.5351,71.016960,38.320313);
 
