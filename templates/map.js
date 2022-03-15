@@ -17,10 +17,10 @@ const layersColoursDict = {
 const modesSettings = {
     'forUkrainian': {
         'layersToDisable': ['charityDropOff', 'bloodDonation'],
-        'layersToEnable': ['helpPoints', 'informationPoints', 'socialFacilities', 'pharmacies', 'hospitals', 'diplomatic'],
+        'layersToEnable': ['helpPoints', 'informationPoints', 'socialFacilities', 'diplomatic'],
     },
     'forPole': {
-        'layersToDisable': ['helpPoints', 'informationPoints', 'socialFacilities', 'pharmacies', 'hospitals'],
+        'layersToDisable': ['helpPoints', 'informationPoints', 'socialFacilities'],
         'layersToEnable': ['charityDropOff', 'diplomatic', 'bloodDonation'],
     },
 }
