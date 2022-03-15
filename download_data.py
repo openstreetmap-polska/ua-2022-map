@@ -34,7 +34,7 @@ logger.setLevel(logging.INFO)
 overpass_api_url = "https://lz4.overpass-api.de/api/interpreter"
 
 overpass_query = """
-    [out:json][timeout:900];
+    [out:json][timeout:1100];
     area(id:3600104401)->.woj_ZP; 
     area(id:3600130914)->.woj_SK; 
     area(id:3600130919)->.woj_LU; 
@@ -81,6 +81,11 @@ overpass_query = """
 
     nwr["information:for"="refugee"](area.pol);
     nwr["information:for"="refugee"](area.rom);
+    
+    nwr[office=lawyer]["fee:conditional"="no_@_refugees"](area.pol);
+    nwr[office=lawyer]["fee"="no"](area.pol);
+    
+    nwr[amenity=school](area.pol);
 );
 out center body qt;
 """
