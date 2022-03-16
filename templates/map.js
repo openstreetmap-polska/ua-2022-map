@@ -368,7 +368,7 @@ function parseOpeningHours(openingHours, lang) {
 
     if (openingHours) {
         if (openingHours.includes('24/7')) {
-            return 'całodobowo';
+            return '24/7';
         } else {
             let hoursPrettified;
 
