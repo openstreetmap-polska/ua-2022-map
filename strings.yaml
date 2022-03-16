@@ -82,3 +82,7 @@ refresh:
   uk: Натисніть <kbd>ctrl</kbd> + <kbd>f5</kbd> щоб оновити дані.
   pl: Naciśnij <kbd>ctrl</kbd> + <kbd>f5</kbd> aby odświeżyć dane.
   en: Press <kbd>ctrl</kbd> + <kbd>f5</kbd> to refresh points.
+opening_hours:
+  uk: Години роботи
+  pl: Godziny otwarcia
+  en: Opening hours

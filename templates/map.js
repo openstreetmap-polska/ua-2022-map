@@ -333,7 +333,7 @@ function renderPopupRouteLink(text, href, hideOnDesktop) {
 function renderName(properties, lang) {
     let name = properties[`name:${lang}`] || properties['name'] || properties['Name'];
     if (name) {
-        return `<h1 class="is-size-5 pb-3">${name}</h1>`
+        return `<h1 class="is-size-5 pb-4 px-1 has-text-grey has-text-weight-light">${name}</h1>`
     }
     else
     {
@@ -344,7 +344,7 @@ function renderName(properties, lang) {
 function renderDescription(properties, lang) {
     let description = properties[`description:${lang}`] || properties['description'];
     if (description) {
-        return `<p class="pt-3 px-2 pb-2 is-size-7">${description}</p>`
+        return `<p class="px-2 py-2 is-size-7">${description}</p>`
     }
     else
     {
@@ -356,7 +356,47 @@ function renderPhoneNumber(properties) {
     const phone = properties['phone'];
     if (phone) {
         const phones = phone.split(';').map(number => `<a href="tel:${number}">${number}</a>`);
-        return `<p class="py-3 pl-1 is-size-7">{{ strings.contact_phone[lang] }}: <strong>${phones.join('; ')}</strong></p>`;
+        return `<p class="px-2 py-2 is-size-7"><span class="has-text-weight-semibold has-text-grey-dark">{{ strings.contact_phone[lang] }}</span>: <strong>${phones.join('; ')}</strong></p>`;
+    }
+    else
+    {
+        return '';
+    }
+}
+
+function parseOpeningHours(openingHours, lang) {
+
+    if (openingHours) {
+        if (openingHours.includes('24/7')) {
+            return 'całodobowo';
+        } else {
+            let hoursPrettified;
+
+            try {
+                let hours = openingHours.toString();
+                let oh = new opening_hours(hours, undefined, 2);
+
+                hoursPrettified = oh.prettifyValue({
+                    conf: {
+                        locale: lang || 'en'
+                    },
+                });
+
+            } catch (error) {
+                return openingHours; //Some of the opening_hours are not valid so we just return the original value
+            }
+
+            return hoursPrettified;
+        }
+    } else {
+        return undefined;
+    }
+}
+
+function renderOpeningHours(properties, lang) {
+    let openingHours = parseOpeningHours(properties['opening_hours'], lang);
+    if (openingHours) {
+        return `<p class="px-2 py-2 is-size-7"><span class="has-text-weight-semibold has-text-grey-dark">{{ strings.opening_hours[lang] }}</span>: ${openingHours}</p>`
     }
     else
     {
@@ -375,6 +415,7 @@ function renderBasicPopup(lonlat, properties) {
         ${renderDescription(properties, LANG)}
     `;
     if (properties.note) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.note}</p>`;
+    if (properties['opening_hours']) popupHTML += renderOpeningHours(properties, LANG);
 
     return popupHTML;
 }
