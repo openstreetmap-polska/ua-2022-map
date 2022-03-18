@@ -62,10 +62,7 @@ overpass_query = """
     nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.pol);
     nwr[social_facility~"food_bank|soup_kitchen|outreach"](area.slov);
 
-    nwr["social_facility:for"~"refugee|refugees"](area.pol);
-    nwr["social_facility:for"~"refugee|refugees"](area.slov);
-    nwr["social_facility:for"~"refugee|refugees"](area.rom);
-    nwr["social_facility:for"~"refugee|refugees"](area.bul);
+    nwr["social_facility:for"~"refugee|refugees"](34.741612,-13.5351,71.016960,38.320313);
         
     nwr[building=train_station](area.pol);
 
