@@ -24,24 +24,9 @@ def get_language_index(lang):
     return flask.render_template('index.html', strings=strings, lang=lang)
 
 
-
 @App.route('/<lang>/map.js')
 def get_language_mapjs(lang):
     return (
         flask.render_template('map.js', strings=strings, lang=lang),
         {'Content-Type': 'application/javascript'},
     )
-
-
-@App.route('/data/osm_data.geojson')
-def get_osm_data_geojson():
-    if not os.path.exists("osm_data.geojson"):
-        return (
-            '{"type": "FeatureCollection", "features": []}',
-            {'Content-Type': 'application/octet-stream'},
-        )
-    with open("osm_data.geojson") as file:
-        return (
-            file.read(),
-            {'Content-Type': 'application/octet-stream'},
-        )
