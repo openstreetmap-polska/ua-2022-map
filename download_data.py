@@ -138,6 +138,7 @@ def process_feature_properties(properties: dict) -> dict:
 
     p = properties["tags"]
     results = {key: tag for key, tag in p.items() if keep_key(key)}
+    results["@id"] = f'{properties.get("type", "")}/{properties.get("id", "")}'
     results["name"] = p.get("name", "")
     results["name:pl"] = coalesce(p.get("name:pl"), p.get("name"))
     results["name:uk"] = coalesce(p.get("name:uk"), p.get("name:ua"), p.get("name"))
@@ -250,14 +251,14 @@ def split_geojson(geojson: dict) -> Dict[str, dict]:
     return results
 
 
-def main(output_dir: Union[str, Path]) -> None:
+def main(output_directory: Union[str, Path]) -> None:
     data = query_overpass_api(overpass_query)
     geojson_data = json2geojson(data)
     processed_data = process_geojson(geojson_data)
-    save_json(file_path=output_dir.joinpath('osm_data.geojson'), data=processed_data)
+    save_json(file_path=output_directory.joinpath('osm_data.geojson'), data=processed_data)
     layers = split_geojson(processed_data)
     for name, gj in layers.items():
-        save_json(file_path=output_dir.joinpath(name + '.geojson'), data=gj)
+        save_json(file_path=output_directory.joinpath(name + '.geojson'), data=gj)
 
 
 if __name__ == "__main__":
@@ -269,4 +270,4 @@ if __name__ == "__main__":
         logger.error(f'Given path: "{output_dir}" is not a directory.')
         sys.exit(1)  # exit with non-zero error code
 
-    main(output_dir=output_dir)
+    main(output_directory=output_dir)

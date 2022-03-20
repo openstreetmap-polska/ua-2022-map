@@ -430,6 +430,14 @@ function renderOpeningHours(properties, lang) {
     }
 }
 
+function renderOSMSourceElementURL(osm_id) {
+    if (osm_id && RegExp('node|way|relation/[0-9]+').test(osm_id)) {
+        return `<a href="https://osm.org/${osm_id}" target="_blank">source</a>`
+    } else {
+        return ""
+    }
+}
+
 function renderBasicPopup(lonlat, properties) {
     const renderGeoUri = !/^((?!chrome|android).)*safari/i.test(navigator.userAgent)
     let popupHTML = `
@@ -442,6 +450,11 @@ function renderBasicPopup(lonlat, properties) {
     `;
     if (properties.note) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.note}</p>`;
     if (properties['opening_hours']) popupHTML += renderOpeningHours(properties, LANG);
+
+    if (properties["@id"]) {
+        popupHTML += '<hr class="my-1">';
+        popupHTML += renderOSMSourceElementURL(properties["@id"]);
+    }
 
     return popupHTML;
 }
