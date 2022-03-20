@@ -213,7 +213,7 @@ const geocoder_api = {
     };
   },
 };
-
+    
 const map = new maplibregl.Map({
     container: 'map', // container id
     center: loadCenter(), // starting position [lng, lat]
@@ -405,13 +405,11 @@ function renderOpeningHours(properties, lang) {
 }
 
 function renderBasicPopup(lonlat, properties) {
-    const renderGeoUri = !/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    const osmUrl = `https://www.openstreetmap.org/directions?from=&to=${lonlat[1]}%2C${lonlat[0]}#map=14/${lonlat[1]}/${lonlat[0]}`;
-    const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lonlat[1]}%2C${lonlat[0]}`;
+    const renderGeoUri = !/^((?!chrome|android).)*safari/i.test(navigator.userAgent)
     let popupHTML = `
         ${renderName(properties, LANG)}
-        ${renderPopupRouteLink(`OpenStreetMap {{ strings.navigation[lang] }}`, osmUrl)}
-        ${renderPopupRouteLink(`Google Maps {{ strings.navigation[lang] }}`, gmapsUrl)}
+        ${renderPopupRouteLink(`OpenStreetMap {{ strings.navigation[lang] }}`, `https://www.openstreetmap.org/directions?from=&to=${lonlat[1]}%2C${lonlat[0]}#map=14/${lonlat[1]}/${lonlat[0]}`)}
+        ${renderPopupRouteLink(`Google Maps {{ strings.navigation[lang] }}`, `https://www.google.com/maps/dir/?api=1&destination=${lonlat[1]}%2C${lonlat[0]}`)}
         ${renderGeoUri ? renderPopupRouteLink('GeoURI', `geo:${lonlat[1]},${lonlat[0]}`, true) : ''}
         ${renderPhoneNumber(properties)}
         ${renderDescription(properties, LANG)}
