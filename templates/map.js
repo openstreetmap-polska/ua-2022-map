@@ -3,7 +3,6 @@ import layers from '../static/style/layers.js'
 const controlsLocation = 'bottom-right';
 
 const layersColoursDict = {
-    background: '',
     helpPoints: '#ffd500',
     informationPoints: '#ffee00',
     bloodDonation: '#990000',
@@ -256,18 +255,25 @@ map.addControl(geolocate, controlsLocation);
 // user interaction stuff
 // ----------------
 Object.entries(layersDefinitions).forEach(x => {
-    if (x[0] !== 'background') {
+    if (!x[0].includes("Tiles")) {
         map.on('mouseenter', `${x[0]}Circles`, () => {
             map.getCanvas().style.cursor = 'pointer';
         });
         map.on('mouseleave', `${x[0]}Circles`, () => {
             map.getCanvas().style.cursor = '';
         });
+        map.on('mouseenter', `${x[0]}Clusters`, () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+        map.on('mouseleave', `${x[0]}Clusters`, () => {
+            map.getCanvas().style.cursor = '';
+        });
     }
 });
 
 Object.entries(layersDefinitions).forEach(x => {
-    if (x[0] !== 'background') {
+    // click on feature shows popup with info
+    if (!x[0].includes("Tiles")) {
         map.on('click', `${x[0]}Circles`, function (e) {
             const lonlat = e.features[0].geometry.coordinates;
             const properties = e.features[0].properties;
@@ -276,6 +282,26 @@ Object.entries(layersDefinitions).forEach(x => {
                 .setLngLat(e.lngLat)
                 .setHTML(popupHTML)
                 .addTo(map);
+        });
+    }
+    // click on cluster zooms to the cluster
+    if (!x[0].includes("Tiles")) {
+        map.on('click', `${x[0]}Clusters`, function (e) {
+            const features = map.queryRenderedFeatures(e.point, {
+                layers: [`${x[0]}Clusters`]
+            });
+            const clusterId = features[0].properties.cluster_id;
+            const sourceId = features[0].layer.source;
+            map.getSource(sourceId).getClusterExpansionZoom(
+                clusterId,
+                function (err, zoom) {
+                    if (err) return;
+                    map.easeTo({
+                        center: features[0].geometry.coordinates,
+                        zoom: zoom + 1 // felt like just zoom wasn't zooming enough
+                    });
+                }
+            );
         });
     }
 });
@@ -404,6 +430,14 @@ function renderOpeningHours(properties, lang) {
     }
 }
 
+function renderOSMSourceElementURL(osm_id) {
+    if (osm_id && RegExp('node|way|relation/[0-9]+').test(osm_id)) {
+        return `<a href="https://osm.org/${osm_id}" target="_blank">source</a>`
+    } else {
+        return ""
+    }
+}
+
 function renderBasicPopup(lonlat, properties) {
     const renderGeoUri = !/^((?!chrome|android).)*safari/i.test(navigator.userAgent)
     let popupHTML = `
@@ -416,6 +450,11 @@ function renderBasicPopup(lonlat, properties) {
     `;
     if (properties.note) popupHTML += `<p class="pt-4 px-2 pb-2 is-size-7">${properties.note}</p>`;
     if (properties['opening_hours']) popupHTML += renderOpeningHours(properties, LANG);
+
+    if (properties["@id"]) {
+        popupHTML += '<hr class="my-1">';
+        popupHTML += renderOSMSourceElementURL(properties["@id"]);
+    }
 
     return popupHTML;
 }
