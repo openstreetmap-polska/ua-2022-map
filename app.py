@@ -2,7 +2,6 @@ import os
 import json
 import flask
 import ruamel.yaml
-from flask_minify import Minify
 
 languages = ("pl", "uk", "en")
 
@@ -12,7 +11,7 @@ strings = yaml.load(
 )
 
 App = flask.Flask(__name__)
-Minify(app=App, html=True, js=True, cssless=True)
+
 
 @App.route('/')
 def get_index():
