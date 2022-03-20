@@ -83,6 +83,8 @@ overpass_query = """
     nwr[office=lawyer]["fee"="no"](area.pol);
     
     nwr[amenity=school](area.pol);
+    
+    nwr[office=government][government=administrative][admin_level](area.pol);
 );
 out center body qt;
 """
@@ -227,6 +229,12 @@ def split_geojson(geojson: dict) -> Dict[str, dict]:
             lambda p:
             True if (
                     p.get("amenity", "") == "bus_station"
+            ) else False
+        ),
+        "government_administrative": (
+            lambda p:
+            True if (
+                p.get("government", "") == "administrative"
             ) else False
         ),
     }

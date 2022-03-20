@@ -10,6 +10,7 @@ const layersColoursDict = {
     pharmacies: '#880044',
     hospitals: '#ff1111',
     diplomatic: '#446688',
+    governmentAdministrative: "#111111",
     charityDropOff: '#11ee11',
 }
 

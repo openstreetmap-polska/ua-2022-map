@@ -69,6 +69,11 @@ export default {
         "data": "https://dopomoha.pl/data/train_stations.geojson",
         "cluster": false
       },
+      "governmentAdministrative": {
+        "type": "geojson",
+        "data": "https://dopomoha.pl/data/government_administrative.geojson",
+        "cluster": false
+      },
       "charityDropOff": {
         "type": "geojson",
         "data": "https://dopomoha.pl/data/zbiorki.geojson",
@@ -505,6 +510,62 @@ export default {
         },
         "minzoom": 5,
         "source": "consulates",
+        "filter": ["!", ["has", "point_count"]],
+        "layout": {
+            "text-field": "{name}",
+            "text-offset": [
+                0,
+                3
+            ],
+            "text-size": 8,
+            "text-font": [
+                "Open Sans Bold"
+            ],
+            "text-letter-spacing": 0.05,
+            "visibility": "visible"
+        },
+        "paint": {
+            "text-color": "#050505",
+            "text-halo-color": "rgba(255, 255, 255, 0.9)",
+            "text-halo-width": 2
+        }
+    },
+    {
+        "id": "governmentAdministrativeCircles",
+        "type": "circle",
+        "metadata": {
+            "group": "governmentAdministrative",
+            "name": {
+                "pl": "Urzędy",
+                "en": "Government Offices",
+                "uk": "Урядові установи"
+            }
+        },
+        "source": "governmentAdministrative",
+        "filter": ["!", ["has", "point_count"]],
+        "layout": {
+            "visibility": "visible"
+        },
+        "paint": {
+            "circle-color": "#111111",
+            "circle-radius": 10,
+            "circle-stroke-color": "#fff",
+            "circle-stroke-width": 2
+        }
+    },
+    {
+        "id": "governmentAdministrativeLabels",
+        "type": "symbol",
+        "metadata": {
+            "group": "governmentAdministrative",
+            "name": {
+                "pl": "Urzędy",
+                "en": "Government Offices",
+                "uk": "Урядові установи"
+            }
+        },
+        "minzoom": 5,
+        "source": "governmentAdministrative",
         "filter": ["!", ["has", "point_count"]],
         "layout": {
             "text-field": "{name}",
