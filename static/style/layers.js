@@ -41,7 +41,12 @@ export default {
         "type": "geojson",
         "data": "https://dopomoha.pl/data/zbiorki.geojson",
         "maxzoom": 12
-      }
+      },
+      legal_advice: {
+        type: "geojson",
+        data: "https://dopomoha.pl/data/legal_advice.geojson",
+        maxzoom: 12,
+      },    
     },
     "sprite": "https://dopomoha.pl/static/style/sprite",
     "glyphs": "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
@@ -687,6 +692,55 @@ export default {
               "text-halo-color": "rgba(255, 255, 255, 0.9)",
               "text-halo-width": 2
           }
+      },
+      {
+        id: "legalAdvice_label",
+        type: "symbol",
+        metadata: {
+          group: "lawyerOffice",
+          name: {
+            pl: "Pomoc prawna",
+            en: "Legal advice",
+            uk: "Legal advice",
+          },
+        },
+        source: "legal_advice",
+        minzoom: 5,
+        layout: {
+          "text-field": "{name:pl}",
+          "text-offset": [0, 3],
+          "text-size": 7,
+          "text-font": ["Open Sans Bold"],
+          "text-letter-spacing": 0.05,
+          visibility: "none",
+        },
+        paint: {
+          "text-color": "#050505",
+          "text-halo-color": "rgba(255, 255, 255, 0.9)",
+          "text-halo-width": 2,
+        },
+      },
+      {
+        id: "legalAdvice_circle",
+        type: "circle",
+        metadata: {
+          group: "lawyerOffice",
+          name: {
+              pl: "Pomoc prawna",
+              en: "Legal advice",
+              uk: "Legal advice",
+            },
+        },
+        source: "legal_advice",
+        layout: {
+          visibility: "none",
+        },
+        paint: {
+          "circle-color": "#11ee11",
+          "circle-radius": 7,
+          "circle-stroke-color": "#fff",
+          "circle-stroke-width": 2,
+        },
       }
     ],
     "id": "53fam6b4c"

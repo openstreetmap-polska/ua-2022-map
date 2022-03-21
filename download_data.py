@@ -231,6 +231,12 @@ def split_geojson(geojson: dict) -> Dict[str, dict]:
                     p.get("amenity", "") == "bus_station"
             ) else False
         ),
+        "legal_advice": (
+            lambda p:
+            True if (
+                    p.get("office", "") == "lawyer"
+            ) else False
+        ),
     }
     results = {}
 
