@@ -15,7 +15,7 @@
   <meta property="og:title" content="{{ strings.title[lang] }}">
   <meta property="og:description" content="{{ strings.site_description[lang] }}">
   <meta property="og:image" content="https://dopomoha.pl/static/img/meta-image.png">
-  
+
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta property="twitter:domain" content="dopomoha.pl">
@@ -44,7 +44,7 @@
   <nav aria-label="main navigation" class="navbar is-link pl-1">
     <div class="navbar-brand">
       <a class="navbar-item has-text-weight-semibold has-text-white-ter is-size-4 is-size-5-mobile pr-2 pl-2" href="">
-        dopomoha.pl 
+        dopomoha.pl
           <svg class="icon ml-2"  style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="#ffd500" d="M12,1C7.59,1 4,4.59 4,9C4,14.57 10.96,22.34 11.26,22.67L12,23.5L12.74,22.67C13.04,22.34 20,14.57 20,9C20,4.59 16.41,1 12,1M12,20.47C9.82,17.86 6,12.54 6,9A6,6 0 0,1 12,3A6,6 0 0,1 18,9C18,12.83 13.75,18.36 12,20.47M11.13,14H12.88V15.75H11.13M12,5A3.5,3.5 0 0,0 8.5,8.5H10.25A1.75,1.75 0 0,1 12,6.75A1.75,1.75 0 0,1 13.75,8.5C13.75,10.26 11.13,10.04 11.13,12.88H12.88C12.88,10.91 15.5,10.69 15.5,8.5A3.5,3.5 0 0,0 12,5Z" />
         </svg>
@@ -114,13 +114,13 @@
         </div>
 
         <div class="navbar-item px-1 is-hidden-mobile">
-          <a class="{% if lang == 'pl' %}active-lang{% endif %}" href="{{ url_for('get_language_index', lang='pl') }}">
+          <a{% if lang == 'pl' %} class="active-lang"{% endif %} href="{{ url_for('get_language_index', lang='pl') }}">
             <img src="{{ url_for('static', filename='img/flags/pl.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="Polish language">
           </a>
         </div>
 
         <div class="navbar-item px-1 is-hidden-mobile">
-          <a class="{% if lang == 'en' %}active-lang{% endif %}" href="{{ url_for('get_language_index', lang='en') }}">
+          <a{% if lang == 'en' %} class="active-lang"{% endif %} href="{{ url_for('get_language_index', lang='en') }}">
             <img src="{{ url_for('static', filename='img/flags/en.png') }}" height="26px"  width="35px"  class="mt-2 lang-img" alt="English language">
           </a>
         </div>
@@ -166,10 +166,10 @@
       </div>
     </div>
   </nav>
-  
+
   <div class="sidebar-right is-invisible" id="sidebar-div">
     <div class="card">
-  
+
       <div id="sidebar-header">
         <div class="columns is-vcentered is-flex mr-0">
           <div class="column ml-4 my-3">
@@ -185,14 +185,14 @@
                   id="sidebar-button-close-desktop"></button>
         </div>
       </div>
-  
+
       <div class="card-content pl-3 pt-1 pb-4">
         <div class="content" id="sidebar-content-div">
           <div id="legend__wrapper">
           </div>
         </div>
       </div>
-      
+
       <footer class="card-footer">
         <div class="notification is-white-bis is-light is-hidden-mobile has-text-centered py-1 is-size-7 has-text-grey" style="width:100%">
            {{ strings.refresh[lang] | safe }}
@@ -202,7 +202,17 @@
   </div>
 
   <div id="map"></div>
-  <script src="{{ url_for('get_language_mapjs', lang=lang) }}" type="module"></script>
+  <script>
+  const LANG = '{{lang}}';
+  const strings = { // {% for str in strings %}
+    '{{ str }}': {
+      uk: '{{ strings[str].uk }}',
+      pl: '{{ strings[str].pl }}',
+      en: '{{ strings[str].en }}'
+    }, //    {% endfor %}
+  };
+  </script>
+  <script src="/static/js/map.js" type="module"></script>
 
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "da4ec9500cd74c4c8a08c72a1d70f491"}'></script>
