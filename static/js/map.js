@@ -39,16 +39,19 @@ function saveMode(mode) {
 }
 
 function loadCenter() {
-  let center;
+  let center = { lng: 24.055, lat: 50.538 };
+
   if (typeof localStorage !== 'undefined') {
     center = localStorage.getItem("center");
-    if (center) try {
-      center = JSON.parse(center);
-    } catch (e) { console.warn(e) }
+    if (center) {
+      try {
+        center = JSON.parse(center);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
   }
 
-  if (!center || !center.lng || typeof center.lng !== 'number' || !center.lat || typeof center.lat !== 'number')
-    return { lng: 24.055, lat: 50.538 };
   return center;
 }
 
