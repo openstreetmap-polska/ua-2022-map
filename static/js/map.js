@@ -48,7 +48,7 @@ function loadCenter() {
       try {
         center = {
           ...defaultCenter,
-          ...JSON.parse(center, (key, value) => (key.match(/lon|lat|^$/) && value) ? value : undefined)
+          ...JSON.parse(center, (key, value) => (key.match(/lng|lat|^$/) && value) ? value : undefined)
         };
       } catch (e) {
         console.warn(e);
