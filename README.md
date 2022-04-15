@@ -47,6 +47,10 @@ pip install -r requirements.txt
 
 Go to http://localhost:8000/en/ in the browser.
 
+## Minimum System Requirements
+
+Python 3.7 or greater
+
 ## Build
 
 ```bash
