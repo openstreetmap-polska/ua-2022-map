@@ -320,13 +320,6 @@ map.on('load', () => {
 //        if(localStorage && localStorage.getItem(localStorageLayersItemId)) {
 //            return
 //        }
-        if (lang === 'uk') {
-            enableLayer('osmTilesUk');
-            disableLayer('osmTiles');
-        } else {
-            enableLayer('osmTiles');
-            disableLayer('osmTilesUk');
-        }
     })(LANG);
     document.getElementById('switchMode').onclick = toggleMode;
 })

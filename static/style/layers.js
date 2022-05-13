@@ -14,16 +14,6 @@ export default {
         "paint": {"raster-fade-duration": 100},
         "attribution": "data © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
       },
-      "osmTilesUk": {
-        "type": "raster",
-        "tiles": [
-          "https://dopomoha.pl/hot/{z}/{x}/{y}.png"
-        ],
-        "tileSize": 256,
-        "maxzoom": 19,
-        "paint": {"raster-fade-duration": 100},
-        "attribution": "data © <a target=\"_top\" rel=\"noopener\" href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors."
-      },
       "bloodDonationPoints": {
         "type": "geojson",
         "data": "https://dopomoha.pl/data/blood_donation_points.geojson",
@@ -99,22 +89,7 @@ export default {
             "visibility": "visible"
         }
     },
-    {
-        "id": "osmTilesUk",
-        "type": "raster",
-        "metadata": {
-            "group": "osmTilesUk",
-            "name": {
-                "pl": "OSM Carto - język ukraiński",
-                "en": "OSM Carto - Ukrainian language",
-                "uk": "OSM Carto - українська мова"
-            }
-        },
-        "source": "osmTilesUk",
-        "layout": {
-            "visibility": "none"
-        }
-    },
+    
     {
         "id": "helpPointsCircles",
         "type": "circle",
