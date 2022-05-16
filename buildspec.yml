@@ -1,0 +1,16 @@
+version: 0.2
+
+
+phases:
+  build:
+    commands:
+       - python -m venv venv
+       - source ./venv/bin/activate
+       - pip install -r ./requirements.txt --upgrade pip
+       - pip install --upgrade flask
+       - python generate_sites.py
+       - python generate_json_style.py "./build/static/style/"
+artifacts:
+  files:
+      - '**/*'
+  base-directory: build
