@@ -69,3 +69,9 @@ Generate sprites by running:
 nvm use 8
 spritezero --ratio 4 ./static/style/sprite ./static/icons/
 ```
+## Deployment to AWS
+
+1. Code is getting deployed using CodePipeline,
+2. Static website is deployed to S3 bucket,
+3. Reception points are generated on EC2 instance on regular basis,
+4. Page is hosted behind CloudFront
