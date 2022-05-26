@@ -78,9 +78,9 @@ spritezero --ratio 4 ./static/style/sprite ./static/icons/
 
 ## Architecture diagram
 
-![diagram](img/OSM-AED-Architecture.png)
+![diagramA](img/OSM-AED-Architecture.png)
 
 
-## Process daigram
+## Process diagram
 
-
+![diagramP](img/OSM-AED-Architecture.png)
