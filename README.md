@@ -75,3 +75,12 @@ spritezero --ratio 4 ./static/style/sprite ./static/icons/
 2. Static website is deployed to S3 bucket,
 3. Reception points are generated on EC2 instance on regular basis,
 4. Page is hosted behind CloudFront
+
+## Architecture diagram
+
+![diagramA](img/OSM-AED-Architecture.png)
+
+
+## Process diagram
+
+![diagramP](img/OSM-AED-Process.png)
